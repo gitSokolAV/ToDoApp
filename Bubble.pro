@@ -3,7 +3,7 @@ QT += quick
 SOURCES += \
         main.cpp
 
-resources.files = main.qml
+resources.files = main.qml AddCategoryBtn.qml
 resources.prefix = /$${TARGET}
 RESOURCES += resources
 
@@ -18,4 +18,5 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES +=
+DISTFILES += \
+    AddCategoryBtn.qml
