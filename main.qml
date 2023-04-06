@@ -1,4 +1,6 @@
 import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 Window {
     width: 640
@@ -6,45 +8,59 @@ Window {
     visible: true
     title: qsTr("Hello World")
     color: '#040404'
-    Rectangle{
-        width: 500
-        height: 500
-        ListModel{
-            id: theModel
-        }
-        GridView{
-            anchors.fill: parent
-            anchors.margins: 50
-            anchors.bottomMargin: 50
-            clip: true
-            cellWidth: 60
-            cellHeight: 60
-            model: theModel
-            delegate: componentRectangle
-        }
-        Component{
-            id: componentRectangle
-            Rectangle{
-                id: rectangleModel
-                required property int index
-                required property int number
-                color: "White"
-                Text{
-                    width: 50
-                    height: 50
-                    anchors.centerIn: parent
-                    text: rectangleModel.number
+
+    Page{
+        id: page
+        anchors.fill: parent
+
+        Rectangle{
+            id: menuPage
+            radius: 10
+            width: 300
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.margins: 40
+            color: "darkgrey"
+            Page{
+                id:testMenu
+                anchors.fill: menuPage
+                header: AddCategoryBtn{
+                    onNewCategory: {
+                        var newCat = {};
+                        newCat.text = category;
+                        listModel.append(newCat)
+                    }
                 }
-            }
-        }
-        AddCategoryBtn{
-            property int count: 1
-            MouseArea{
-                anchors.fill: parent
-                onClicked: {
-                    theModel.append({"number": ++parent.count})
+
+                ListView{
+                    id: listView
+                    anchors.fill: parent
+                    spacing: 10
+
+                    model: listModel
+                    clip: true
+                    delegate: Rectangle{
+                        radius: 10
+                        height: 50
+                        width: listView.width
+                        color: "lightgray"
+                        border.color: "black"
+                        Text{
+                            anchors.centerIn: parent
+                            text: modelData
+                        }
+                    }
+                }
+                ListModel{
+                    id: listModel
+
+
                 }
             }
         }
     }
 }
+
+
+
