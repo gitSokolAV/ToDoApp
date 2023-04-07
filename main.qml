@@ -1,66 +1,60 @@
 import QtQuick
+import QtQuick.Window
 import QtQuick.Controls
-import QtQuick.Layouts
-
-Window {
-    width: 640
-    height: 480
+Window{
+    width: 1000
+    height: 700
     visible: true
-    title: qsTr("Hello World")
-    color: '#040404'
-
-    Page{
-        id: page
+    title: "Hello"
+    StackView{
+        id: stackView
         anchors.fill: parent
+        initialItem: mainWindow
+    }
 
+    Rectangle {
+        id: mainWindow
+        anchors.fill: parent
+        color: "#2D2727"
         Rectangle{
-            id: menuPage
-            radius: 10
-            width: 300
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.margins: 40
-            color: "darkgrey"
-            Page{
-                id:testMenu
-                anchors.fill: menuPage
-                header: AddCategoryBtn{
-                    onNewCategory: {
-                        var newCat = {};
-                        newCat.text = category;
-                        listModel.append(newCat)
-                    }
-                }
+            id: appMenu
+            anchors.fill: parent
+            anchors.margins: 15
+            color: "#413543"
+            border.color: "#8F43EE"
+            border.width: 1
 
-                ListView{
-                    id: listView
+            Rectangle{
+                id: buttonTodo
+                height: 50
+                width: 300
+                color: "#8F43EE"
+                border.width: 1
+                anchors.centerIn: parent
+                Text{
+                    text: "To Do App"
+                    color: "#413543"
+                    font.pixelSize: 20
+                    anchors.centerIn: parent
+                }
+                MouseArea{
                     anchors.fill: parent
-                    spacing: 10
-
-                    model: listModel
-                    clip: true
-                    delegate: Rectangle{
-                        radius: 10
-                        height: 50
-                        width: listView.width
-                        color: "lightgray"
-                        border.color: "black"
-                        Text{
-                            anchors.centerIn: parent
-                            text: modelData
-                        }
+                    onClicked: {
+                        stackView.push(pageToDoList)
                     }
                 }
-                ListModel{
-                    id: listModel
+            }
+        }
 
-
-                }
+        ToDoList{
+            id: pageToDoList
+            backgroundColor: "#2D2727"
+            visible: false
+            buttonText: "Back"
+            onButtonClicked: {
+                stackView.pop()
             }
         }
     }
 }
-
-
 

@@ -4,10 +4,10 @@ import QtQuick.Layouts
 
 Rectangle{
     id:root
-    color: "lightGreen"
+    color: "#8f43ee"
     height: 60
 
-    signal newCategory(string category)
+    signal newCategory(string nameCategory);
 
     RowLayout{
         anchors.fill: parent
@@ -20,20 +20,17 @@ Rectangle{
             Layout.alignment: Qt.AlignCenter
             placeholderText: "New category name.."
             font.pointSize: 10
-            color: "lightblue"
+            color: "#000000"
         }
         Button{
             id:btnAdd
-
-            text: "Add Category"
+            text: "AddCategory"
             onClicked: {
-                newCategory(catName.text);
+                newCategory(catName.text)
                 catName.clear();
             }
         }
     }
-
-
 }
 
 
