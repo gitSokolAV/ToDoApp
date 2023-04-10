@@ -7,6 +7,7 @@ Rectangle{
     color: "#8f43ee"
     height: 60
 
+
     signal newCategory(string nameCategory);
 
     RowLayout{

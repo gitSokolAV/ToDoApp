@@ -6,6 +6,11 @@ Window{
     height: 700
     visible: true
     title: "Hello"
+    property color colorDarkGray: "#2D2727"
+    property color colorLightGray: "#413543"
+    property color colorPurple: "#8F43EE"
+    property color colorYellow: "#F0EB8D"
+
     StackView{
         id: stackView
         anchors.fill: parent
@@ -15,25 +20,25 @@ Window{
     Rectangle {
         id: mainWindow
         anchors.fill: parent
-        color: "#2D2727"
+        color: colorDarkGray
         Rectangle{
             id: appMenu
             anchors.fill: parent
             anchors.margins: 15
-            color: "#413543"
-            border.color: "#8F43EE"
+            color: colorLightGray
+            border.color: colorPurple
             border.width: 1
 
             Rectangle{
                 id: buttonTodo
                 height: 50
                 width: 300
-                color: "#8F43EE"
+                color: colorPurple
                 border.width: 1
                 anchors.centerIn: parent
                 Text{
                     text: "To Do App"
-                    color: "#413543"
+                    color: colorLightGray
                     font.pixelSize: 20
                     anchors.centerIn: parent
                 }
@@ -45,10 +50,10 @@ Window{
                 }
             }
         }
-
+        //Return to menu
         ToDoList{
             id: pageToDoList
-            backgroundColor: "#2D2727"
+            backgroundColor: colorDarkGray
             visible: false
             buttonText: "Back"
             onButtonClicked: {

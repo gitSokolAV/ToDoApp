@@ -12,73 +12,107 @@ Page {
         id: backgroundRect
     }
     Rectangle{
-        id: leftMenu
-        width: 300
-        color: "#413543"
-        anchors.left: parent.left
+        id: topRectangle
+        height: 50
+        width: parent.width
+        color: colorPurple
         anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.leftMargin: 10
-        anchors.topMargin: 10
-        anchors.bottomMargin: 10
-        border.color: "#8F43EE"
-        border.width: 1
-        Rectangle{
-            id: menuPage
-            radius: 10
+
+        Text{
+            text: "Bubble To Do List"
+            font.bold: true
+            font.pixelSize: 40
             anchors.left: parent.left
-            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.leftMargin: 50
+            color: colorYellow
+        }
+    }
+    Item{
+        width: parent.width
+        anchors.top: topRectangle.bottom
+        anchors.bottom: parent.bottom
+
+        Rectangle{
+            id: leftRectangle
+            width: parent.width / 2
+            height: parent.height
+            anchors.left: parent.left
+            color: colorLightGray
+        }
+    }
+    Item{
+        id: rightItem
+        width: parent.width / 2
+        height: parent.height
+        anchors.right: parent.right
+        Column{
             anchors.top: parent.top
-            anchors.margins: 10
-            Page{
-                id:testMenu
-                anchors.fill: menuPage
+            anchors.topMargin: 100
+            spacing: 10
+            anchors.horizontalCenter: parent.horizontalCenter
+            Rectangle{
+                id: textFieldRectangle
+                width: rightItem.width * 0.8
+                height: 50
+                radius: 10
+                color: colorLightGray
+                border.color: colorPurple
+                border.width: 1
 
-                header: AddCategoryBtn{
-                    onNewCategory: {
-                        //var newCat = {};
-                        //newCat.text = nameCategory;
-                        //listModel.append(newCat);
-                        var addCat = nameCategory
-                        listModel.append(addCat)
-                    }
-                }
-                ListView{
-                    id: listView
+                TextField{
                     anchors.fill: parent
-                    spacing: 10
-                    model: listModel
-                    clip: true
-                    delegate: Rectangle{
+                    anchors.margins: 10
+                    placeholderText: "Enter To Do Title"
+                    color: colorPurple
+                }
+            }
 
-                        radius: 10
-                        height: 50
-                        width: ListView.view.width
-                        color: "lightgray"
-                        border.color: "black"
-                        Text{
-                            anchors.centerIn: parent
-                            text: modelData
-                        }
-                    }
+            Rectangle{
+                width: rightItem.width * 0.8
+                height: rightItem.height * 0.6
+                color: colorLightGray
+                border.color: colorPurple
+                border.width: 1
+                radius: 10
+
+                TextArea{
+                    placeholderText: "Enter the To Do item description"
+                    anchors.fill: parent
+                    color: colorYellow
+                    background: colorYellow
+
                 }
-                ListModel{
-                    id: listModel
-                    ListElement{
-                        text: "aaa"
-                    }
-                }
+            }
+
+
+            Button{
+                text: "Add"
+                height: 50
+                width: rightItem.width / 3
+
+            }
+        }
+    }
+    Rectangle{
+        id: bottomRectangle
+        height: 50
+        width: parent.width
+        color: colorPurple
+        anchors.bottom: parent.bottom
+
+        //return Button
+        Button{
+            id: navButton
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.margins: 10
+            onClicked: {
+                root.buttonClicked();
             }
         }
     }
 
-    Button{
-        id: navButton
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.margins: 10
-        onClicked: {
-            root.buttonClicked();
-        }
-    }
+
+
 }
