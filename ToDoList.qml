@@ -11,6 +11,10 @@ Page {
     background: Rectangle{
         id: backgroundRect
     }
+    ListModel{
+        id: listModel
+    }
+
     Rectangle{
         id: topRectangle
         height: 50
@@ -39,6 +43,45 @@ Page {
             height: parent.height
             anchors.left: parent.left
             color: colorLightGray
+
+            ListView{
+                id: listView
+                model: listModel
+                spacing: 10
+                clip: true
+                width: parent.width * 0.7
+                height: parent.height * 0.8
+                anchors.centerIn: parent
+                delegate: Rectangle{
+                    property string title
+                    property string description
+                    title: _title
+                    description: _description
+
+                    id: delegateRectangle
+                    width: listView.width
+                    height: 100
+                    color: colorPurple
+                    radius: 10
+
+                    Column{
+                        anchors.fill: parent
+                        anchors.margins: 10
+
+                        Text {
+                            text: delegateRectangle.title
+                            font.pixelSize: 20
+                            color: "green"
+                        }
+                        Text{
+                            text: delegateRectangle.description
+                            font.pixelSize: 16
+                            color: "black"
+                        }
+                    }
+                }
+
+            }
         }
     }
     Item{
@@ -61,6 +104,7 @@ Page {
                 border.width: 1
 
                 TextField{
+                    id: titleToDo
                     anchors.fill: parent
                     anchors.margins: 10
                     placeholderText: "Enter To Do Title"
@@ -76,7 +120,9 @@ Page {
                 border.width: 1
                 radius: 10
 
+
                 TextArea{
+                    id: descriptionToDo
                     placeholderText: "Enter the To Do item description"
                     anchors.fill: parent
                     color: colorYellow
@@ -90,7 +136,11 @@ Page {
                 text: "Add"
                 height: 50
                 width: rightItem.width / 3
-
+                onClicked: {
+                    listModel.append({"_title": titleToDo.text, "_description": descriptionToDo.text})
+                    titleToDo.text=""
+                    descriptionToDo=""
+                }
             }
         }
     }
