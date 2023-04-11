@@ -135,11 +135,11 @@ Page {
             Button{
                 text: "Add"
                 height: 50
-                width: rightItem.width / 3
+                width: rightItem.width * 0.5
                 onClicked: {
                     listModel.append({"_title": titleToDo.text, "_description": descriptionToDo.text})
                     titleToDo.text=""
-                    descriptionToDo=""
+                    descriptionToDo.text=""
                 }
             }
         }
