@@ -64,20 +64,48 @@ Page {
                     color: colorPurple
                     radius: 10
 
+
+
                     Column{
                         anchors.fill: parent
                         anchors.margins: 10
 
+
                         Text {
                             text: delegateRectangle.title
                             font.pixelSize: 20
-                            color: "green"
+                            color: colorYellow
                         }
                         Text{
                             text: delegateRectangle.description
                             font.pixelSize: 16
-                            color: "black"
+                            color: colorDarkGray
                         }
+                    }
+                    Rectangle{
+                        id: deleteButton
+                        height: 80
+                        width: 80
+                        radius: 10
+                        color: colorYellow
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: 10
+                        Text{
+                            text: "Delete"
+                            anchors.centerIn: parent
+                            color: colorPurple
+                            font.bold: true
+                            font.pixelSize: 20
+
+                        }
+                        MouseArea{
+                                anchors.fill: parent
+                                onClicked: {
+                                    listModel.remove(index)
+                                }
+                            }
+
                     }
                 }
 
@@ -119,11 +147,13 @@ Page {
                 border.color: colorPurple
                 border.width: 1
                 radius: 10
+                clip: true
 
 
                 TextArea{
                     id: descriptionToDo
                     placeholderText: "Enter the To Do item description"
+                    clip: true
                     anchors.fill: parent
                     color: colorYellow
                     background: colorYellow
