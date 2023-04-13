@@ -35,13 +35,14 @@ Page {
     Item{
         width: parent.width
         anchors.top: topRectangle.bottom
-        anchors.bottom: parent.bottom
+        anchors.bottom: bottomRectangle.top
 
         Rectangle{
             id: leftRectangle
             width: parent.width / 2
             height: parent.height
             anchors.left: parent.left
+
             color: colorLightGray
 
             ListView{
@@ -49,9 +50,8 @@ Page {
                 model: listModel
                 spacing: 10
                 clip: true
-                width: parent.width * 0.7
-                height: parent.height * 0.8
-                anchors.centerIn: parent
+                anchors.fill: parent
+                anchors.margins: 50
                 delegate: Rectangle{
                     property string title
                     property string description
@@ -60,37 +60,66 @@ Page {
 
                     id: delegateRectangle
                     width: listView.width
-                    height: 100
+                    //height: listView.height * 0.3
+                    height: descriptionText.contentHeight < 50 ? listView.height * 0.3 : descriptionText.contentHeight
+                    anchors.topMargin: 50
+
                     color: colorPurple
                     radius: 10
+                    border.width: 1
+                    border.color: colorYellow
 
 
-
-                    Column{
-                        anchors.fill: parent
+                    Rectangle{
+                        id: columnRectangle
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.right: deleteButton.left
+                        anchors.left: parent.left
                         anchors.margins: 10
+                        color: colorPurple
+                        radius: 10
+                        border.width: 1
+                        border.color: colorYellow
 
 
-                        Text {
-                            text: delegateRectangle.title
-                            font.pixelSize: 20
-                            color: colorYellow
-                        }
-                        Text{
-                            text: delegateRectangle.description
-                            font.pixelSize: 16
-                            color: colorDarkGray
+                        Column{
+                            anchors.fill: columnRectangle
+                            anchors.margins: 10
+                            spacing: 10
+                            Text{
+                                id:titleText
+                                anchors.fill: parent
+                                wrapMode: TextEdit.Wrap
+                                clip: true
+                                text: delegateRectangle.title
+                                font.pixelSize: 20
+                                color: colorYellow
+                            }
+                            Text{
+                                id:descriptionText
+                                anchors.fill: parent
+                                anchors.topMargin: titleText.contentHeight
+                                text: delegateRectangle.description
+                                font.pixelSize: 16
+                                color: colorDarkGray
+                                wrapMode: TextEdit.Wrap
+                                clip: true
+                            }
                         }
                     }
+
+
                     Rectangle{
                         id: deleteButton
-                        height: 80
-                        width: 80
+                        anchors.top: delegateRectangle.top
+                        anchors.bottom: delegateRectangle.bottom
+                        implicitWidth: 80
                         radius: 10
                         color: colorYellow
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
-                        anchors.rightMargin: 10
+                        anchors.margins: 10
                         Text{
                             text: "Delete"
                             anchors.centerIn: parent
@@ -154,10 +183,9 @@ Page {
                     id: descriptionToDo
                     placeholderText: "Enter the To Do item description"
                     clip: true
+                    wrapMode: TextEdit.Wrap
                     anchors.fill: parent
-                    color: colorYellow
-                    background: colorYellow
-
+                    color: colorYellow                    
                 }
             }
 
