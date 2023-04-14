@@ -6,6 +6,7 @@ Page {
     id: root
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: navButton.text
+
     signal buttonClicked();
 
     background: Rectangle{
@@ -42,7 +43,6 @@ Page {
             width: parent.width / 2
             height: parent.height
             anchors.left: parent.left
-
             color: colorLightGray
 
             ListView{
@@ -59,9 +59,9 @@ Page {
                     description: _description
 
                     id: delegateRectangle
-                    width: listView.width
-                    //height: listView.height * 0.3
-                    height: descriptionText.contentHeight < 50 ? listView.height * 0.3 : descriptionText.contentHeight
+                    width: listView.width                    
+                    height: descriptionText.contentHeight + titleText.contentHeight < 50 ?
+                                listView.height * 0.3 : descriptionText.contentHeight + titleText.contentHeight
                     anchors.topMargin: 50
 
                     color: colorPurple
@@ -69,8 +69,8 @@ Page {
                     border.width: 1
                     border.color: colorYellow
 
-
                     Rectangle{
+
                         id: columnRectangle
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
@@ -81,7 +81,6 @@ Page {
                         radius: 10
                         border.width: 1
                         border.color: colorYellow
-
 
                         Column{
                             anchors.fill: columnRectangle
@@ -109,24 +108,22 @@ Page {
                         }
                     }
 
-
                     Rectangle{
                         id: deleteButton
-                        anchors.top: delegateRectangle.top
-                        anchors.bottom: delegateRectangle.bottom
                         implicitWidth: 80
                         radius: 10
                         color: colorYellow
-                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.top: delegateRectangle.verticalCenter
+                        anchors.bottom: delegateRectangle.bottom
                         anchors.right: parent.right
                         anchors.margins: 10
+
                         Text{
                             text: "Delete"
                             anchors.centerIn: parent
                             color: colorPurple
                             font.bold: true
                             font.pixelSize: 20
-
                         }
                         MouseArea{
                                 anchors.fill: parent
@@ -135,6 +132,30 @@ Page {
                                 }
                             }
 
+                    }
+                    Rectangle{
+                        id: doneButton
+                        implicitWidth: 80
+                        radius: 10
+                        color: colorYellow
+                        anchors.bottom: delegateRectangle.verticalCenter
+                        anchors.top: delegateRectangle.top
+                        anchors.right: parent.right
+                        anchors.margins: 10
+
+                        Text{
+                            text: "Done"
+                            anchors.centerIn: parent
+                            color: colorPurple
+                            font.bold: true
+                            font.pixelSize: 20
+                        }
+                        MouseArea{
+                                anchors.fill: parent
+                                onClicked: {
+                                    columnRectangle.color = "green"
+                                }
+                            }
                     }
                 }
 
@@ -178,7 +199,6 @@ Page {
                 radius: 10
                 clip: true
 
-
                 TextArea{
                     id: descriptionToDo
                     placeholderText: "Enter the To Do item description"
@@ -188,7 +208,6 @@ Page {
                     color: colorYellow                    
                 }
             }
-
 
             Button{
                 text: "Add"
