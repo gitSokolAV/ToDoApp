@@ -45,11 +45,22 @@ Window{
                 MouseArea{
                     anchors.fill: parent
                     onClicked: {
-                        stackView.push(pageToDoList)
+                        //stackView.push(pageToDoList)
+                        stackView.push(pageCategory)
                     }
                 }
             }
         }
+        Category{
+            id: pageCategory
+            backgroundColor: colorYellow
+            visible: false
+            buttonText: "Back"
+            onButtonClicked: {
+                stackView.pop()
+            }
+        }
+
         //Return to menu
         ToDoList{
             id: pageToDoList
