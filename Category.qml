@@ -15,16 +15,15 @@ Page {
     }
 
     ListModel{
-        id:listModel
+        id:pageListModel
     }
 
-    Item{
+    Page{
         StackView{
-            id: stackView
+            id: pageStackView
             anchors.fill: parent
-            initialItem: mainWindow
         }
-        anchors.fill: parent
+
         Rectangle{
             id: leftRect
             width: parent.width / 2
@@ -34,24 +33,20 @@ Page {
             }
 
             ListView{
-
-                id: listView
-                model: listModel
-                spacing: 10
+                id: pagelistView
+                model: pageListModel
                 anchors.fill: leftRect
-                delegate: Rectangle{
-                    id:delegateRect
-                    width: 100
-                    height: 100
-                    color: "red"
-
-
+                delegate: Text{
+                    text: "Page" + (index + 1)
                     MouseArea{
                         anchors.fill: parent
-                        onClicked: {
-                            Loader.source = "ToDoList.qml"
+                        onClicked:{
+                            var page = stackView.push(Qt.resolvedUrl("ToDoList.qml"))
+                            pageListModel.setProperty(index, "page", page)
                         }
                     }
+
+
                 }
 
             }
@@ -65,7 +60,7 @@ Page {
             Button{
                 text: "AAD"
                 onClicked: {
-                    listModel.append(ToDoList)
+                    pageListModel.append({"page": null})
                 }
         }
     }
