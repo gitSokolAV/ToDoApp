@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 
+
+
 Page {
     id: root
     property alias backgroundColor: backgroundRect.color
@@ -59,7 +61,7 @@ Page {
                     description: _description
 
                     id: delegateRectangle
-                    width: listView.width                    
+                    width: listView.width
                     height: descriptionText.contentHeight + titleText.contentHeight < 50 ?
                                 listView.height * 0.3 : descriptionText.contentHeight + titleText.contentHeight
                     anchors.topMargin: 50
@@ -154,8 +156,8 @@ Page {
                                 anchors.fill: parent
                                 onClicked: {
                                     columnRectangle.color = "green"
-                                }
                             }
+                        }
                     }
                 }
 
@@ -189,7 +191,6 @@ Page {
                     color: colorPurple
                 }
             }
-
             Rectangle{
                 width: rightItem.width * 0.8
                 height: rightItem.height * 0.6
@@ -208,7 +209,6 @@ Page {
                     color: colorYellow                    
                 }
             }
-
             Button{
                 text: "Add"
                 height: 50
@@ -239,7 +239,4 @@ Page {
             }
         }
     }
-
-
-
 }
