@@ -22,7 +22,15 @@ Page {
                 color: colorPurple
                 property bool isDragging: false
                 property string name: "Category"
-
+                Menu {
+                    id: menu
+                    MenuItem {
+                        text: "Удалить"
+                        onTriggered: {
+                            container.removeRect(rect)
+                        }
+                    }
+                }
                 MouseArea {
                     anchors.fill: parent
                     onPressed: isDragging = true
@@ -31,6 +39,12 @@ Page {
                         if(isDragging) {
                             parent.x += mouse.x - width / 2;
                             parent.y += mouse.y - height / 2;
+                        }
+                    }
+                    acceptedButtons: Qt.RightButton
+                    onClicked: {
+                        if (mouse.button === Qt.RightButton) {
+                            menu.popup()
                         }
                     }
                 }
@@ -59,6 +73,9 @@ Page {
         Item {
             id: container
             anchors.fill: parent
+            function removeRect(rect) {
+                rect.destroy()
+            }
         }
 
         Component {
