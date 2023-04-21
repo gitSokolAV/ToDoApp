@@ -14,82 +14,59 @@ Page {
     background: Rectangle{
         id: backgroundRect
     }
-    Component {
-            id: newRectComponent
-            Rectangle {
-                width: 50
-                height: 50
-                color: colorPurple
-                property bool isDragging: false
-                property string name: "Category"
-                Menu {
-                    id: menu
-                    MenuItem {
-                        text: "Удалить"
-                        onTriggered: {
-                            container.removeRect(rect)
-                        }
-                    }
-                }
-                MouseArea {
-                    anchors.fill: parent
-                    onPressed: isDragging = true
-                    onReleased: isDragging = false
-                    onPositionChanged: {
-                        if(isDragging) {
-                            parent.x += mouse.x - width / 2;
-                            parent.y += mouse.y - height / 2;
-                        }
-                    }
-                    acceptedButtons: Qt.RightButton
-                    onClicked: {
-                        if (mouse.button === Qt.RightButton) {
-                            menu.popup()
-                        }
-                    }
-                }
-
-                Text {
-                    text: name
-                    anchors.centerIn: parent
-                }
-            }
-        }
 
         Button {
-            text: "Add new category"
+            id: addButton
+            text: "Add Category"
+            anchors.centerIn: parent
             onClicked: {
-                var dialog = nameDialog.createObject(null);
-                dialog.accepted.connect(function() {
-                    var newRect = newRectComponent.createObject(container);
-                    newRect.x = Math.random() * (container.width - newRect.width);
-                    newRect.y = Math.random() * (container.height - newRect.height);
-                    newRect.name = dialog.textInput.text;
-                });
-                dialog.open();
+                categoryDialog.open()
             }
         }
 
-        Item {
-            id: container
-            anchors.fill: parent
-            function removeRect(rect) {
-                rect.destroy()
+        Dialog {
+            id: categoryDialog
+            title: "Enter Category Name"
+            anchors.centerIn: parent
+            standardButtons: Dialog.Ok | Dialog.Cancel
+            TextField {
+                id: categoryNameInput
+                placeholderText: "Category Name"
+            }
+            onAccepted: {
+                var categoryText = categoryNameInput.text.trim()
+                if (categoryText !== "") {
+                    var categoryRect = categoryRectComponent.createObject(parent, {"categoryText": categoryText})
+                    categoryRect.x = Math.random() * (parent.width - categoryRect.width)
+                    categoryRect.y = Math.random() * (parent.height - categoryRect.height)
+                }
             }
         }
 
         Component {
-            id: nameDialog
-            Dialog {
-                id: dialog
-                parent: root
-                title: "Enter name for new category"
-                standardButtons: Dialog.Ok | Dialog.Cancel
-                TextField {
-                    id: textInput
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: parent.width * 0.8
+            id: categoryRectComponent
+            Rectangle {
+                property string categoryText: ""
+                width: 100 + categoryText.length * 10
+                height: 30
+                color: "lightblue"
+                radius: 5
+                Text {
+                    text: categoryText
+                    color: "white"
+                    anchors.centerIn: parent
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    drag.target: parent
+                    drag.axis: Drag.XAndYAxis
+                    drag.minimumX: 0
+                    drag.maximumX: parent.parent.width - parent.width
+                    drag.minimumY: 0
+                    drag.maximumY: parent.parent.height - parent.height
+                    onDoubleClicked: {
+                        stackView.push(pageToDoList)
+                    }
                 }
             }
         }
@@ -102,6 +79,7 @@ Page {
         onClicked: {
             root.buttonClicked();
         }
+
     }
 
 }
