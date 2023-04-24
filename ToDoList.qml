@@ -206,7 +206,7 @@ Page {
                     clip: true
                     wrapMode: TextEdit.Wrap
                     anchors.fill: parent
-                    color: colorYellow                    
+                    color: colorYellow
                 }
             }
             Button{
