@@ -49,6 +49,8 @@ Page {
             id: categoryRectComponent
             Rectangle {
                 property string categoryText: ""
+                property var toDoList
+
                 width: categoryText.length * 10
                 height: 50
                 color: colorPurple
@@ -67,22 +69,22 @@ Page {
                     drag.minimumY: 0
                     drag.maximumY: parent.parent.height - parent.height
 
-                    property bool selected: false // добавляем новое свойство
+                    property bool selected: false
 
                     onDoubleClicked: {
-                        stackView.push(pageToDoList)
+                        var toDoListInstance = Qt.createComponent("ToDoList.qml")
+                        toDoListInstance.category = categoryText
+                        stackView.push(toDoListInstance)
                     }
 
-                    // обработчик нажатия кнопки мыши
                     onPressed: {
                         selected = true
-                        color = colorLightGray // изменяем цвет при нажатии кнопки мыши
+                        color = colorLightGray
                     }
 
-                    // обработчик отпускания кнопки мыши
                     onReleased: {
                         selected = false
-                        color = colorPurple // изменяем цвет при отпускании кнопки мыши
+                        color = colorPurple
                     }
                 }
 

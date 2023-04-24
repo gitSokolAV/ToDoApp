@@ -5,14 +5,12 @@ import QtQuick.Controls
 
 
 Page {
-    id: root
-    property alias backgroundColor: backgroundRect.color
-    property alias buttonText: navButton.text
+    id: toDoList
+    //property alias backgroundColor: backgroundRect.color
 
-    signal buttonClicked();
-
-    background: Rectangle{
+    Rectangle{
         id: backgroundRect
+        color: purpleColor
     }
     ListModel{
         id: listModel
@@ -26,7 +24,8 @@ Page {
         anchors.top: parent.top
 
         Text{
-            text: "Bubble To Do List"
+            //text: "Bubble To Do List"
+            text: "To Do List from : " + categoryText
             font.bold: true
             font.pixelSize: 40
             anchors.left: parent.left
@@ -231,11 +230,12 @@ Page {
         //return Button
         Button{
             id: navButton
+            text: "Back"
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             anchors.margins: 10
             onClicked: {
-                root.buttonClicked();
+                stackView.pop()
             }
         }
     }
