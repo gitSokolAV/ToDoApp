@@ -5,8 +5,7 @@ import QtQuick.Controls
 
 
 Page {
-    id: toDoList
-    //property alias backgroundColor: backgroundRect.color
+    id: toDoList    
 
     Rectangle{
         id: backgroundRect
@@ -84,7 +83,7 @@ Page {
                         border.color: colorYellow
 
                         Column{
-                            anchors.fill: columnRectangle
+                            //anchors.fill: columnRectangle
                             anchors.margins: 10
                             spacing: 10
                             Text{

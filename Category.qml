@@ -70,6 +70,7 @@ Page {
                     drag.maximumY: parent.parent.height - parent.height
 
                     property bool selected: false
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
 
                     onDoubleClicked: {
                         var toDoListInstance = Qt.createComponent("ToDoList.qml")
@@ -85,6 +86,21 @@ Page {
                     onReleased: {
                         selected = false
                         color = colorPurple
+                    }
+
+                    onClicked: {
+                        if (mouse.button === Qt.RightButton) {
+                            menuPopUp.popup();
+                        }
+                    }
+                    Menu{
+                        id: menuPopUp
+                        MenuItem{
+                            text: "Delete"
+                        }
+                        MenuItem{
+                            text: "Rename"
+                        }
                     }
                 }
 
