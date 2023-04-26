@@ -3,7 +3,7 @@ QT += quick
 SOURCES += \
         main.cpp
 
-resources.files = main.qml AddCategoryBtn.qml ToDoList.qml
+resources.files = main.qml AddCategoryBtn.qml ToDoList.qml Category.qml
 resources.prefix = /$${TARGET}
 RESOURCES += resources
 
@@ -19,4 +19,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+    Category.qml \
     ToDoList.qml

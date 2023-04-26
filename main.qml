@@ -44,16 +44,15 @@ Window{
                 }
                 MouseArea{
                     anchors.fill: parent
-                    onClicked: {
-                        stackView.push(pageToDoList)
+                    onClicked: {                        
+                        stackView.push(pageCategory)
                     }
                 }
             }
         }
-        //Return to menu
-        ToDoList{
-            id: pageToDoList
-            backgroundColor: colorDarkGray
+        Category{
+            id: pageCategory
+            backgroundColor: colorYellow
             visible: false
             buttonText: "Back"
             onButtonClicked: {

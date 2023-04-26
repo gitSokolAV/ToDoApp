@@ -2,14 +2,15 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 
-Page {
-    id: root
-    property alias backgroundColor: backgroundRect.color
-    property alias buttonText: navButton.text
-    signal buttonClicked();
 
-    background: Rectangle{
+
+Page {
+    id: toDoList
+    //property alias backgroundColor: backgroundRect.color
+
+    Rectangle{
         id: backgroundRect
+        color: purpleColor
     }
     ListModel{
         id: listModel
@@ -23,7 +24,8 @@ Page {
         anchors.top: parent.top
 
         Text{
-            text: "Bubble To Do List"
+            //text: "Bubble To Do List"
+            text: "To Do List from : " + categoryText
             font.bold: true
             font.pixelSize: 40
             anchors.left: parent.left
@@ -35,7 +37,7 @@ Page {
     Item{
         width: parent.width
         anchors.top: topRectangle.bottom
-        anchors.bottom: parent.bottom
+        anchors.bottom: bottomRectangle.top
 
         Rectangle{
             id: leftRectangle
@@ -49,9 +51,8 @@ Page {
                 model: listModel
                 spacing: 10
                 clip: true
-                width: parent.width * 0.7
-                height: parent.height * 0.8
-                anchors.centerIn: parent
+                anchors.fill: parent
+                anchors.margins: 50
                 delegate: Rectangle{
                     property string title
                     property string description
@@ -60,44 +61,70 @@ Page {
 
                     id: delegateRectangle
                     width: listView.width
-                    height: 100
+                    height: descriptionText.contentHeight + titleText.contentHeight < 50 ?
+                                listView.height * 0.3 : descriptionText.contentHeight + titleText.contentHeight
+                    anchors.topMargin: 50
+
                     color: colorPurple
                     radius: 10
+                    border.width: 1
+                    border.color: colorYellow
 
+                    Rectangle{
 
-
-                    Column{
-                        anchors.fill: parent
+                        id: columnRectangle
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.right: deleteButton.left
+                        anchors.left: parent.left
                         anchors.margins: 10
+                        color: colorPurple
+                        radius: 10
+                        border.width: 1
+                        border.color: colorYellow
 
-
-                        Text {
-                            text: delegateRectangle.title
-                            font.pixelSize: 20
-                            color: colorYellow
-                        }
-                        Text{
-                            text: delegateRectangle.description
-                            font.pixelSize: 16
-                            color: colorDarkGray
+                        Column{
+                            anchors.fill: columnRectangle
+                            anchors.margins: 10
+                            spacing: 10
+                            Text{
+                                id:titleText
+                                anchors.fill: parent
+                                wrapMode: TextEdit.Wrap
+                                clip: true
+                                text: delegateRectangle.title
+                                font.pixelSize: 20
+                                color: colorYellow
+                            }
+                            Text{
+                                id:descriptionText
+                                anchors.fill: parent
+                                anchors.topMargin: titleText.contentHeight
+                                text: delegateRectangle.description
+                                font.pixelSize: 16
+                                color: colorDarkGray
+                                wrapMode: TextEdit.Wrap
+                                clip: true
+                            }
                         }
                     }
+
                     Rectangle{
                         id: deleteButton
-                        height: 80
-                        width: 80
+                        implicitWidth: 80
                         radius: 10
                         color: colorYellow
-                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.top: delegateRectangle.verticalCenter
+                        anchors.bottom: delegateRectangle.bottom
                         anchors.right: parent.right
-                        anchors.rightMargin: 10
+                        anchors.margins: 10
+
                         Text{
                             text: "Delete"
                             anchors.centerIn: parent
                             color: colorPurple
                             font.bold: true
                             font.pixelSize: 20
-
                         }
                         MouseArea{
                                 anchors.fill: parent
@@ -106,6 +133,30 @@ Page {
                                 }
                             }
 
+                    }
+                    Rectangle{
+                        id: doneButton
+                        implicitWidth: 80
+                        radius: 10
+                        color: colorYellow
+                        anchors.bottom: delegateRectangle.verticalCenter
+                        anchors.top: delegateRectangle.top
+                        anchors.right: parent.right
+                        anchors.margins: 10
+
+                        Text{
+                            text: "Done"
+                            anchors.centerIn: parent
+                            color: colorPurple
+                            font.bold: true
+                            font.pixelSize: 20
+                        }
+                        MouseArea{
+                                anchors.fill: parent
+                                onClicked: {
+                                    columnRectangle.color = "green"
+                            }
+                        }
                     }
                 }
 
@@ -139,7 +190,6 @@ Page {
                     color: colorPurple
                 }
             }
-
             Rectangle{
                 width: rightItem.width * 0.8
                 height: rightItem.height * 0.6
@@ -149,19 +199,15 @@ Page {
                 radius: 10
                 clip: true
 
-
                 TextArea{
                     id: descriptionToDo
                     placeholderText: "Enter the To Do item description"
                     clip: true
+                    wrapMode: TextEdit.Wrap
                     anchors.fill: parent
                     color: colorYellow
-                    background: colorYellow
-
                 }
             }
-
-
             Button{
                 text: "Add"
                 height: 50
@@ -184,15 +230,13 @@ Page {
         //return Button
         Button{
             id: navButton
+            text: "Back"
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             anchors.margins: 10
             onClicked: {
-                root.buttonClicked();
+                stackView.pop()
             }
         }
     }
-
-
-
 }
