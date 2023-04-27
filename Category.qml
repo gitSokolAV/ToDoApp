@@ -100,6 +100,33 @@ Page {
                         }
                         MenuItem{
                             text: "Rename"
+                            onClicked: {
+                                renameDialog.open();
+                            }
+                        }
+                    }
+                }
+                Dialog {
+                    id: renameDialog
+                    title: "Rename Category"
+                    anchors.centerIn: parent
+                    standardButtons: Dialog.Ok | Dialog.Cancel
+                    TextField {
+                        id: categoryNameInput
+                        text: categoryText
+                        placeholderText: "Category Name"
+                    }
+                    onAccepted: {
+                        var newCategoryText = categoryNameInput.text.trim();
+                        if (newCategoryText !== "" && newCategoryText !== categoryText) {
+                            categoryText = newCategoryText;
+                            // Обновляем элементы в массиве категорий
+                            for (var i = 0; i < categories.length; i++) {
+                                if (categories[i].text === categoryText) {
+                                    categories[i].text = newCategoryText;
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
