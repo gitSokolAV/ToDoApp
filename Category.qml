@@ -37,7 +37,7 @@ Page {
             onAccepted: {
                 var categoryText = categoryNameInput.text.trim()
                 if (categoryText !== "") {
-                    var categoryRect = categoryRectComponent.createObject(parent, {"categoryText": categoryText})
+                    var categoryRect = categoryRectComponent.createObject(parent, {"categoryText": categoryText, "index": categories.length})
                     categoryRect.x = Math.random() * (parent.width - categoryRect.width)
                     categoryRect.y = Math.random() * (parent.height - categoryRect.height)
                     categories.push({"text": categoryText, "x": categoryRect.x, "y": categoryRect.y})
@@ -61,6 +61,7 @@ Page {
                     anchors.centerIn: parent
                 }
                 MouseArea {
+                    id: mouseArea
                     anchors.fill: parent
                     drag.target: parent
                     drag.axis: Drag.XAndYAxis
@@ -70,6 +71,7 @@ Page {
                     drag.maximumY: parent.parent.height - parent.height
 
                     property bool selected: false
+                    property int index: -1
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
 
                     onDoubleClicked: {
@@ -97,6 +99,10 @@ Page {
                         id: menuPopUp
                         MenuItem{
                             text: "Delete"
+                            onTriggered: {
+                                categories.splice(mouseArea.index, 1);
+                                mouseArea.parent.destroy();
+                            }
                         }
                         MenuItem{
                             text: "Rename"
