@@ -19,7 +19,9 @@ Page {
         Button {
             id: addButton
             text: "Add Category"
-            anchors.centerIn: parent
+            anchors.right: navButton.left
+            anchors.bottom: parent.bottom
+            anchors.margins: 10
             onClicked: {
                 categoryDialog.open()
             }
@@ -110,6 +112,22 @@ Page {
                                 renameDialog.open();
                             }
                         }
+                        MenuItem{
+                                text: "Show Date"
+                                onTriggered: {
+                                    dateDialog.open();
+                                }
+                            }
+                    }
+                }
+                Dialog {
+                    id: dateDialog
+                    title: "Category Creation Date"
+                    standardButtons: Dialog.Ok
+                    Text {
+                        text: "Category \"" + categoryText + "\" was created on " + new Date().toLocaleDateString()
+                        color: "black"
+                        font.bold: true
                     }
                 }
                 Dialog {
