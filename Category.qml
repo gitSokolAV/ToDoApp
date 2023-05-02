@@ -8,6 +8,7 @@ Page {
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: navButton.text
     property var categories: []
+
     signal buttonClicked();
 
 
@@ -96,6 +97,12 @@ Page {
                         if (mouse.button === Qt.RightButton) {
                             menuPopUp.popup();
                         }
+                        selected = !selected;
+                        if (selected) {
+                            color = colorLightGray;
+                        } else {
+                            color = colorPurple;
+                        }
                     }
                     Menu{
                         id: menuPopUp
@@ -113,11 +120,31 @@ Page {
                             }
                         }
                         MenuItem{
-                                text: "Show Date"
-                                onTriggered: {
-                                    dateDialog.open();
-                                }
+                            text: "Show Date"
+                            onTriggered: {
+                                dateDialog.open();
                             }
+                        }
+                        MenuItem{
+                            text: "Connect"
+                            onClicked: {
+                                connectDialog.open();
+                            }
+                        }
+
+                    }
+                }
+                Dialog {
+                    id: connectDialog
+                    title: "Connect Category"
+                    standardButtons: Dialog.Ok | Dialog.Cancel
+                    ComboBox {
+                        id: categoryComboBox
+                        model: categories
+                        textRole: "text"
+                    }
+                    onAccepted: {
+                        var selectedCategory = categoryComboBox.currentText;
                     }
                 }
                 Dialog {
