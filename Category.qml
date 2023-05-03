@@ -15,6 +15,9 @@ Page {
     background: Rectangle{
         id: backgroundRect
     }
+    ListModel {
+        id: categoryModel
+    }
 
 
         Button {
@@ -44,9 +47,11 @@ Page {
                     categoryRect.x = Math.random() * (parent.width - categoryRect.width)
                     categoryRect.y = Math.random() * (parent.height - categoryRect.height)
                     categories.push({"text": categoryText, "x": categoryRect.x, "y": categoryRect.y})
+                    categoryModel.append({"text": categoryText})
                 }
             }
         }
+
 
         Component {
             id: categoryRectComponent
@@ -104,6 +109,7 @@ Page {
                             color = colorPurple;
                         }
                     }
+
                     Menu{
                         id: menuPopUp
                         MenuItem{
@@ -125,28 +131,34 @@ Page {
                                 dateDialog.open();
                             }
                         }
-                        MenuItem{
+                        MenuItem {
                             text: "Connect"
                             onClicked: {
-                                connectDialog.open();
+                                connectDialog.open()
                             }
-                        }
 
+                        }
                     }
                 }
                 Dialog {
                     id: connectDialog
-                    title: "Connect Category"
+                    title: "Connect to Category"
+                    modal: true
+
                     standardButtons: Dialog.Ok | Dialog.Cancel
+
                     ComboBox {
                         id: categoryComboBox
-                        model: categories
-                        textRole: "text"
-                    }
-                    onAccepted: {
-                        var selectedCategory = categoryComboBox.currentText;
+                        model: categoryModel
+                        currentIndex: 0
+                        onCurrentIndexChanged: {
+                            console.log("Selected category:", currentText)
+                        }
                     }
                 }
+
+
+
                 Dialog {
                     id: dateDialog
                     title: "Category Creation Date"
@@ -157,6 +169,7 @@ Page {
                         font.bold: true
                     }
                 }
+
                 Dialog {
                     id: renameDialog
                     title: "Rename Category"
