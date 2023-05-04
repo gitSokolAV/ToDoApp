@@ -10,16 +10,14 @@ Page {
     property var categories: []
 
     signal buttonClicked();
+    ListModel {
+        id: categoriesModel
+    }
 
 
     background: Rectangle{
         id: backgroundRect
     }
-    ListModel {
-        id: categoryModel
-    }
-
-
         Button {
             id: addButton
             text: "Add Category"
@@ -47,7 +45,7 @@ Page {
                     categoryRect.x = Math.random() * (parent.width - categoryRect.width)
                     categoryRect.y = Math.random() * (parent.height - categoryRect.height)
                     categories.push({"text": categoryText, "x": categoryRect.x, "y": categoryRect.y})
-                    categoryModel.append({"text": categoryText})
+                    categoriesModel.append({"text": categoryText});
                 }
             }
         }
@@ -136,29 +134,20 @@ Page {
                             onClicked: {
                                 connectDialog.open()
                             }
-
                         }
                     }
                 }
                 Dialog {
                     id: connectDialog
                     title: "Connect to Category"
-                    modal: true
-
                     standardButtons: Dialog.Ok | Dialog.Cancel
-
                     ComboBox {
                         id: categoryComboBox
-                        model: categoryModel
-                        currentIndex: 0
-                        onCurrentIndexChanged: {
-                            console.log("Selected category:", currentText)
-                        }
+                        model: categoriesModel
+                        textRole: "text"
+                        anchors.fill: parent
                     }
                 }
-
-
-
                 Dialog {
                     id: dateDialog
                     title: "Category Creation Date"
