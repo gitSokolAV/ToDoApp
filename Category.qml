@@ -77,7 +77,7 @@ Page {
                     drag.maximumY: parent.parent.height - parent.height
 
                     property bool selected: false
-                    property int index: -1
+                    property int index: 0
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
 
                     onDoubleClicked: {
@@ -113,8 +113,11 @@ Page {
                         MenuItem{
                             text: "Delete"
                             onTriggered: {
-                                categories.splice(mouseArea.index, 1);
+                                var index = mouseArea.index;
+                                categoriesModel.remove(index, 1);
+                                categories.splice(index, 1);
                                 mouseArea.parent.destroy();
+                                categoryComboBox.model = categoriesModel;
                             }
                         }
                         MenuItem{
