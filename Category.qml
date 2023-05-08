@@ -56,6 +56,7 @@ Page {
             Rectangle {
                 property string categoryText: ""
                 property var toDoList
+                property int index: -1
 
                 width: categoryText.length * 10
                 height: 50
@@ -168,21 +169,16 @@ Page {
                     anchors.centerIn: parent
                     standardButtons: Dialog.Ok | Dialog.Cancel
                     TextField {
-                        id: categoryNameInput
+                        id: categoryNameInputRename
                         text: categoryText
                         placeholderText: "Category Name"
                     }
                     onAccepted: {
-                        var newCategoryText = categoryNameInput.text.trim();
+                        var newCategoryText = categoryNameInputRename.text.trim();
                         if (newCategoryText !== "" && newCategoryText !== categoryText) {
-                            categoryText = newCategoryText;
                             // Обновляем элементы в массиве категорий
-                            for (var i = 0; i < categories.length; i++) {
-                                if (categories[i].text === categoryText) {
-                                    categories[i].text = newCategoryText;
-                                    break;
-                                }
-                            }
+                            categoriesModel.setProperty(index, "text", newCategoryText);
+                            categoryText = newCategoryText;
                         }
                     }
                 }
