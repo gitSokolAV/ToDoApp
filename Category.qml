@@ -8,17 +8,15 @@ Page {
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: navButton.text
     property var categories: []
-    property var categoryRect: null
-
     signal buttonClicked();
-    ListModel {
-        id: categoriesModel
-    }
 
+        ListModel {
+            id: categoriesModel
+        }
+        background: Rectangle{
+            id: backgroundRect
+        }
 
-    background: Rectangle{
-        id: backgroundRect
-    }
         Button {
             id: addButton
             text: "Add Category"
@@ -153,18 +151,28 @@ Page {
                         anchors.fill: parent
                     }
                     onAccepted: {
-                        var selectedIndex = categoryComboBox.currentIndex;
-                        if (selectedIndex >= 0 && selectedIndex < categories.length) {
-                            var selectedCategory = categories[selectedIndex];
-                            var startX = categoryRect.x + categoryRect.width / 2;
-                            var startY = categoryRect.y + categoryRect.height / 2;
-                            var endX = selectedCategory.x + categoryRect.width / 2;
-                            var endY = selectedCategory.y + categoryRect.height / 2;
-                            var lineComponent = Qt.createComponent("Arrow.qml");
-                            var line = lineComponent.createObject(parent, {"startX": startX, "startY": startY, "endX": endX, "endY": endY});
+                        var selectedCategory = categoryComboBox.currentText;
+
+                        colorDialog.open();
+                    }
+                }
+                Dialog {
+                    id: colorDialog
+                    title: "Select Color"
+                    standardButtons: Dialog.Ok | Dialog.Cancel
+                    Button {
+                        text: "Color"
+                        onClicked: {
+                            colorDialogOpen.open();
+                        }
+                    }
+                    ColorDialog{
+                        id: colorDialogOpen
+                        onAccepted: {
                         }
                     }
                 }
+
                 Dialog {
                     id: dateDialog
                     title: "Category Creation Date"

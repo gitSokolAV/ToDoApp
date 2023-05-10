@@ -1,28 +1,39 @@
 import QtQuick 2.0
 
-Item{
-    property int startX: 0
-    property int startY: 0
-    property int endX: 0
-    property int endY: 0
-
-    x: Math.min(startX, endX)
-    y: Math.min(startY, endY)
-    width: Math.abs(startX - endX)
-    height: Math.abs(startY - endY)
-
-    function angle() {
-        return Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
-    }
-
-    rotation: angle()
-    transformOrigin: Item.TopLeft
+Item {
+    id: root
+    width: 0
+    height: 0
+    property real length: 0
+    property real width: 0
+    property real angle: 0
+    property color color: "black"
 
     Rectangle {
-        anchors.fill: parent
-        color: "red"
-        border.width: 1
-        border.color: "black"
-        radius: 5
+        id: line
+        x: -width / 2
+        y: 0
+        width: length
+        height: width
+        color: color
+        transform: Rotation {
+            origin.x: width / 2
+            origin.y: width / 2
+            angle: root.angle
+        }
+    }
+
+    Rectangle {
+        id: head
+        x: length - width / 2
+        y: -width / 2
+        width: width
+        height: width
+        color: color
+        transform: Rotation {
+            origin.x: width / 2
+            origin.y: width / 2
+            angle: root.angle
+        }
     }
 }
