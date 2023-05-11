@@ -27,6 +27,24 @@ Page {
                 categoryDialog.open()
             }
         }
+        Button {
+            id: colorButton
+            text: "Change Color"
+            anchors.right: addButton.left
+            anchors.bottom: parent.bottom
+            anchors.margins: 10
+            onClicked: {
+                colorDialog.open()
+            }
+            ColorDialog{
+                id: colorDialog
+                title: "please choose a color"
+                onAccepted: {
+                    backgroundColor = colorDialog.selectedColor
+                }
+            }
+        }
+
 
         Dialog {
             id: categoryDialog
@@ -43,8 +61,9 @@ Page {
                     var categoryRect = categoryRectComponent.createObject(parent, {"categoryText": categoryText, "index": categories.length})
                     categoryRect.x = Math.random() * (parent.width - categoryRect.width)
                     categoryRect.y = Math.random() * (parent.height - categoryRect.height)
-                    categories.push({"text": categoryText, "x": categoryRect.x, "y": categoryRect.y})
+                    categories.push({"text": categoryText, "x": categoryRect.x, "y": categoryRect.y, })
                     categoriesModel.append({"text": categoryText});
+                    console.log(categories.length)
                 }
             }
         }
@@ -55,7 +74,7 @@ Page {
             Rectangle {
                 property string categoryText: ""
                 property var toDoList
-                property int index: -1
+                property int index
 
                 width: categoryText.length * 10
                 height: 50
@@ -77,7 +96,7 @@ Page {
                     drag.maximumY: parent.parent.height - parent.height
 
                     property bool selected: false
-                    property int index: 0
+                    property int index: categories.indexOf(objectName)
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
 
                     onDoubleClicked: {
@@ -87,24 +106,17 @@ Page {
                     }
 
                     onPressed: {
-                        selected = true
                         color = colorLightGray
                     }
 
                     onReleased: {
-                        selected = false
                         color = colorPurple
                     }
 
                     onClicked: {
                         if (mouse.button === Qt.RightButton) {
-                            menuPopUp.popup();
-                        }
-                        selected = !selected;
-                        if (selected) {
-                            color = colorLightGray;
-                        } else {
-                            color = colorPurple;
+                            console.log(index)
+                            menuPopUp.popup();                            
                         }
                     }
 
@@ -114,6 +126,7 @@ Page {
                             text: "Delete"
                             onTriggered: {
                                 var index = mouseArea.index;
+                                console.log(index)
                                 categoriesModel.remove(index, 1);
                                 categories.splice(index, 1);
                                 mouseArea.parent.destroy();
@@ -151,27 +164,30 @@ Page {
                         anchors.fill: parent
                     }
                     onAccepted: {
-                        var selectedCategory = categoryComboBox.currentText;
+                        var rect1 = categories.indexOf(objectName)
+                        var rect2 = categoryComboBox.currentText
+                        console.log(rect1)
+                        console.log(rect2)
+                        //colorDialog.open();
+                    }
 
-                        colorDialog.open();
-                    }
                 }
-                Dialog {
-                    id: colorDialog
-                    title: "Select Color"
-                    standardButtons: Dialog.Ok | Dialog.Cancel
-                    Button {
-                        text: "Color"
-                        onClicked: {
-                            colorDialogOpen.open();
-                        }
-                    }
-                    ColorDialog{
-                        id: colorDialogOpen
-                        onAccepted: {
-                        }
-                    }
-                }
+                //Dialog {
+                //    id: colorDialog
+                //    title: "Select Color"
+                //    standardButtons: Dialog.Ok | Dialog.Cancel
+                //    Button {
+                //        text: "Color"
+                //        onClicked: {
+                //            colorDialogOpen.open();
+                //        }
+                //    }
+                //    ColorDialog{
+                //        id: colorDialogOpen
+                //        onAccepted: {
+                //        }
+                //    }
+                //}
 
                 Dialog {
                     id: dateDialog
