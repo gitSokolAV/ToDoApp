@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
-
+import QtQuick.Dialogs
 
 
 Page {
@@ -225,7 +225,24 @@ Page {
         width: parent.width
         color: colorPurple
         anchors.bottom: parent.bottom
-
+        Button {
+            id: colorButton
+            text: "Change Color"
+            anchors.right: addButton.left
+            anchors.bottom: parent.bottom
+            anchors.margins: 10
+            onClicked: {
+                colorDialog.open()
+            }
+            ColorDialog{
+                id: colorDialog
+                title: "please choose a color"
+                onAccepted: {
+                    topRectangle.color = colorDialog.selectedColor
+                    bottomRectangle.color = colorDialog.selectedColor
+                }
+            }
+        }
         //return Button
         Button{
             id: navButton
