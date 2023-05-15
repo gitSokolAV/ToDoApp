@@ -94,9 +94,9 @@ Page {
                     drag.maximumX: parent.parent.width - parent.width
                     drag.minimumY: 0
                     drag.maximumY: parent.parent.height - parent.height
+                    property int clickedIndex: -1
 
-                    property bool selected: false
-                    property int index: categories.indexOf(objectName)
+                    //property int index: categories.indexOf(objectName)
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
 
                     onDoubleClicked: {
@@ -115,6 +115,7 @@ Page {
 
                     onClicked: {
                         if (mouse.button === Qt.RightButton) {
+                            clickedIndex = index
                             console.log(index)
                             menuPopUp.popup();                            
                         }
@@ -125,12 +126,13 @@ Page {
                         MenuItem{
                             text: "Delete"
                             onTriggered: {
-                                var index = mouseArea.index;
-                                console.log(index)
+                                var index = mouseArea.clickedIndex;
+
                                 categoriesModel.remove(index, 1);
                                 categories.splice(index, 1);
                                 mouseArea.parent.destroy();
                                 categoryComboBox.model = categoriesModel;
+                                console.log(categories.length)
                             }
                         }
                         MenuItem{
@@ -164,7 +166,7 @@ Page {
                         anchors.fill: parent
                     }
                     onAccepted: {
-                        var rect1 = categories.indexOf(objectName)
+                        var rect1 = mouseArea.clickedIndex
                         var rect2 = categoryComboBox.currentText
                         console.log(rect1)
                         console.log(rect2)
