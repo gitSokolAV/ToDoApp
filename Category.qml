@@ -38,7 +38,7 @@ Page {
             }
             ColorDialog{
                 id: colorDialog
-                title: "please choose a color"
+                title: "Please choose a color"
                 onAccepted: {
                     backgroundColor = colorDialog.selectedColor
                 }
@@ -58,12 +58,11 @@ Page {
             onAccepted: {
                 var categoryText = categoryNameInput.text.trim()
                 if (categoryText !== "") {
-                    var categoryRect = categoryRectComponent.createObject(parent, {"categoryText": categoryText, "index": categories.length})
+                    var categoryRect = categoryRectComponent.createObject(parent, {"categoryText": categoryText, "index": categories.length,"colorRect": colorPurple})
                     categoryRect.x = Math.random() * (parent.width - categoryRect.width)
                     categoryRect.y = Math.random() * (parent.height - categoryRect.height)
-                    categories.push({"text": categoryText, "x": categoryRect.x, "y": categoryRect.y, })
-                    categoriesModel.append({"text": categoryText});
-                    console.log(categories.length)
+                    categories.push({"text": categoryText, "x": categoryRect.x, "y": categoryRect.y, "colorRect": colorPurple })
+                    categoriesModel.append({"text": categoryText, "colorRect": colorPurple});
                 }
             }
         }
@@ -75,10 +74,11 @@ Page {
                 property string categoryText: ""
                 property var toDoList
                 property int index
+                property color colorRect: colorPurple
 
                 width: categoryText.length * 10
                 height: 50
-                color: colorPurple
+                color: colorRect
                 radius: 10
                 Text {
                     text: categoryText
@@ -116,7 +116,6 @@ Page {
                     onClicked: {
                         if (mouse.button === Qt.RightButton) {
                             clickedIndex = index
-                            console.log(index)
                             menuPopUp.popup();                            
                         }
                     }
@@ -131,8 +130,7 @@ Page {
                                 categoriesModel.remove(index, 1);
                                 categories.splice(index, 1);
                                 mouseArea.parent.destroy();
-                                categoryComboBox.model = categoriesModel;
-                                console.log(categories.length)
+                                categoryComboBox.model = categoriesModel;                                
                             }
                         }
                         MenuItem{
@@ -165,31 +163,34 @@ Page {
                         textRole: "text"
                         anchors.fill: parent
                     }
-                    onAccepted: {
-                        var rect1 = mouseArea.clickedIndex
-                        var rect2 = categoryComboBox.currentText
-                        console.log(rect1)
-                        console.log(rect2)
-                        //colorDialog.open();
+                    onAccepted: {                        
+                        colorDialog2.open();
                     }
-
                 }
-                //Dialog {
-                //    id: colorDialog
-                //    title: "Select Color"
-                //    standardButtons: Dialog.Ok | Dialog.Cancel
-                //    Button {
-                //        text: "Color"
-                //        onClicked: {
-                //            colorDialogOpen.open();
-                //        }
-                //    }
-                //    ColorDialog{
-                //        id: colorDialogOpen
-                //        onAccepted: {
-                //        }
-                //    }
-                //}
+                Dialog {
+                    id: colorDialog2
+                    title: "Select Color"
+                    standardButtons: Dialog.Ok | Dialog.Cancel
+                    Button {
+                        text: "Color"
+                        onClicked: {
+                            colorDialogOpen.open();
+                        }
+                    }
+                    ColorDialog{
+                        id: colorDialogOpen
+                        onAccepted: {
+                            var rect1 = mouseArea.clickedIndex
+                            var rect2 = categoryComboBox.currentIndex
+                            console.log(categories[rect1].colorRect.toString() )
+                            console.log(categories[rect2].colorRect.toString())
+                            var obj1 = categories[rect1]
+                            var obj2 = categories[rect2]
+                            obj1.colorRect = colorDialogOpen.selectedColor
+                            obj2.colorRect = colorDialogOpen.selectedColor
+                        }
+                    }
+                }
 
                 Dialog {
                     id: dateDialog
