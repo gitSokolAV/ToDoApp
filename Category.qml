@@ -8,10 +8,12 @@ Page {
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: navButton.text
     property var categories: []
+
     signal buttonClicked();
 
         ListModel {
             id: categoriesModel
+            dynamicRoles: true
         }
         background: Rectangle{
             id: backgroundRect
@@ -58,11 +60,11 @@ Page {
             onAccepted: {
                 var categoryText = categoryNameInput.text.trim()
                 if (categoryText !== "") {
-                    var categoryRect = categoryRectComponent.createObject(parent, {"categoryText": categoryText, "index": categories.length,"colorRect": colorPurple})
+                    var categoryRect = categoryRectComponent.createObject(parent, {"categoryText": categoryText, "index": categories.length, "colorRect": colorPurple})
                     categoryRect.x = Math.random() * (parent.width - categoryRect.width)
                     categoryRect.y = Math.random() * (parent.height - categoryRect.height)
-                    categories.push({"text": categoryText, "x": categoryRect.x, "y": categoryRect.y, "colorRect": colorPurple })
-                    categoriesModel.append({"text": categoryText, "colorRect": colorPurple});
+                    categories.push({"text": categoryText, "x": categoryRect.x, "y": categoryRect.y,"colorRect": colorPurple})
+                    categoriesModel.append({"text": categoryText,"colorRect": colorPurple});
                 }
             }
         }
@@ -74,7 +76,8 @@ Page {
                 property string categoryText: ""
                 property var toDoList
                 property int index
-                property color colorRect: colorPurple
+                property color colorRect
+
 
                 width: categoryText.length * 10
                 height: 50
@@ -105,18 +108,18 @@ Page {
                         stackView.push(toDoListInstance)
                     }
 
-                    onPressed: {
-                        color = colorLightGray
-                    }
-
-                    onReleased: {
-                        color = colorPurple
-                    }
+                    //onPressed: {
+                    //    color = colorLightGray
+                    //}
+//
+                    //onReleased: {
+                    //    color = colorPurple
+                    //}
 
                     onClicked: {
                         if (mouse.button === Qt.RightButton) {
                             clickedIndex = index
-                            menuPopUp.popup();                            
+                            menuPopUp.popup();
                         }
                     }
 
@@ -130,7 +133,7 @@ Page {
                                 categoriesModel.remove(index, 1);
                                 categories.splice(index, 1);
                                 mouseArea.parent.destroy();
-                                categoryComboBox.model = categoriesModel;                                
+                                categoryComboBox.model = categoriesModel;
                             }
                         }
                         MenuItem{
@@ -163,12 +166,13 @@ Page {
                         textRole: "text"
                         anchors.fill: parent
                     }
-                    onAccepted: {                        
+                    onAccepted: {
                         colorDialog2.open();
                     }
                 }
                 Dialog {
                     id: colorDialog2
+
                     title: "Select Color"
                     standardButtons: Dialog.Ok | Dialog.Cancel
                     Button {
@@ -180,14 +184,13 @@ Page {
                     ColorDialog{
                         id: colorDialogOpen
                         onAccepted: {
-                            var rect1 = mouseArea.clickedIndex
-                            var rect2 = categoryComboBox.currentIndex
-                            console.log(categories[rect1].colorRect.toString() )
-                            console.log(categories[rect2].colorRect.toString())
-                            var obj1 = categories[rect1]
-                            var obj2 = categories[rect2]
-                            obj1.colorRect = colorDialogOpen.selectedColor
-                            obj2.colorRect = colorDialogOpen.selectedColor
+                            var rect1 = mouseArea.clickedIndex;
+                            var rect2 = categoryComboBox.currentIndex;
+                            var newColor = colorDialogOpen.selectedColor
+
+                            categoriesModel.setProperty(rect1, "colorRect", newColor);
+                            categoriesModel.setProperty(rect2, "colorRect", newColor);
+                            colorRect = newColor
                         }
                     }
                 }
