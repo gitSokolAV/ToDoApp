@@ -7,8 +7,6 @@ Page {
     id: root
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: navButton.text
-    property var categories: []
-
     signal buttonClicked();
 
         ListModel {
@@ -21,7 +19,7 @@ Page {
 
 
         Button {
-            id: addButton
+            id: addCategoryButton
             text: "Add Category"
             anchors.right: navButton.left
             anchors.bottom: parent.bottom
@@ -32,9 +30,9 @@ Page {
             }
         }
         Button {
-            id: colorButton
+            id: backgroundChangeColorButton
             text: "Change Color"
-            anchors.right: addButton.left
+            anchors.right: addCategoryButton.left
             anchors.bottom: parent.bottom
             anchors.margins: 10
             onClicked: {
@@ -62,16 +60,22 @@ Page {
 
 
             onAccepted: {
+                var setCategoryColor = newColorDialog.selectedColor
+                var setCategoryName = categoryNameInput.text.trim()
+                var setCategoryIndex = categoriesModel.count
 
-                var newColor = newColorDialog.selectedColor
-                var categoryText = categoryNameInput.text.trim()
-                if (categoryText !== "") {
+                if (setCategoryName !== "") {
+                    categoriesModel.append({"categoryName": setCategoryName, "categoryColor": setCategoryColor, "index": setCategoryIndex})
+                    var newCategory =
+                            categoryRectComponent.createObject(parent,
+                                                                        {"categoryName": categoriesModel.get(setCategoryIndex).categoryName,
+                                                                         "categoryColor": categoriesModel.get(setCategoryIndex).categoryColor,
+                                                                         "categoryIndex": categoriesModel.get(setCategoryIndex).categoryIndex})
 
-                    var categoryRect = categoryRectComponent.createObject(parent, {"categoryText": categoryText, "index": categories.length, "colorRect": newColor})
-                    categoryRect.x = Math.random() * (parent.width - categoryRect.width)
-                    categoryRect.y = Math.random() * (parent.height - categoryRect.height)
-                    categories.push({"text": categoryText, "x": categoryRect.x, "y": categoryRect.y, "color": newColor})
-                    categoriesModel.append({"text": categoryText});
+                    //var categoryRect = categoryRectComponent.createObject(parent, {"categoryText": categoryText,"colorRect": newColor})
+                    //categoryRect.x = Math.random() * (parent.width - categoryRect.width)
+                    //categoryRect.y = Math.random() * (parent.height - categoryRect.height)
+                    //categoriesModel.append({categoryRect, "x": categoryRect.x, "y": categoryRect.y });
 
                 }
 
@@ -89,17 +93,17 @@ Page {
         Component {
             id: categoryRectComponent
             Rectangle {
-                property string categoryText: ""
+                property string categoryName: ""
+                property color categoryColor
                 property var toDoList
                 property int index
-                property color colorRect
 
-                width: categoryText.length * 10
+                width: categoryName.length * 10
                 height: 50
-                color: colorRect
+                color: categoryColor
                 radius: 10
                 Text {
-                    text: categoryText
+                    text: categoryName
                     color: colorYellow
                     anchors.centerIn: parent
                 }
@@ -117,18 +121,9 @@ Page {
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
                     onDoubleClicked: {
                         var toDoListInstance = Qt.createComponent("ToDoList.qml")
-                        toDoListInstance.category = categoryText
+                        toDoListInstance.category = categoryName
                         stackView.push(toDoListInstance)
                     }
-
-                    //onPressed: {
-                    //    color = colorLightGray
-                    //}
-//
-                    //onReleased: {
-                    //    color = colorPurple
-                    //}
-
                     onClicked: {
                         if (mouse.button === Qt.RightButton) {
                             clickedIndex = index
@@ -142,8 +137,7 @@ Page {
                             text: "Delete"
                             onTriggered: {
                                 var index = mouseArea.clickedIndex;
-                                categoriesModel.remove(index, 1);
-                                categories.splice(index, 1);
+                                categoriesModel.remove(index, 1);                                
                                 mouseArea.parent.destroy();
                                 categoryComboBox.model = categoriesModel;
                             }
@@ -166,6 +160,7 @@ Page {
                                 connectDialog.open()
                             }
                         }
+
                     }
                 }
                 Dialog {
@@ -175,7 +170,7 @@ Page {
                     ComboBox {
                         id: categoryComboBox
                         model: categoriesModel
-                        textRole: "text"
+
                         anchors.fill: parent
                     }
                     onAccepted: {
@@ -197,23 +192,28 @@ Page {
                         id: colorDialogOpen
                         onAccepted: {
                             var rect1 = mouseArea.clickedIndex;
-                            var rect2 = categoryComboBox.currentIndex;
-                            var newColor = colorDialogOpen.selectedColor
-                            //categoriesModel.setProperty(rect1, "colorRect", newColor);
-                            //categoriesModel.setProperty(rect2, "colorRect", newColor);
+                            categoriesModel.setProperty(rect1, "categoryColor", colorDialogOpen.selectedColor)
+                            //var rect2 = categoryComboBox.currentIndex;
+                            //var newColor = colorDialogOpen.selectedColor
+                            ////categoriesModel.setProperty(rect1, "colorRect", newColor);
+                            ////categoriesModel.setProperty(rect2, "colorRect", newColor);
+                            ////categories[rect2].colorRect = newColor
+                            ////colorRect = newColor
+                            //console.log("color categories rect1 " + " name "+ categories[rect1].text + ": "  + categories[rect1].colorRect.toString())
+                            //console.log("color categories rect2 " + " name "+ categories[rect2].text + ": "  + categories[rect2].colorRect.toString())
+                            //console.log("Rect 1 Index: " + rect1.toString())
+                            //console.log("Rect 2 Index: " + rect2.toString())
+                            //categories[rect1].colorRect = newColor
                             //categories[rect2].colorRect = newColor
-                            //colorRect = newColor
-                            console.log("color categories rect1 " + " name "+ categories[rect1].text + ": "  + categories[rect1].color.toString())
-                            console.log("color categories rect2 " + " name "+ categories[rect2].text + ": "  + categories[rect2].color.toString())
-                            categoryRectComponent[rect1].colorRect = newColor
-                            categoryRectComponent[rect2].colorRect = newColor
-                            categories[rect2].color = newColor
-                            categoriesModel.modelReset()
-
-                            console.log("color categories rect1 " + " name "+ categories[rect1].text + ": "  + categories[rect1].color.toString())
-                            console.log("color categories rect2 " + " name "+ categories[rect2].text + ": "  + categories[rect2].color.toString())
-                            colorRect = newColor
-
+//
+//
+                            //console.log("color categories rect1 " + " name "+ categories[rect1].text + ": "  + categories[rect1].colorRect.toString())
+                            //console.log("color categories rect2 " + " name "+ categories[rect2].text + ": "  + categories[rect2].colorRect.toString())
+                            ////colorRect = newColor
+                            //for (var i = 0; i < categories.length; i++)
+                            //{
+                            //   console.log(i.toString() + ": " + categories[i].colorRect)
+                            //}
                         }
                     }
                 }
@@ -223,7 +223,7 @@ Page {
                     title: "Category Creation Date"
                     standardButtons: Dialog.Ok
                     Text {
-                        text: "Category \"" + categoryText + "\" was created on " + new Date().toLocaleDateString()
+                        text: "Category \"" + categoryName + "\" was created on " + new Date().toLocaleDateString()
                         color: "black"
                         font.bold: true
                     }
@@ -236,15 +236,15 @@ Page {
                     standardButtons: Dialog.Ok | Dialog.Cancel
                     TextField {
                         id: categoryNameInputRename
-                        text: categoryText
+                        text: categoryName
                         placeholderText: "Category Name"
                     }
                     onAccepted: {
                         var newCategoryText = categoryNameInputRename.text.trim();
-                        if (newCategoryText !== "" && newCategoryText !== categoryText) {
+                        if (newCategoryText !== "" && newCategoryText !== categoryName) {
                             // Обновляем элементы в массиве категорий
                             categoriesModel.setProperty(index, "text", newCategoryText);
-                            categoryText = newCategoryText;
+                            categoryName = newCategoryText;
                         }
                     }
                 }

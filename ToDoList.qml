@@ -24,7 +24,7 @@ Page {
 
         Text{
             //text: "Bubble To Do List"
-            text: "To Do List from : " + categoryText
+            text: "To Do List from : " + categoryName
             font.bold: true
             font.pixelSize: 40
             anchors.left: parent.left
@@ -228,7 +228,7 @@ Page {
         Button {
             id: colorButton
             text: "Change Color"
-            anchors.right: addButton.left
+            anchors.right:  addCategoryButton.left
             anchors.bottom: parent.bottom
             anchors.margins: 10
             onClicked: {
