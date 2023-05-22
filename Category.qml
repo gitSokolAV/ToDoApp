@@ -18,6 +18,9 @@ Page {
         }
 
 
+
+
+
         Button {
             id: addCategoryButton
             text: "Add Category"
@@ -63,20 +66,16 @@ Page {
                 var setCategoryColor = newColorDialog.selectedColor
                 var setCategoryName = categoryNameInput.text.trim()
                 var setCategoryIndex = categoriesModel.count
-
-                if (setCategoryName !== "") {
-                    categoriesModel.append({"categoryName": setCategoryName, "categoryColor": setCategoryColor, "index": setCategoryIndex})
-                    var newCategory =
-                            categoryRectComponent.createObject(parent,
-                                                                        {"categoryName": categoriesModel.get(setCategoryIndex).categoryName,
-                                                                         "categoryColor": categoriesModel.get(setCategoryIndex).categoryColor,
-                                                                         "categoryIndex": categoriesModel.get(setCategoryIndex).categoryIndex})
-
-                    //var categoryRect = categoryRectComponent.createObject(parent, {"categoryText": categoryText,"colorRect": newColor})
-                    //categoryRect.x = Math.random() * (parent.width - categoryRect.width)
-                    //categoryRect.y = Math.random() * (parent.height - categoryRect.height)
-                    //categoriesModel.append({categoryRect, "x": categoryRect.x, "y": categoryRect.y });
-
+                if(setCategoryName !== ""){
+                    categoriesModel.append({
+                                               "categoryName": setCategoryName,
+                                               "categoryColor": setCategoryColor,
+                                               "categoryIndex": setCategoryIndex
+                                           })
+                    var newCategory =  categoryRectComponent.createObject(root);
+                    newCategory.categoryName = categoriesModel.get(setCategoryIndex).categoryName
+                    newCategory.categoryColor = categoriesModel.get(setCategoryIndex).categoryColor
+                    newCategory.categoryIndex = categoriesModel.get(setCategoryIndex).categoryIndex
                 }
 
             }
@@ -96,11 +95,11 @@ Page {
                 property string categoryName: ""
                 property color categoryColor
                 property var toDoList
-                property int index
+                property int categoryIndex
 
                 width: categoryName.length * 10
                 height: 50
-                color: categoryColor
+                color: categoriesModel.get(categoryIndex).categoryColor
                 radius: 10
                 Text {
                     text: categoryName
@@ -126,7 +125,7 @@ Page {
                     }
                     onClicked: {
                         if (mouse.button === Qt.RightButton) {
-                            clickedIndex = index
+                            clickedIndex = categoryIndex
                             menuPopUp.popup();
                         }
                     }
@@ -170,7 +169,7 @@ Page {
                     ComboBox {
                         id: categoryComboBox
                         model: categoriesModel
-
+                        textRole: "categoryName"
                         anchors.fill: parent
                     }
                     onAccepted: {
@@ -191,30 +190,19 @@ Page {
                     ColorDialog{
                         id: colorDialogOpen
                         onAccepted: {
-                            var rect1 = mouseArea.clickedIndex;
-                            categoriesModel.setProperty(rect1, "categoryColor", colorDialogOpen.selectedColor)
-                            //var rect2 = categoryComboBox.currentIndex;
-                            //var newColor = colorDialogOpen.selectedColor
-                            ////categoriesModel.setProperty(rect1, "colorRect", newColor);
-                            ////categoriesModel.setProperty(rect2, "colorRect", newColor);
-                            ////categories[rect2].colorRect = newColor
-                            ////colorRect = newColor
-                            //console.log("color categories rect1 " + " name "+ categories[rect1].text + ": "  + categories[rect1].colorRect.toString())
-                            //console.log("color categories rect2 " + " name "+ categories[rect2].text + ": "  + categories[rect2].colorRect.toString())
-                            //console.log("Rect 1 Index: " + rect1.toString())
-                            //console.log("Rect 2 Index: " + rect2.toString())
-                            //categories[rect1].colorRect = newColor
-                            //categories[rect2].colorRect = newColor
-//
-//
-                            //console.log("color categories rect1 " + " name "+ categories[rect1].text + ": "  + categories[rect1].colorRect.toString())
-                            //console.log("color categories rect2 " + " name "+ categories[rect2].text + ": "  + categories[rect2].colorRect.toString())
-                            ////colorRect = newColor
-                            //for (var i = 0; i < categories.length; i++)
-                            //{
-                            //   console.log(i.toString() + ": " + categories[i].colorRect)
-                            //}
-                        }
+                                var newCategoryColor = colorDialogOpen.selectedColor;
+                                var clickedObjectIndex = mouseArea.clickedIndex;
+                                var selectedObjectIndex = categoryComboBox.currentIndex;
+
+                                // Обновляем цвет выбранного объекта в модели
+                                categoriesModel.setProperty(clickedObjectIndex, "categoryColor", newCategoryColor);
+
+                                // Если выбран объект из выпадающего списка, обновляем его цвет
+                                if (selectedObjectIndex >= 0) {
+                                    var selectedCategory = categoriesModel.get(selectedObjectIndex);
+                                    selectedCategory.categoryColor = newCategoryColor;
+                                }
+                            }
                     }
                 }
 
@@ -243,7 +231,7 @@ Page {
                         var newCategoryText = categoryNameInputRename.text.trim();
                         if (newCategoryText !== "" && newCategoryText !== categoryName) {
                             // Обновляем элементы в массиве категорий
-                            categoriesModel.setProperty(index, "text", newCategoryText);
+                            categoriesModel.setProperty(categoryIndex, "categoryName", newCategoryText);
                             categoryName = newCategoryText;
                         }
                     }
