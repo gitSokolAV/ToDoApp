@@ -97,6 +97,7 @@ Page {
                 property var toDoList
                 property int categoryIndex
 
+
                 width: categoryName.length * 10
                 height: 50
                 color: categoriesModel.get(categoryIndex).categoryColor
@@ -105,6 +106,37 @@ Page {
                     text: categoryName
                     color: colorYellow
                     anchors.centerIn: parent
+                }
+                Canvas {
+                    id: arrowCanvas
+                    anchors.fill: parent
+                    renderTarget: Canvas.Image
+                    z: -1
+                    function drawArrow(fromX, fromY, toX, toY) {
+                            var ctx = arrowCanvas.getContext("2d");
+                            ctx.clearRect(0, 0, arrowCanvas.width, arrowCanvas.height);
+
+                            ctx.beginPath();
+                            ctx.moveTo(fromX, fromY);
+                            ctx.lineTo(toX, toY);
+                            ctx.strokeStyle = "black";
+                            ctx.lineWidth = 2;
+                            ctx.stroke();
+
+                            var arrowSize = 8;
+                            var angle = Math.atan2(toY - fromY, toX - fromX);
+                            ctx.save();
+                            ctx.translate(toX, toY);
+                            ctx.rotate(angle);
+                            ctx.beginPath();
+                            ctx.moveTo(-arrowSize, -arrowSize);
+                            ctx.lineTo(0, 0);
+                            ctx.lineTo(-arrowSize, arrowSize);
+                            ctx.fillStyle = "black";
+                            ctx.closePath();
+                            ctx.fill();
+                            ctx.restore();
+                        }
                 }
                 MouseArea {
                     property int clickedIndex: -1
@@ -202,6 +234,18 @@ Page {
                                     var selectedCategory = categoriesModel.get(selectedObjectIndex);
                                     selectedCategory.categoryColor = newCategoryColor;
                                 }
+                                if (selectedObjectIndex >= 0) {
+                                            // ...
+
+                                            // Рассчитываем координаты двух объектов
+                                            var fromX = mouseArea.x + mouseArea.width / 2;
+                                            var fromY = mouseArea.y + mouseArea.height / 2;
+                                            var toX = selectedCategoryRect.x + selectedCategoryRect.width / 2;
+                                            var toY = selectedCategoryRect.y + selectedCategoryRect.height / 2;
+
+                                            // Рисуем стрелку между объектами
+                                            categoryRectComponent.drawArrow(fromX, fromY, toX, toY);
+                                        }
                             }
                     }
                 }
