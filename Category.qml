@@ -97,7 +97,6 @@ Page {
                 property var toDoList
                 property int categoryIndex
 
-
                 width: categoryName.length * 10
                 height: 50
                 color: categoriesModel.get(categoryIndex).categoryColor
@@ -106,37 +105,6 @@ Page {
                     text: categoryName
                     color: colorYellow
                     anchors.centerIn: parent
-                }
-                Canvas {
-                    id: arrowCanvas
-                    anchors.fill: parent
-                    renderTarget: Canvas.Image
-                    z: -1
-                    function drawArrow(fromX, fromY, toX, toY) {
-                            var ctx = arrowCanvas.getContext("2d");
-                            ctx.clearRect(0, 0, arrowCanvas.width, arrowCanvas.height);
-
-                            ctx.beginPath();
-                            ctx.moveTo(fromX, fromY);
-                            ctx.lineTo(toX, toY);
-                            ctx.strokeStyle = "black";
-                            ctx.lineWidth = 2;
-                            ctx.stroke();
-
-                            var arrowSize = 8;
-                            var angle = Math.atan2(toY - fromY, toX - fromX);
-                            ctx.save();
-                            ctx.translate(toX, toY);
-                            ctx.rotate(angle);
-                            ctx.beginPath();
-                            ctx.moveTo(-arrowSize, -arrowSize);
-                            ctx.lineTo(0, 0);
-                            ctx.lineTo(-arrowSize, arrowSize);
-                            ctx.fillStyle = "black";
-                            ctx.closePath();
-                            ctx.fill();
-                            ctx.restore();
-                        }
                 }
                 MouseArea {
                     property int clickedIndex: -1
@@ -213,6 +181,37 @@ Page {
 
                     title: "Select Color"
                     standardButtons: Dialog.Ok | Dialog.Cancel
+                    Item {
+                            id: arrowItem
+                            width: categoryRectComponent.width
+                            height: categoryRectComponent.height
+                            property int clickedIndex: -1
+                            property int selectedObjectIndex: categoryComboBox.currentIndex
+                            property real arrowWidth: 0
+                            property real arrowHeight: 0
+
+                            function updateArrow() {
+                                if (clickedIndex >= 0 && selectedObjectIndex >= 0) {
+                                    var clickedObject = categoryRectComponent.createObject(root)
+                                    var selectedObject = categoryRectComponent.createObject(root)
+                                    clickedObject.categoryIndex = clickedIndex
+                                    selectedObject.categoryIndex = selectedObjectIndex
+                                    arrowWidth = selectedObject.x + selectedObject.width / 2 - clickedObject.x - clickedObject.width / 2
+                                    arrowHeight = selectedObject.y + selectedObject.height / 2 - clickedObject.y - clickedObject.height / 2
+                                    clickedObject.destroy()
+                                    selectedObject.destroy()
+                                } else {
+                                    arrowWidth = 0
+                                    arrowHeight = 0
+                                }
+                            }
+
+                            Rectangle {
+                                width: arrowWidth
+                                height: arrowHeight
+                                color: "black"
+                            }
+                        }
                     Button {
                         text: "Color"
                         onClicked: {
@@ -233,19 +232,8 @@ Page {
                                 if (selectedObjectIndex >= 0) {
                                     var selectedCategory = categoriesModel.get(selectedObjectIndex);
                                     selectedCategory.categoryColor = newCategoryColor;
+                                    arrowItem.updateArrow()
                                 }
-                                if (selectedObjectIndex >= 0) {
-                                            // ...
-
-                                            // Рассчитываем координаты двух объектов
-                                            var fromX = mouseArea.x + mouseArea.width / 2;
-                                            var fromY = mouseArea.y + mouseArea.height / 2;
-                                            var toX = selectedCategoryRect.x + selectedCategoryRect.width / 2;
-                                            var toY = selectedCategoryRect.y + selectedCategoryRect.height / 2;
-
-                                            // Рисуем стрелку между объектами
-                                            categoryRectComponent.drawArrow(fromX, fromY, toX, toY);
-                                        }
                             }
                     }
                 }
