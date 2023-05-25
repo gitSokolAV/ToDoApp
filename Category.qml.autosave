@@ -216,16 +216,15 @@ Page {
                                     var selectedCategory = categoriesModel.get(selectedObjectIndex);
                                     selectedCategory.categoryColor = newCategoryColor;
 
-                                    var connectCategory = categoriesModel.get(clickedObjectIndex);
+                                    var connectCategory = categoriesModel.get(clickedObjectIndex) ;
                                     var targetCategory = categoriesModel.get(selectedObjectIndex);
-                                    console.log(connectCategory.x)
+                                    
+                                    console.log(connectCategory )
                                     console.log(connectCategory.y)
                                     console.log(selectedCategory.x)
                                     console.log(selectedCategory.y)
                                     createArrow(connectCategory, targetCategory);
-
                                 }
-
                             }
                     }
 

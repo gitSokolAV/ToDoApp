@@ -23,8 +23,7 @@ Item {
             ctx.moveTo(0, height / 2);
             ctx.lineTo(width, height / 2);
             ctx.stroke();
-
-            // Draw arrowhead
+            
             var arrowSize = 10;
             var arrowWidth = 6;
             var arrowHeight = 10;
