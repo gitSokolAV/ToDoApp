@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Dialogs
+import QtQuick.Shapes
 
 Page {
     id: root
@@ -16,10 +17,6 @@ Page {
         background: Rectangle{
             id: backgroundRect
         }
-
-
-
-
         Button {
             id: addCategoryButton
             text: "Add Category"
@@ -75,6 +72,8 @@ Page {
                     newCategory.categoryName = categoriesModel.get(setCategoryIndex).categoryName
                     newCategory.categoryColor = categoriesModel.get(setCategoryIndex).categoryColor
                     newCategory.categoryIndex = categoriesModel.get(setCategoryIndex).categoryIndex
+                    newCategory.x = Math.random() * (root.width - newCategory.width)
+                    newCategory.y = Math.random() * (root.height - newCategory.height)
                 }
 
             }
@@ -95,6 +94,7 @@ Page {
                 property color categoryColor
                 property var toDoList
                 property int categoryIndex
+                property bool connected: false
 
                 width: categoryName.length * 10
                 height: 50
@@ -104,6 +104,38 @@ Page {
                     text: categoryName
                     color: colorYellow
                     anchors.centerIn: parent
+                }
+                Item {
+                   id: arrowItem
+                   width: 100
+                   height: 100
+                   anchors {
+                       horizontalCenter: parent.horizontalCenter
+                       top: parent.bottom
+                       bottom: categoryComboBox.top
+                   }
+                   Shape {
+                       width: arrowItem.width
+                       height: arrowItem.height
+                       ShapePath {
+                           strokeWidth: 2
+                           strokeColor: "black"
+                           fillColor: "transparent"
+                           PathLine {
+                               x: arrowItem.width / 2
+                               y: 0
+                           }
+                           PathLine {
+                               x: arrowItem.width
+                               y: arrowItem.height / 2
+                           }
+                           PathLine {
+                               x: arrowItem.width / 2
+                               y: arrowItem.height
+                           }
+                       }
+                   }
+                    visible: arrowItem.parent.connected && categoryComboBox.currentIndex >= 0
                 }
                 MouseArea {
                     property int clickedIndex: -1
@@ -135,7 +167,7 @@ Page {
                             text: "Delete"
                             onTriggered: {
                                 var index = mouseArea.clickedIndex;
-                                categoriesModel.remove(index, 1);                                
+                                categoriesModel.remove(index, 1);
                                 mouseArea.parent.destroy();
                                 categoryComboBox.model = categoriesModel;
                             }
@@ -172,6 +204,7 @@ Page {
                         anchors.fill: parent
                     }
                     onAccepted: {
+
                         colorDialog2.open();
                     }
                 }
@@ -186,24 +219,9 @@ Page {
                             colorDialogOpen.open();
                         }
                     }
-                    Component{
-                        id: arrowComponent
-                        Arrow{
-                            sourceCategory: null
-                            targetCategory: null
-                        }
-                    }
-
                     ColorDialog{
                         id: colorDialogOpen
                         onAccepted: {
-                                function createArrow(connect, target){
-                                    var arrowItem = arrowComponent.createObject(root);
-                                    arrowItem.sourceCategory = connect;
-                                    arrowItem.targetCategory = target;
-                                }
-
-
                                 var newCategoryColor = colorDialogOpen.selectedColor;
                                 var clickedObjectIndex = mouseArea.clickedIndex;
                                 var selectedObjectIndex = categoryComboBox.currentIndex;
@@ -215,20 +233,10 @@ Page {
                                 if (selectedObjectIndex >= 0) {
                                     var selectedCategory = categoriesModel.get(selectedObjectIndex);
                                     selectedCategory.categoryColor = newCategoryColor;
-
-                                    var connectCategory = categoriesModel.get(clickedObjectIndex);
-                                    var targetCategory = categoriesModel.get(selectedObjectIndex);
-                                    console.log(connectCategory.x)
-                                    console.log(connectCategory.y)
-                                    console.log(selectedCategory.x)
-                                    console.log(selectedCategory.y)
-                                    createArrow(connectCategory, targetCategory);
-
                                 }
-
+                                arrowItem.parent.connected = true;
                             }
                     }
-
                 }
 
                 Dialog {
@@ -264,7 +272,6 @@ Page {
 
             }
         }
-
 
     Button{
         id: navButton

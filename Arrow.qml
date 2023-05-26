@@ -1,40 +1,31 @@
 import QtQuick
 
 Item {
-    property var sourceCategory
-    property var targetCategory
+    property alias sourceItem: source
+    property alias targetItem: target
 
-    width: Math.abs(targetCategory.x - sourceCategory.x)
-    height: Math.abs(targetCategory.y - sourceCategory.y)
-    anchors {
-        left: Math.min(sourceCategory.x, targetCategory.x)
-        top: Math.min(sourceCategory.y, targetCategory.y)
-    }
-    rotation: Math.atan2(targetCategory.y - sourceCategory.y, targetCategory.x - sourceCategory.x) * 180 / Math.PI
+    property color lineColor: "black"
+    property int lineWidth: 2
 
-    Canvas {
-        anchors.fill: parent
-        onPaint: {
-            var ctx = getContext("2d");
-            ctx.clearRect(0, 0, width, height);
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = "black";
-            ctx.beginPath();
-            ctx.moveTo(0, height / 2);
-            ctx.lineTo(width, height / 2);
-            ctx.stroke();
-
-            // Draw arrowhead
-            var arrowSize = 10;
-            var arrowWidth = 6;
-            var arrowHeight = 10;
-            ctx.beginPath();
-            ctx.moveTo(width - arrowSize, height / 2 - arrowWidth / 2);
-            ctx.lineTo(width - arrowSize, height / 2 + arrowWidth / 2);
-            ctx.lineTo(width - arrowSize - arrowHeight, height / 2);
-            ctx.closePath();
-            ctx.fillStyle = "black";
-            ctx.fill();
+    Rectangle {
+        id: line
+        width: Math.sqrt(Math.pow(target.x - source.x, 2) + Math.pow(target.y - source.y, 2))
+        height: lineWidth
+        color: lineColor
+        rotation: Math.atan2(target.y - source.y, target.x - source.x) * 180 / Math.PI
+        anchors {
+            left: source.right
+            top: source.bottom
         }
+    }
+
+    Item {
+        id: source
+        anchors.fill: sourceItem
+    }
+
+    Item {
+        id: target
+        anchors.fill: targetItem
     }
 }
