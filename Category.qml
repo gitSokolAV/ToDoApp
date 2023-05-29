@@ -62,13 +62,14 @@ Page {
                 var setCategoryColor = newColorDialog.selectedColor
                 var setCategoryName = categoryNameInput.text.trim()
                 var setCategoryIndex = categoriesModel.count
+                var setTextLabel
                 if(setCategoryName !== ""){
                     categoriesModel.append({
                                                "categoryName": setCategoryName,
                                                "categoryColor": setCategoryColor,
                                                "categoryIndex": setCategoryIndex
                                            })
-                    var newCategory =  categoryRectComponent.createObject(root);
+                var newCategory =  categoryRectComponent.createObject(root);
                     newCategory.categoryName = categoriesModel.get(setCategoryIndex).categoryName
                     newCategory.categoryColor = categoriesModel.get(setCategoryIndex).categoryColor
                     newCategory.categoryIndex = categoriesModel.get(setCategoryIndex).categoryIndex
@@ -94,48 +95,24 @@ Page {
                 property color categoryColor
                 property var toDoList
                 property int categoryIndex
-                property bool connected: false
 
-                width: categoryName.length * 10
+
+                width: categoryName.length * 20
                 height: 50
                 color: categoriesModel.get(categoryIndex).categoryColor
                 radius: 10
                 Text {
                     text: categoryName
                     color: colorYellow
-                    anchors.centerIn: parent
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
-                Item {
-                   id: arrowItem
-                   width: 100
-                   height: 100
-                   anchors {
-                       horizontalCenter: parent.horizontalCenter
-                       top: parent.bottom
-                       bottom: categoryComboBox.top
-                   }
-                   Shape {
-                       width: arrowItem.width
-                       height: arrowItem.height
-                       ShapePath {
-                           strokeWidth: 2
-                           strokeColor: "black"
-                           fillColor: "transparent"
-                           PathLine {
-                               x: arrowItem.width / 2
-                               y: 0
-                           }
-                           PathLine {
-                               x: arrowItem.width
-                               y: arrowItem.height / 2
-                           }
-                           PathLine {
-                               x: arrowItem.width / 2
-                               y: arrowItem.height
-                           }
-                       }
-                   }
-                    visible: arrowItem.parent.connected && categoryComboBox.currentIndex >= 0
+                Label{
+                    id: connectLabel
+                    property var textConnectLabel
+                    property bool boolConnectLabel: false
+                    text: "Connect with " + textConnectLabel
+                    anchors.bottom: parent.bottom
+                    visible: boolConnectLabel
                 }
                 MouseArea {
                     property int clickedIndex: -1
@@ -233,8 +210,9 @@ Page {
                                 if (selectedObjectIndex >= 0) {
                                     var selectedCategory = categoriesModel.get(selectedObjectIndex);
                                     selectedCategory.categoryColor = newCategoryColor;
+                                    connectLabel.textConnectLabel = selectedCategory.categoryName;
+                                    connectLabel.boolConnectLabel = true;
                                 }
-                                arrowItem.parent.connected = true;
                             }
                     }
                 }
