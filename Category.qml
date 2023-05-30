@@ -62,17 +62,22 @@ Page {
                 var setCategoryColor = newColorDialog.selectedColor
                 var setCategoryName = categoryNameInput.text.trim()
                 var setCategoryIndex = categoriesModel.count
-                var setTextLabel
+                var setTextConnectLabel = ""
+                var setBoolConnectLabel = false
                 if(setCategoryName !== ""){
                     categoriesModel.append({
                                                "categoryName": setCategoryName,
                                                "categoryColor": setCategoryColor,
-                                               "categoryIndex": setCategoryIndex
+                                               "categoryIndex": setCategoryIndex,
+                                               "textConnectLabel": setTextConnectLabel,
+                                               "boolConnectLabel": setBoolConnectLabel
                                            })
                 var newCategory =  categoryRectComponent.createObject(root);
                     newCategory.categoryName = categoriesModel.get(setCategoryIndex).categoryName
                     newCategory.categoryColor = categoriesModel.get(setCategoryIndex).categoryColor
                     newCategory.categoryIndex = categoriesModel.get(setCategoryIndex).categoryIndex
+                    newCategory.textConnectLabel = categoriesModel.get(setCategoryIndex).textConnectLabel
+                    newCategory.boolConnectLabel = categoriesModel.get(setCategoryIndex).boolConnectLabel
                     newCategory.x = Math.random() * (root.width - newCategory.width)
                     newCategory.y = Math.random() * (root.height - newCategory.height)
                 }
@@ -89,30 +94,34 @@ Page {
 
 
         Component {
-            id: categoryRectComponent
+            id: categoryRectComponent            
             Rectangle {
                 property string categoryName: ""
                 property color categoryColor
                 property var toDoList
                 property int categoryIndex
+                property var textConnectLabel
+                property var boolConnectLabel
 
 
-                width: categoryName.length * 20
+
+
+                //width: categoryName.length * 20
+                width: 300
                 height: 50
                 color: categoriesModel.get(categoryIndex).categoryColor
                 radius: 10
-                Text {
+                Text {                    
                     text: categoryName
+                    font.pixelSize: 20
                     color: colorYellow
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
                 Label{
                     id: connectLabel
-                    property var textConnectLabel
-                    property bool boolConnectLabel: false
-                    text: "Connect with " + textConnectLabel
+                    text: "Connect with " + categoriesModel.get(categoryIndex).textConnectLabel
                     anchors.bottom: parent.bottom
-                    visible: boolConnectLabel
+                    visible: categoriesModel.get(categoryIndex).boolConnectLabel
                 }
                 MouseArea {
                     property int clickedIndex: -1
@@ -205,13 +214,14 @@ Page {
 
                                 // Обновляем цвет выбранного объекта в модели
                                 categoriesModel.setProperty(clickedObjectIndex, "categoryColor", newCategoryColor);
-
+                                categoriesModel.setProperty(clickedObjectIndex, "textConnectLabel", categoriesModel.get(selectedObjectIndex).categoryName);
+                                categoriesModel.setProperty(clickedObjectIndex, "boolConnectLabel", true);
                                 // Если выбран объект из выпадающего списка, обновляем его цвет
                                 if (selectedObjectIndex >= 0) {
                                     var selectedCategory = categoriesModel.get(selectedObjectIndex);
                                     selectedCategory.categoryColor = newCategoryColor;
-                                    connectLabel.textConnectLabel = selectedCategory.categoryName;
-                                    connectLabel.boolConnectLabel = true;
+                                    selectedCategory.textConnectLabel = categoriesModel.get(clickedObjectIndex).categoryName;
+                                    selectedCategory.boolConnectLabel = true;
                                 }
                             }
                     }
