@@ -9,6 +9,14 @@ Page {
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: navButton.text
     signal buttonClicked();
+        Path{
+            startX: 0
+            startY: 100
+            PathLine{
+                x: 200
+                y: 100
+            }
+        }
 
         ListModel {
             id: categoriesModel
@@ -102,10 +110,6 @@ Page {
                 property int categoryIndex
                 property var textConnectLabel
                 property var boolConnectLabel
-
-
-
-
                 //width: categoryName.length * 20
                 width: 300
                 height: 50
@@ -119,7 +123,7 @@ Page {
                 }
                 Label{
                     id: connectLabel
-                    text: "Connect with " + categoriesModel.get(categoryIndex).textConnectLabel
+                    text: "Connected with " + categoriesModel.get(categoryIndex).textConnectLabel
                     anchors.bottom: parent.bottom
                     visible: categoriesModel.get(categoryIndex).boolConnectLabel
                 }
@@ -196,15 +200,45 @@ Page {
                 }
                 Dialog {
                     id: colorDialog2
-
+                    width: 180
+                    height: 100
                     title: "Select Color"
                     standardButtons: Dialog.Ok | Dialog.Cancel
                     Button {
+                        id: btnColor
                         text: "Color"
                         onClicked: {
                             colorDialogOpen.open();
                         }
                     }
+                    Button{
+                        id: btnLine
+                        anchors.left: btnColor.right
+                        anchors.leftMargin: 7
+                        text: "Line"
+                        Shape{
+                          id: connectLine
+                          width: 200
+                          height: 200
+                          anchors.centerIn: parent
+                          visible: false
+                          ShapePath{
+                              strokeColor: "black"
+                              strokeWidth: 4
+                              strokeStyle: ShapePath.SolidLine
+                              startX: 20; startY: 20
+                              PathLine { x: 180; y: 130 }
+                              PathLine { x: 20; y: 130 }
+                              PathLine { x: 20; y: 20 }
+                          }
+                        }
+
+                        onClicked: {
+                            connectLine.visible = true
+                        }
+
+                    }
+
                     ColorDialog{
                         id: colorDialogOpen
                         onAccepted: {
