@@ -223,17 +223,21 @@ Page {
                           anchors.centerIn: parent
                           visible: false
                           ShapePath{
+                              id: shapePathConnection
                               strokeColor: "black"
                               strokeWidth: 4
                               strokeStyle: ShapePath.SolidLine
-                              startX: 20; startY: 20
-                              PathLine { x: 180; y: 130 }
-                              PathLine { x: 20; y: 130 }
-                              PathLine { x: 20; y: 20 }
+                              var selectCategory = categoryComboBox.currentIndex
+
+                              //20,20
+                              startX: categoriesModel.get(selectCategory).x; startY: categoriesModel.get(selectCategory).y
+                              PathLine { x: categoriesModel.get(selectCategory).x; y: categoriesModel.get(selectCategory).y }
+
                           }
                         }
 
                         onClicked: {
+                            var selectCategory = mouseArea.clickedIndex
                             connectLine.visible = true
                         }
 
