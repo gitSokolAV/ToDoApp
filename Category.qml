@@ -218,26 +218,25 @@ Page {
                         text: "Line"
                         Shape{
                           id: connectLine
-                          width: 200
-                          height: 200
+                          //width: 10
+                          //height: 10
                           anchors.centerIn: parent
                           visible: false
                           ShapePath{
-                              id: shapePathConnection
-                              strokeColor: "black"
-                              strokeWidth: 4
-                              strokeStyle: ShapePath.SolidLine
-                              var selectCategory = categoryComboBox.currentIndex
-
-                              //20,20
-                              startX: categoriesModel.get(selectCategory).x; startY: categoriesModel.get(selectCategory).y
-                              PathLine { x: categoriesModel.get(selectCategory).x; y: categoriesModel.get(selectCategory).y }
-
-                          }
+                                id: connectLineShape
+                                strokeColor: "black"
+                                strokeWidth: 4
+                                strokeStyle: ShapePath.SolidLine
+                                startX: mouseArea.mouseX
+                                startY: mouseArea.mouseY
+                                PathLine {
+                                    x: categoryComboBox.currentIndex.x
+                                    y: categoryComboBox.currentIndex.y
+                                }
+                            }
                         }
 
                         onClicked: {
-                            var selectCategory = mouseArea.clickedIndex
                             connectLine.visible = true
                         }
 
@@ -246,22 +245,21 @@ Page {
                     ColorDialog{
                         id: colorDialogOpen
                         onAccepted: {
-                                var newCategoryColor = colorDialogOpen.selectedColor;
-                                var clickedObjectIndex = mouseArea.clickedIndex;
-                                var selectedObjectIndex = categoryComboBox.currentIndex;
-
-                                // Обновляем цвет выбранного объекта в модели
-                                categoriesModel.setProperty(clickedObjectIndex, "categoryColor", newCategoryColor);
-                                categoriesModel.setProperty(clickedObjectIndex, "textConnectLabel", categoriesModel.get(selectedObjectIndex).categoryName);
-                                categoriesModel.setProperty(clickedObjectIndex, "boolConnectLabel", true);
-                                // Если выбран объект из выпадающего списка, обновляем его цвет
-                                if (selectedObjectIndex >= 0) {
-                                    var selectedCategory = categoriesModel.get(selectedObjectIndex);
-                                    selectedCategory.categoryColor = newCategoryColor;
-                                    selectedCategory.textConnectLabel = categoriesModel.get(clickedObjectIndex).categoryName;
-                                    selectedCategory.boolConnectLabel = true;
-                                }
+                            var newCategoryColor = colorDialogOpen.selectedColor;
+                            var clickedObjectIndex = mouseArea.clickedIndex;
+                            var selectedObjectIndex = categoryComboBox.currentInd
+                            // Обновляем цвет выбранного объекта в модели
+                            categoriesModel.setProperty(clickedObjectIndex, "categoryColor", newCategoryColor);
+                            categoriesModel.setProperty(clickedObjectIndex, "textConnectLabel", categoriesModel.get(selectedObjectIndex).categoryName);
+                            categoriesModel.setProperty(clickedObjectIndex, "boolConnectLabel", true);
+                            // Если выбран объект из выпадающего списка, обновляем его цвет
+                            if (selectedObjectIndex >= 0) {
+                                var selectedCategory = categoriesModel.get(selectedObjectIndex);
+                                selectedCategory.categoryColor = newCategoryColor;
+                                selectedCategory.textConnectLabel = categoriesModel.get(clickedObjectIndex).categoryName;
+                                selectedCategory.boolConnectLabel = true;
                             }
+                        }
                     }
                 }
 
@@ -295,7 +293,6 @@ Page {
                         }
                     }
                 }
-
             }
         }
 
