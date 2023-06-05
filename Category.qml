@@ -72,13 +72,18 @@ Page {
                 var setCategoryIndex = categoriesModel.count
                 var setTextConnectLabel = ""
                 var setBoolConnectLabel = false
+                var setPositionX = Math.random() * (root.width)
+                var setPositionY = Math.random() * (root.height)
+
                 if(setCategoryName !== ""){
                     categoriesModel.append({
                                                "categoryName": setCategoryName,
                                                "categoryColor": setCategoryColor,
                                                "categoryIndex": setCategoryIndex,
                                                "textConnectLabel": setTextConnectLabel,
-                                               "boolConnectLabel": setBoolConnectLabel
+                                               "boolConnectLabel": setBoolConnectLabel,
+                                               "positionX": setPositionX,
+                                               "positionY": setPositionY
                                            })
                 var newCategory =  categoryRectComponent.createObject(root);
                     newCategory.categoryName = categoriesModel.get(setCategoryIndex).categoryName
@@ -86,8 +91,9 @@ Page {
                     newCategory.categoryIndex = categoriesModel.get(setCategoryIndex).categoryIndex
                     newCategory.textConnectLabel = categoriesModel.get(setCategoryIndex).textConnectLabel
                     newCategory.boolConnectLabel = categoriesModel.get(setCategoryIndex).boolConnectLabel
-                    newCategory.x = Math.random() * (root.width - newCategory.width)
-                    newCategory.y = Math.random() * (root.height - newCategory.height)
+                    newCategory.x = categoriesModel.get(setCategoryIndex).positionX
+                    newCategory.y = categoriesModel.get(setCategoryIndex).positionY
+
                 }
 
             }
@@ -110,11 +116,34 @@ Page {
                 property int categoryIndex
                 property var textConnectLabel
                 property var boolConnectLabel
+                property var positionX
+                property var positionY
                 //width: categoryName.length * 20
                 width: 300
                 height: 50
                 color: categoriesModel.get(categoryIndex).categoryColor
                 radius: 10
+                Shape{
+                  id: connectLine
+                  property double lineX: 0
+                  property double lineY: 0
+
+                  anchors.centerIn: parent
+                  visible: false
+                  ShapePath{
+                        id: connectLineShape
+
+                        strokeColor: "black"
+                        strokeWidth: 4
+                        strokeStyle: ShapePath.SolidLine
+                        startX: mouseArea.mouseX / 2
+                        startY: mouseArea.mouseY / 2
+                        PathLine {
+                            x: connectLine.lineX
+                            y: connectLine.lineY
+                        }
+                    }
+                }
                 Text {                    
                     text: categoryName
                     font.pixelSize: 20
@@ -143,6 +172,11 @@ Page {
                         var toDoListInstance = Qt.createComponent("ToDoList.qml")
                         toDoListInstance.category = categoryName
                         stackView.push(toDoListInstance)
+                    }
+                    onReleased: {
+                        // Обновляем значения positionX и positionY в модели
+                        categoriesModel.setProperty(categoryIndex, "positionX", parent.x);
+                        categoriesModel.setProperty(categoryIndex, "positionY", parent.y);
                     }
                     onClicked: {
                         if (mouse.button === Qt.RightButton) {
@@ -216,25 +250,6 @@ Page {
                         anchors.left: btnColor.right
                         anchors.leftMargin: 7
                         text: "Line"
-                        Shape{
-                          id: connectLine
-                          //width: 10
-                          //height: 10
-                          anchors.centerIn: parent
-                          visible: false
-                          ShapePath{
-                                id: connectLineShape
-                                strokeColor: "black"
-                                strokeWidth: 4
-                                strokeStyle: ShapePath.SolidLine
-                                startX: mouseArea.mouseX
-                                startY: mouseArea.mouseY
-                                PathLine {
-                                    x: categoryComboBox.currentIndex.x
-                                    y: categoryComboBox.currentIndex.y
-                                }
-                            }
-                        }
 
                         onClicked: {
                             connectLine.visible = true
@@ -247,7 +262,8 @@ Page {
                         onAccepted: {
                             var newCategoryColor = colorDialogOpen.selectedColor;
                             var clickedObjectIndex = mouseArea.clickedIndex;
-                            var selectedObjectIndex = categoryComboBox.currentInd
+                            var selectedObjectIndex = categoryComboBox.currentIndex
+
                             // Обновляем цвет выбранного объекта в модели
                             categoriesModel.setProperty(clickedObjectIndex, "categoryColor", newCategoryColor);
                             categoriesModel.setProperty(clickedObjectIndex, "textConnectLabel", categoriesModel.get(selectedObjectIndex).categoryName);
@@ -258,7 +274,15 @@ Page {
                                 selectedCategory.categoryColor = newCategoryColor;
                                 selectedCategory.textConnectLabel = categoriesModel.get(clickedObjectIndex).categoryName;
                                 selectedCategory.boolConnectLabel = true;
+                                //var selectedObjectX = selectedCategory.x;
+                                //var selectedObjectY = selectedCategory.y;
+                                connectLine.lineX = selectedCategory.positionX
+                                connectLine.lineY = selectedCategory.positionY
+                                connectLine.visible = true;
+                                console.log(connectLine.lineX)
+                                console.log(connectLine.lineY)
                             }
+
                         }
                     }
                 }
@@ -293,6 +317,7 @@ Page {
                         }
                     }
                 }
+
             }
         }
 
