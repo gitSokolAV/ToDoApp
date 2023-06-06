@@ -8,15 +8,7 @@ Page {
     id: root
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: navButton.text
-    signal buttonClicked();
-        Path{
-            startX: 0
-            startY: 100
-            PathLine{
-                x: 200
-                y: 100
-            }
-        }
+    signal buttonClicked();        
 
         ListModel {
             id: categoriesModel
@@ -105,6 +97,28 @@ Page {
                 }
             }
         }
+        Shape{
+          id: connectLine
+          width: root.width
+          height: root.height
+          property double lineX: 0
+          property double lineY: 0
+
+          anchors.centerIn: parent
+          visible: false
+          ShapePath{
+                id: connectLineShape
+                strokeColor: "black"
+                strokeWidth: 4
+                strokeStyle: ShapePath.SolidLine
+                startX: 0
+                startY: 0
+                PathLine {
+                    x: connectLine.lineX
+                    y: connectLine.lineY
+                }
+            }
+        }
 
 
         Component {
@@ -123,27 +137,7 @@ Page {
                 height: 50
                 color: categoriesModel.get(categoryIndex).categoryColor
                 radius: 10
-                Shape{
-                  id: connectLine
-                  property double lineX: 0
-                  property double lineY: 0
 
-                  anchors.centerIn: parent
-                  visible: false
-                  ShapePath{
-                        id: connectLineShape
-
-                        strokeColor: "black"
-                        strokeWidth: 4
-                        strokeStyle: ShapePath.SolidLine
-                        startX: mouseArea.mouseX / 2
-                        startY: mouseArea.mouseY / 2
-                        PathLine {
-                            x: connectLine.lineX
-                            y: connectLine.lineY
-                        }
-                    }
-                }
                 Text {                    
                     text: categoryName
                     font.pixelSize: 20
@@ -173,8 +167,7 @@ Page {
                         toDoListInstance.category = categoryName
                         stackView.push(toDoListInstance)
                     }
-                    onReleased: {
-                        // Обновляем значения positionX и positionY в модели
+                    onReleased: {                        
                         categoriesModel.setProperty(categoryIndex, "positionX", parent.x);
                         categoriesModel.setProperty(categoryIndex, "positionY", parent.y);
                     }
@@ -271,13 +264,18 @@ Page {
                             // Если выбран объект из выпадающего списка, обновляем его цвет
                             if (selectedObjectIndex >= 0) {
                                 var selectedCategory = categoriesModel.get(selectedObjectIndex);
+                                var clickedCategory = categoriesModel.get(clickedObjectIndex);
                                 selectedCategory.categoryColor = newCategoryColor;
                                 selectedCategory.textConnectLabel = categoriesModel.get(clickedObjectIndex).categoryName;
                                 selectedCategory.boolConnectLabel = true;
-                                //var selectedObjectX = selectedCategory.x;
-                                //var selectedObjectY = selectedCategory.y;
-                                connectLine.lineX = selectedCategory.positionX
-                                connectLine.lineY = selectedCategory.positionY
+                                connectLineShape.startX = selectedCategory.width / 2
+                                connectLineShape.startY = selectedCategory.height / 2
+                                //connectLine.lineX = selectedCategory.positionX / 2
+                                //connectLine.lineY = selectedCategory.positionY / 2
+                                console.log(connectLineShape.startX)
+                                console.log(connectLineShape.startY)
+                                connectLine.lineX = parent.width / 2
+                                connectLine.lineY = parent.height / 2
                                 connectLine.visible = true;
                                 console.log(connectLine.lineX)
                                 console.log(connectLine.lineY)
