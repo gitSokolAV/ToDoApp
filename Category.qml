@@ -101,8 +101,8 @@ Page {
           id: connectLine
           width: root.width
           height: root.height
-          property double lineX: 0
-          property double lineY: 0
+          property double endPositionLineX: 0
+          property double endPositionLineY: 0
 
           anchors.centerIn: parent
           visible: false
@@ -114,8 +114,8 @@ Page {
                 startX: 0
                 startY: 0
                 PathLine {
-                    x: connectLine.lineX
-                    y: connectLine.lineY
+                    x: connectLine.endPositionLineX
+                    y: connectLine.endPositionLineY
                 }
             }
         }
@@ -268,17 +268,18 @@ Page {
                                 selectedCategory.categoryColor = newCategoryColor;
                                 selectedCategory.textConnectLabel = categoriesModel.get(clickedObjectIndex).categoryName;
                                 selectedCategory.boolConnectLabel = true;
-                                connectLineShape.startX = selectedCategory.width / 2
-                                connectLineShape.startY = selectedCategory.height / 2
+                                connectLineShape.startX = clickedCategory.positionX + 150
+                                connectLineShape.startY = clickedCategory.positionY + 25
                                 //connectLine.lineX = selectedCategory.positionX / 2
                                 //connectLine.lineY = selectedCategory.positionY / 2
                                 console.log(connectLineShape.startX)
                                 console.log(connectLineShape.startY)
-                                connectLine.lineX = parent.width / 2
-                                connectLine.lineY = parent.height / 2
+                                connectLine.endPositionLineX = selectedCategory.positionX + 150
+                                connectLine.endPositionLineY = selectedCategory.positionY + 25
+                                console.log(connectLine.endPositionLineX)
+                                console.log(connectLine.endPositionLineY)
                                 connectLine.visible = true;
-                                console.log(connectLine.lineX)
-                                console.log(connectLine.lineY)
+
                             }
 
                         }
