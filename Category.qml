@@ -114,9 +114,24 @@ Page {
                 startX: 0
                 startY: 0
                 PathLine {
+                    id: pathLine
                     x: connectLine.endPositionLineX
                     y: connectLine.endPositionLineY
                 }
+            }
+          TextArea{
+              id: textLine
+              color: "black"
+              anchors.centerIn: pathLine
+              text: "ssadasdasdasd"
+
+          }
+            onWidthChanged: {
+                connectLineShape.startX = width / 2;
+            }
+
+            onHeightChanged: {
+                connectLineShape.startY = height / 2;
             }
         }
 
@@ -170,6 +185,15 @@ Page {
                     onReleased: {                        
                         categoriesModel.setProperty(categoryIndex, "positionX", parent.x);
                         categoriesModel.setProperty(categoryIndex, "positionY", parent.y);
+                    }
+                    onXChanged: {
+                        connectLineShape.startX = parent.x + (parent.width / 2);
+                        connectLineShape.update();
+                    }
+
+                    onYChanged: {
+                        connectLineShape.startY = parent.y + (parent.height / 2);
+                        connectLineShape.update();
                     }
                     onClicked: {
                         if (mouse.button === Qt.RightButton) {
