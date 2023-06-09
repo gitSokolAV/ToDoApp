@@ -5,7 +5,7 @@ import QtQuick.Dialogs
 
 
 Page {
-    id: toDoList    
+    id: toDoList
 
     Rectangle{
         id: backgroundRect
