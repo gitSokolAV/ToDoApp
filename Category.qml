@@ -114,11 +114,25 @@ Page {
                 startX: 0
                 startY: 0
                 PathLine {
-                   id: pathLine
+                    id: pathLine
                     x: connectLine.endPositionLineX
                     y: connectLine.endPositionLineY
                 }
-            }          
+            }
+          TextArea{
+              id: textLine
+              color: "black"
+              anchors.centerIn: pathLine
+              text: "ssadasdasdasd"
+
+          }
+            onWidthChanged: {
+                connectLineShape.startX = width / 2;
+            }
+
+            onHeightChanged: {
+                connectLineShape.startY = height / 2;
+            }
         }
 
 
@@ -168,9 +182,16 @@ Page {
                         toDoListInstance.category = categoryName
                         stackView.push(toDoListInstance)
                     }
-                    onReleased: {                        
+                    onReleased: {
                         categoriesModel.setProperty(categoryIndex, "positionX", parent.x);
                         categoriesModel.setProperty(categoryIndex, "positionY", parent.y);
+                        if(connectLine.visible){
+
+                            connectLine.endPositionLineX = parent.x + parent.width / 2;
+                            connectLine.endPositionLineY = parent.y + parent.height / 2;
+                        }
+
+
                     }
                     onClicked: {
                         if (mouse.button === Qt.RightButton) {
@@ -269,19 +290,17 @@ Page {
                                 selectedCategory.categoryColor = newCategoryColor;
                                 selectedCategory.textConnectLabel = categoriesModel.get(clickedObjectIndex).categoryName;
                                 selectedCategory.boolConnectLabel = true;
-
-                                if(connectLineShape.startX <= 0){
                                 connectLineShape.startX = clickedCategory.positionX + 150
                                 connectLineShape.startY = clickedCategory.positionY + 25
+                                //connectLine.lineX = selectedCategory.positionX / 2
+                                //connectLine.lineY = selectedCategory.positionY / 2
+                                console.log(connectLineShape.startX)
+                                console.log(connectLineShape.startY)
                                 connectLine.endPositionLineX = selectedCategory.positionX + 150
                                 connectLine.endPositionLineY = selectedCategory.positionY + 25
+                                console.log(connectLine.endPositionLineX)
+                                console.log(connectLine.endPositionLineY)
                                 connectLine.visible = true;
-                                }
-                                if(connectLineShape.startX >= 0){
-                                    var line = connectLine.createObject(root)
-                                    line.startX = clickedCategory.positionX + 150
-                                    line.startY = clickedCategory.positionY + 25
-                                }
 
                             }
 
