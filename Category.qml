@@ -119,13 +119,16 @@ Page {
                     y: connectLine.endPositionLineY
                 }
             }
-          TextArea{
-              id: textLine
+          Text {
+              id: centerText
+              text: "Center Text"
               color: "black"
-              anchors.centerIn: pathLine
-              text: "ssadasdasdasd"
-
+              font.bold: true
+              x: connectLineShape.pathPercentAt(0.5) * connectLine.width - width / 2
+              y: connectLineShape.pathPercentAt(0.5) * connectLine.height - height / 2
+              z: 1
           }
+
             onWidthChanged: {
                 connectLineShape.startX = width / 2;
             }
@@ -186,9 +189,9 @@ Page {
                         categoriesModel.setProperty(categoryIndex, "positionX", parent.x);
                         categoriesModel.setProperty(categoryIndex, "positionY", parent.y);
                         if(connectLine.visible){
-
-                            connectLine.endPositionLineX = parent.x + parent.width / 2;
-                            connectLine.endPositionLineY = parent.y + parent.height / 2;
+                            var clickedCategory = categoriesModel.get(categoryIndex);
+                            connectLine.endPositionLineX = clickedCategory.positionX + 150;
+                            connectLine.endPositionLineY = clickedCategory.positionY + 25;
                         }
 
 
@@ -300,6 +303,8 @@ Page {
                                 connectLine.endPositionLineY = selectedCategory.positionY + 25
                                 console.log(connectLine.endPositionLineX)
                                 console.log(connectLine.endPositionLineY)
+                                connectLineShape.strokeColor = newCategoryColor
+
                                 connectLine.visible = true;
 
                             }
