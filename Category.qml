@@ -101,8 +101,11 @@ Page {
           id: connectLine
           width: root.width
           height: root.height
+          property double startPositionLineX: 0
+          property double startPositionLineY: 0
           property double endPositionLineX: 0
           property double endPositionLineY: 0
+          property real lineAngle: 0
 
           anchors.centerIn: parent
           visible: false
@@ -111,8 +114,8 @@ Page {
                 strokeColor: "black"
                 strokeWidth: 4
                 strokeStyle: ShapePath.SolidLine
-                startX: 0
-                startY: 0
+                startX: connectLine.startPositionLineX
+                startY: connectLine.startPositionLineY
                 PathLine {
                     id: pathLine
                     x: connectLine.endPositionLineX
@@ -124,8 +127,10 @@ Page {
               text: "Center Text"
               color: "black"
               font.bold: true
-              x: connectLineShape.pathPercentAt(0.5) * connectLine.width - width / 2
-              y: connectLineShape.pathPercentAt(0.5) * connectLine.height - height / 2
+              font.pixelSize: 26
+              rotation: connectLine.lineAngle
+              x: (connectLine.startPositionLineX + connectLine.endPositionLineX) / 2 - width / 2
+              y: (connectLine.startPositionLineY + connectLine.endPositionLineY) / 2 - height / 2
               z: 1
           }
 
@@ -293,8 +298,10 @@ Page {
                                 selectedCategory.categoryColor = newCategoryColor;
                                 selectedCategory.textConnectLabel = categoriesModel.get(clickedObjectIndex).categoryName;
                                 selectedCategory.boolConnectLabel = true;
-                                connectLineShape.startX = clickedCategory.positionX + 150
-                                connectLineShape.startY = clickedCategory.positionY + 25
+                                connectLine.startPositionLineX = clickedCategory.positionX + 150
+                                connectLine.startPositionLineY = clickedCategory.positionY + 25
+                                connectLineShape.startX = connectLine.startPositionLineX
+                                connectLineShape.startY = connectLine.startPositionLineY
                                 //connectLine.lineX = selectedCategory.positionX / 2
                                 //connectLine.lineY = selectedCategory.positionY / 2
                                 console.log(connectLineShape.startX)
@@ -304,7 +311,7 @@ Page {
                                 console.log(connectLine.endPositionLineX)
                                 console.log(connectLine.endPositionLineY)
                                 connectLineShape.strokeColor = newCategoryColor
-
+                                connectLine.lineAngle = Math.atan2(connectLine.endPositionLineY - connectLine.startPositionLineY, connectLine.endPositionLineX - connectLine.startPositionLineX) * 180 / Math.PI
                                 connectLine.visible = true;
 
                             }
