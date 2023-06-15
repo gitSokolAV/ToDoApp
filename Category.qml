@@ -124,7 +124,7 @@ Page {
             }
           Text {
               id: centerText
-              text: "Center Text"
+              text: "Enter name line"
               color: "black"
               font.bold: true
               font.pixelSize: 26
@@ -313,6 +313,8 @@ Page {
                                 connectLineShape.strokeColor = newCategoryColor
                                 connectLine.lineAngle = Math.atan2(connectLine.endPositionLineY - connectLine.startPositionLineY, connectLine.endPositionLineX - connectLine.startPositionLineX) * 180 / Math.PI
                                 connectLine.visible = true;
+                                textLineDialog.open();
+
 
                             }
 
@@ -328,6 +330,23 @@ Page {
                         text: "Category \"" + categoryName + "\" was created on " + new Date().toLocaleDateString()
                         color: "black"
                         font.bold: true
+                    }
+                }
+                Dialog{
+                    id: textLineDialog
+                    title: "Enter name Line"
+                    standardButtons: Dialog.Ok
+                    anchors.centerIn: parent.Center
+                    TextField {
+                        id: centerTextLineName
+                        text: centerText.text
+                        placeholderText: "Line Name"
+                    }
+                    onAccepted: {
+                        var newNameLine = centerTextLineName.text.trim();
+                        if(newNameLine !== "" && newNameLine !== centerText.text){
+                            centerText.text = newNameLine
+                        }
                     }
                 }
 
