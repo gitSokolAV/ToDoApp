@@ -197,6 +197,10 @@ Page {
                             var clickedCategory = categoriesModel.get(categoryIndex);
                             connectLine.endPositionLineX = clickedCategory.positionX + 150;
                             connectLine.endPositionLineY = clickedCategory.positionY + 25;
+                            var deltaX = connectLine.endPositionLineX - connectLine.startPositionLineX;
+                            var deltaY = connectLine.endPositionLineY - connectLine.startPositionLineY;
+                            var angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+                            centerText.rotation = angle;
                         }
 
 
