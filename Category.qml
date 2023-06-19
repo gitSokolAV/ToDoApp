@@ -128,10 +128,18 @@ Page {
               color: "black"
               font.bold: true
               font.pixelSize: 26
+              anchors.bottom: connectLineShape.top
               rotation: connectLine.lineAngle
               x: (connectLine.startPositionLineX + connectLine.endPositionLineX) / 2 - width / 2
               y: (connectLine.startPositionLineY + connectLine.endPositionLineY) / 2 - height / 2
               z: 1
+              MouseArea{
+                  id: centerTextMouseArea
+                  anchors.fill: parent
+                  onDoubleClicked: {
+                      textLineDialog.open()
+                  }
+              }
           }
 
             onWidthChanged: {
@@ -336,23 +344,7 @@ Page {
                         font.bold: true
                     }
                 }
-                Dialog{
-                    id: textLineDialog
-                    title: "Enter name Line"
-                    standardButtons: Dialog.Ok
-                    anchors.centerIn: parent.Center
-                    TextField {
-                        id: centerTextLineName
-                        text: centerText.text
-                        placeholderText: "Line Name"
-                    }
-                    onAccepted: {
-                        var newNameLine = centerTextLineName.text.trim();
-                        if(newNameLine !== "" && newNameLine !== centerText.text){
-                            centerText.text = newNameLine
-                        }
-                    }
-                }
+
 
                 Dialog {
                     id: renameDialog
@@ -374,6 +366,23 @@ Page {
                     }
                 }
 
+            }
+        }
+        Dialog{
+            id: textLineDialog
+            title: "Enter name Line"
+            standardButtons: Dialog.Ok
+            anchors.centerIn: parent.Center
+            TextField {
+                id: centerTextLineName
+                text: centerText.text
+                placeholderText: "Line Name"
+            }
+            onAccepted: {
+                var newNameLine = centerTextLineName.text.trim();
+                if(newNameLine !== "" && newNameLine !== centerText.text){
+                    centerText.text = newNameLine
+                }
             }
         }
 
