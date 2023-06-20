@@ -54,6 +54,7 @@ Page {
             standardButtons: Dialog.Ok | Dialog.Cancel
             TextField {
                 id: categoryNameInput
+                width: categoryDialog.width - 14
                 placeholderText: "Category Name"
             }
 
@@ -105,6 +106,7 @@ Page {
           property double startPositionLineY: 0
           property double endPositionLineX: 0
           property double endPositionLineY: 0
+          property int  indexStartPosition: -1
           property real lineAngle: 0
 
           anchors.centerIn: parent
@@ -203,6 +205,9 @@ Page {
                         categoriesModel.setProperty(categoryIndex, "positionY", parent.y);
                         if(connectLine.visible){
                             var clickedCategory = categoriesModel.get(categoryIndex);
+                            var startCategory = categoriesModel.get(connectLine.indexStartPosition)
+                            connectLine.startPositionLineX =startCategory.positionX + 150;
+                            connectLine.startPositionLineY = startCategory.positionY + 25
                             connectLine.endPositionLineX = clickedCategory.positionX + 150;
                             connectLine.endPositionLineY = clickedCategory.positionY + 25;
                             var deltaX = connectLine.endPositionLineX - connectLine.startPositionLineX;
@@ -270,27 +275,18 @@ Page {
                 Dialog {
                     id: colorDialog2
                     width: 180
-                    height: 100
+                    height: 120
                     title: "Select Color"
                     standardButtons: Dialog.Ok | Dialog.Cancel
                     Button {
                         id: btnColor
+                        width: 160
+                        height: 50
                         text: "Color"
                         onClicked: {
                             colorDialogOpen.open();
                         }
-                    }
-                    Button{
-                        id: btnLine
-                        anchors.left: btnColor.right
-                        anchors.leftMargin: 7
-                        text: "Line"
-
-                        onClicked: {
-                            connectLine.visible = true
-                        }
-
-                    }
+                    }                    
 
                     ColorDialog{
                         id: colorDialogOpen
@@ -298,6 +294,7 @@ Page {
                             var newCategoryColor = colorDialogOpen.selectedColor;
                             var clickedObjectIndex = mouseArea.clickedIndex;
                             var selectedObjectIndex = categoryComboBox.currentIndex
+                            connectLine.indexStartPosition = clickedObjectIndex
 
                             // Обновляем цвет выбранного объекта в модели
                             categoriesModel.setProperty(clickedObjectIndex, "categoryColor", newCategoryColor);
@@ -372,11 +369,14 @@ Page {
             id: textLineDialog
             title: "Enter name Line"
             standardButtons: Dialog.Ok
-            anchors.centerIn: parent.Center
+            anchors.centerIn: parent
+            width: 300
+            height: 300
             TextField {
                 id: centerTextLineName
                 text: centerText.text
                 placeholderText: "Line Name"
+                width: textLineDialog.width - 14
             }
             onAccepted: {
                 var newNameLine = centerTextLineName.text.trim();
