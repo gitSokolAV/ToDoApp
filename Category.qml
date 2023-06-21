@@ -67,6 +67,7 @@ Page {
                 var setBoolConnectLabel = false
                 var setPositionX = Math.random() * (root.width)
                 var setPositionY = Math.random() * (root.height)
+                var setConnectedBool = false
 
                 if(setCategoryName !== ""){
                     categoriesModel.append({
@@ -76,7 +77,8 @@ Page {
                                                "textConnectLabel": setTextConnectLabel,
                                                "boolConnectLabel": setBoolConnectLabel,
                                                "positionX": setPositionX,
-                                               "positionY": setPositionY
+                                               "positionY": setPositionY,
+                                               "connectedBool": setConnectedBool
                                            })
                 var newCategory =  categoryRectComponent.createObject(root);
                     newCategory.categoryName = categoriesModel.get(setCategoryIndex).categoryName
@@ -86,6 +88,7 @@ Page {
                     newCategory.boolConnectLabel = categoriesModel.get(setCategoryIndex).boolConnectLabel
                     newCategory.x = categoriesModel.get(setCategoryIndex).positionX
                     newCategory.y = categoriesModel.get(setCategoryIndex).positionY
+                    newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool
 
                 }
 
@@ -165,7 +168,7 @@ Page {
                 property var boolConnectLabel
                 property var positionX
                 property var positionY
-                //width: categoryName.length * 20
+                property var connectedBool
                 width: 300
                 height: 50
                 color: categoriesModel.get(categoryIndex).categoryColor
@@ -203,18 +206,31 @@ Page {
                     onReleased: {
                         categoriesModel.setProperty(categoryIndex, "positionX", parent.x);
                         categoriesModel.setProperty(categoryIndex, "positionY", parent.y);
-                        if(connectLine.visible){
+                        console.log("X : " + categoriesModel.get(categoryIndex).positionX)
+                        console.log("Y : " + categoriesModel.get(categoryIndex).positionY)
+                        if(connectLine.visible && categoriesModel.get(categoryIndex).connectedBool
+                                               && categoriesModel.get(connectLine.indexStartPosition).connectedBool){
                             var clickedCategory = categoriesModel.get(categoryIndex);
                             var startCategory = categoriesModel.get(connectLine.indexStartPosition)
-                            connectLine.startPositionLineX =startCategory.positionX + 150;
-                            connectLine.startPositionLineY = startCategory.positionY + 25
+                            categoriesModel.setProperty(connectLine.indexStartPosition,"positionX", startCategory.positionX)
+                            categoriesModel.setProperty(connectLine.indexStartPosition,"positionX", startCategory.positionY)
+                            console.log("Start PoSitioN X: "+ startCategory.positionX)
+                            console.log("Start Position Y: "+ startCategory.positionY)
+                            //connectLine.startPositionLineX = startCategory.positionX + 150;
+                            //connectLine.startPositionLineY = startCategory.positionY + 25
+                            connectLine.startPositionLineX = startCategory.positionX + 150;
+                            connectLine.startPositionLineY = startCategory.positionY + 25;
+                            console.log("ConnectLine X: " + connectLine.startPositionLineX)
+                            console.log("connectLine Y: " + connectLine.startPositionLineY)
                             connectLine.endPositionLineX = clickedCategory.positionX + 150;
                             connectLine.endPositionLineY = clickedCategory.positionY + 25;
                             var deltaX = connectLine.endPositionLineX - connectLine.startPositionLineX;
                             var deltaY = connectLine.endPositionLineY - connectLine.startPositionLineY;
                             var angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
                             centerText.rotation = angle;
+
                         }
+
 
 
                     }
@@ -307,18 +323,14 @@ Page {
                                 selectedCategory.categoryColor = newCategoryColor;
                                 selectedCategory.textConnectLabel = categoriesModel.get(clickedObjectIndex).categoryName;
                                 selectedCategory.boolConnectLabel = true;
+                                selectedCategory.connectedBool = true;
+                                clickedCategory.connectedBool = true;
                                 connectLine.startPositionLineX = clickedCategory.positionX + 150
                                 connectLine.startPositionLineY = clickedCategory.positionY + 25
                                 connectLineShape.startX = connectLine.startPositionLineX
                                 connectLineShape.startY = connectLine.startPositionLineY
-                                //connectLine.lineX = selectedCategory.positionX / 2
-                                //connectLine.lineY = selectedCategory.positionY / 2
-                                console.log(connectLineShape.startX)
-                                console.log(connectLineShape.startY)
                                 connectLine.endPositionLineX = selectedCategory.positionX + 150
                                 connectLine.endPositionLineY = selectedCategory.positionY + 25
-                                console.log(connectLine.endPositionLineX)
-                                console.log(connectLine.endPositionLineY)
                                 connectLineShape.strokeColor = newCategoryColor
                                 connectLine.lineAngle = Math.atan2(connectLine.endPositionLineY - connectLine.startPositionLineY, connectLine.endPositionLineX - connectLine.startPositionLineX) * 180 / Math.PI
                                 connectLine.visible = true;
