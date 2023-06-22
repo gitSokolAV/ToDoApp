@@ -127,6 +127,8 @@ Page {
                     y: connectLine.endPositionLineY
                 }
             }
+
+
           Text {
               id: centerText
               text: "Enter name line"
@@ -154,6 +156,26 @@ Page {
             onHeightChanged: {
                 connectLineShape.startY = height / 2;
             }
+        }
+        Binding{
+            target: connectLineShape
+            property: "startX"
+            value: connectLine.startPositionLineX
+        }
+        Binding{
+            target: connectLineShape
+            property: "startY"
+            value: connectLine.startPositionLineY
+        }
+        Binding{
+            target: pathLine
+            property: "x"
+            value: connectLine.endPositionLineX
+        }
+        Binding{
+            target: pathLine
+            property: "y"
+            value: connectLine.endPositionLineY
         }
 
 
@@ -212,14 +234,18 @@ Page {
                                                && categoriesModel.get(connectLine.indexStartPosition).connectedBool){
                             var clickedCategory = categoriesModel.get(categoryIndex);
                             var startCategory = categoriesModel.get(connectLine.indexStartPosition)
-                            categoriesModel.setProperty(connectLine.indexStartPosition,"positionX", startCategory.positionX)
-                            categoriesModel.setProperty(connectLine.indexStartPosition,"positionX", startCategory.positionY)
+                            //categoriesModel.setProperty(connectLine.indexStartPosition,"positionX", startCategory.positionX)
+                            //categoriesModel.setProperty(connectLine.indexStartPosition,"positionX", startCategory.positionY)
+                            console.log("ConnectLineShape X : " + connectLineShape.startX)
+                            console.log("ConnectLineShape Y : " + connectLineShape.startY)
                             console.log("Start PoSitioN X: "+ startCategory.positionX)
                             console.log("Start Position Y: "+ startCategory.positionY)
-                            //connectLine.startPositionLineX = startCategory.positionX + 150;
-                            //connectLine.startPositionLineY = startCategory.positionY + 25
                             connectLine.startPositionLineX = startCategory.positionX + 150;
                             connectLine.startPositionLineY = startCategory.positionY + 25;
+                            //connectLineShape.startX = startCategory.positionX + 150
+                            //connectLineShape.startY = startCategory.positionY + 25
+                            console.log("ConnectLineShape X : " + connectLineShape.startX)
+                            console.log("ConnectLineShape Y : " + connectLineShape.startY)
                             console.log("ConnectLine X: " + connectLine.startPositionLineX)
                             console.log("connectLine Y: " + connectLine.startPositionLineY)
                             connectLine.endPositionLineX = clickedCategory.positionX + 150;
@@ -230,9 +256,6 @@ Page {
                             centerText.rotation = angle;
 
                         }
-
-
-
                     }
                     onClicked: {
                         if (mouse.button === Qt.RightButton) {
