@@ -270,8 +270,16 @@ Page {
                             text: "Delete"
                             onTriggered: {
                                 var index = mouseArea.clickedIndex;
+                                if(categoriesModel.get(index).connectedBool){
+                                    categoriesModel.setProperty(index, "connectedBool", false)
+                                    connectLine.visible = false
+                                    centerText.visible = false
+                                }
                                 categoriesModel.remove(index, 1);
+
                                 mouseArea.parent.destroy();
+
+
                                 categoryComboBox.model = categoriesModel;
                             }
                         }
