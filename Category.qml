@@ -228,28 +228,29 @@ Page {
                     onReleased: {
                         categoriesModel.setProperty(categoryIndex, "positionX", parent.x);
                         categoriesModel.setProperty(categoryIndex, "positionY", parent.y);
-                        console.log("X : " + categoriesModel.get(categoryIndex).positionX)
-                        console.log("Y : " + categoriesModel.get(categoryIndex).positionY)
                         if(connectLine.visible && categoriesModel.get(categoryIndex).connectedBool
                                                && categoriesModel.get(connectLine.indexStartPosition).connectedBool){
                             var clickedCategory = categoriesModel.get(categoryIndex);
                             var startCategory = categoriesModel.get(connectLine.indexStartPosition)
-                            //categoriesModel.setProperty(connectLine.indexStartPosition,"positionX", startCategory.positionX)
-                            //categoriesModel.setProperty(connectLine.indexStartPosition,"positionX", startCategory.positionY)
-                            console.log("ConnectLineShape X : " + connectLineShape.startX)
-                            console.log("ConnectLineShape Y : " + connectLineShape.startY)
-                            console.log("Start PoSitioN X: "+ startCategory.positionX)
-                            console.log("Start Position Y: "+ startCategory.positionY)
+                            if (clickedCategory.categoryName !== startCategory.name){
+                            console.log("Clicked Caterogry name : " + clickedCategory.categoryName)
+                            console.log("Start Category name : " + startCategory.categoryName)
+                            console.log("ConnectLine start X : " + connectLine.startPositionLineX)
+                            console.log("ConnectLine start Y : " + connectLine.startPositionLineY)
+                            console.log("ConnectLine end X : " + connectLine.endPositionLineX)
+                            console.log("ConnectLine end Y : " + connectLine.endPositionLineY)
                             connectLine.startPositionLineX = startCategory.positionX + 150;
                             connectLine.startPositionLineY = startCategory.positionY + 25;
-                            //connectLineShape.startX = startCategory.positionX + 150
-                            //connectLineShape.startY = startCategory.positionY + 25
-                            console.log("ConnectLineShape X : " + connectLineShape.startX)
-                            console.log("ConnectLineShape Y : " + connectLineShape.startY)
-                            console.log("ConnectLine X: " + connectLine.startPositionLineX)
-                            console.log("connectLine Y: " + connectLine.startPositionLineY)
                             connectLine.endPositionLineX = clickedCategory.positionX + 150;
                             connectLine.endPositionLineY = clickedCategory.positionY + 25;
+                            }
+                            else{
+                                connectLine.startPositionLineX = clickedCategory.positionX + 150;
+                                connectLine.startPositionLineY = clickedCategory.positionY + 25;
+                                connectLine.endPositionLineX = startCategory.positionX + 150;
+                                connectLine.endPositionLineY = startCategory.positionY + 25;
+                            }
+
                             var deltaX = connectLine.endPositionLineX - connectLine.startPositionLineX;
                             var deltaY = connectLine.endPositionLineY - connectLine.startPositionLineY;
                             var angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
@@ -276,10 +277,7 @@ Page {
                                     centerText.visible = false
                                 }
                                 categoriesModel.remove(index, 1);
-
                                 mouseArea.parent.destroy();
-
-
                                 categoryComboBox.model = categoriesModel;
                             }
                         }
@@ -315,7 +313,6 @@ Page {
                         anchors.fill: parent
                     }
                     onAccepted: {
-
                         colorDialog2.open();
                     }
                 }
@@ -341,8 +338,8 @@ Page {
                             var newCategoryColor = colorDialogOpen.selectedColor;
                             var clickedObjectIndex = mouseArea.clickedIndex;
                             var selectedObjectIndex = categoryComboBox.currentIndex
-                            connectLine.indexStartPosition = clickedObjectIndex
-
+                            //connectLine.indexStartPosition = clickedObjectIndex
+                            connectLine.indexStartPosition = selectedObjectIndex
                             // Обновляем цвет выбранного объекта в модели
                             categoriesModel.setProperty(clickedObjectIndex, "categoryColor", newCategoryColor);
                             categoriesModel.setProperty(clickedObjectIndex, "textConnectLabel", categoriesModel.get(selectedObjectIndex).categoryName);
@@ -366,8 +363,6 @@ Page {
                                 connectLine.lineAngle = Math.atan2(connectLine.endPositionLineY - connectLine.startPositionLineY, connectLine.endPositionLineX - connectLine.startPositionLineX) * 180 / Math.PI
                                 connectLine.visible = true;
                                 textLineDialog.open();
-
-
                             }
 
                         }
@@ -402,6 +397,7 @@ Page {
                             // Обновляем элементы в массиве категорий
                             categoriesModel.setProperty(categoryIndex, "categoryName", newCategoryText);
                             categoryName = newCategoryText;
+
                         }
                     }
                 }
