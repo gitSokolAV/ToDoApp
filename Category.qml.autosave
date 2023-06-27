@@ -374,8 +374,8 @@ Page {
                     id: dateDialog
                     title: "Category Creation Date"
                     standardButtons: Dialog.Ok
-                    anchors.centerIn: root.verticalCenter
-                    //anchors.verticalCenter: root.verticalCenter
+                    anchors.horizontalCenter: root.horizontalCenter
+                    anchors.verticalCenter: root.verticalCenter
                     Text {
                         text: "Category \"" + categoryName + "\" was created on " + new Date().toLocaleDateString()
                         color: "black"
