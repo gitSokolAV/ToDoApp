@@ -109,6 +109,9 @@ Page {
           property double startPositionLineY: 0
           property double endPositionLineX: 0
           property double endPositionLineY: 0
+          property var clickedCategory
+          property var selectedCategory
+          property var tempCategory
           property int  indexStartPosition: -1
           property real lineAngle: 0
 
@@ -229,27 +232,54 @@ Page {
                     onReleased: {
                         categoriesModel.setProperty(categoryIndex, "positionX", parent.x);
                         categoriesModel.setProperty(categoryIndex, "positionY", parent.y);
+                        connectLine.clickedCategory = categoriesModel.get(categoryIndex);
+                        connectLine.selectedCategory = categoriesModel.get(connectLine.indexStartPosition)
+                        var clickedCategory = categoriesModel.get(categoryIndex);
+                        var startCategory = categoriesModel.get(connectLine.indexStartPosition)
                         if(connectLine.visible && categoriesModel.get(categoryIndex).connectedBool
                                                && categoriesModel.get(connectLine.indexStartPosition).connectedBool){
-                            var clickedCategory = categoriesModel.get(categoryIndex);
-                            var startCategory = categoriesModel.get(connectLine.indexStartPosition)
-                            if (clickedCategory.categoryName !== startCategory.name){
-                            console.log("Clicked Caterogry name : " + clickedCategory.categoryName)
-                            console.log("Start Category name : " + startCategory.categoryName)
-                            console.log("ConnectLine start X : " + connectLine.startPositionLineX)
-                            console.log("ConnectLine start Y : " + connectLine.startPositionLineY)
-                            console.log("ConnectLine end X : " + connectLine.endPositionLineX)
-                            console.log("ConnectLine end Y : " + connectLine.endPositionLineY)
-                            connectLine.startPositionLineX = startCategory.positionX + 150;
-                            connectLine.startPositionLineY = startCategory.positionY + 25;
-                            connectLine.endPositionLineX = clickedCategory.positionX + 150;
-                            connectLine.endPositionLineY = clickedCategory.positionY + 25;
+
+                            //if (clickedCategory.categoryName !== startCategory.name){
+                            //console.log("Clicked Caterogry name : " + clickedCategory.categoryName)
+                            //console.log("Start Category name : " + startCategory.categoryName)
+                            //console.log("ConnectLine start X : " + connectLine.startPositionLineX)
+                            //console.log("ConnectLine start Y : " + connectLine.startPositionLineY)
+                            //console.log("ConnectLine end X : " + connectLine.endPositionLineX)
+                            //console.log("ConnectLine end Y : " + connectLine.endPositionLineY)
+                            //connectLine.startPositionLineX = startCategory.positionX + 150;
+                            //connectLine.startPositionLineY = startCategory.positionY + 25;
+                            //connectLine.endPositionLineX = clickedCategory.positionX + 150;
+                            //connectLine.endPositionLineY = clickedCategory.positionY + 25;
+                            //}
+                            //else{
+                            //    connectLine.startPositionLineX = clickedCategory.positionX + 150;
+                            //    connectLine.startPositionLineY = clickedCategory.positionY + 25;
+                            //    connectLine.endPositionLineX = startCategory.positionX + 150;
+                            //    connectLine.endPositionLineY = startCategory.positionY + 25;
+                            //}
+                            if(connectLine.clickedCategory !== connectLine.selectedCategory){
+                                connectLine.startPositionLineX = connectLine.clickedCategory.positionX + 150
+                                connectLine.startPositionLineY = connectLine.clickedCategory.positionY + 25
+                                connectLine.endPositionLineX = connectLine.selectedCategory.positionX + 150
+                                connectLine.endPositionLineY = connectLine.selectedCategory.positionY + 25
+                                console.log("Position ONE : NO Change")
+                                console.log("Clicked Caterogry name : " + connectLine.selectedCategory.categoryName)
+                                console.log("Start Category name : " + connectLine.clickedCategory.categoryName)
+                                console.log("ConnectLine start X : " + connectLine.startPositionLineX)
+                                console.log("ConnectLine start Y : " + connectLine.startPositionLineY)
+                                console.log("ConnectLine end X : " + connectLine.endPositionLineX)
+                                console.log("ConnectLine end Y : " + connectLine.endPositionLineY)
+                                //if(connectLine.tempCategory === ""){
+                                //connectLine.tempCategory = connectLine.selectedCategory
+                                //}
+                                //if(connectLine.tempCategory.categoryName !== connectLine.selectedCategory.categoryName){
+                                //    connectLine.tempCategory = connectLine.selectedCategory
+                                //}
                             }
                             else{
-                                connectLine.startPositionLineX = clickedCategory.positionX + 150;
-                                connectLine.startPositionLineY = clickedCategory.positionY + 25;
-                                connectLine.endPositionLineX = startCategory.positionX + 150;
-                                connectLine.endPositionLineY = startCategory.positionY + 25;
+                                console.log("ClickedCategory: " + connectLine.clickedCategory.categoryName)
+                                console.log("Selected Category: " + connectLine.selectedCategory.categoryName)
+                                console.log("Temp Category : " + connectLine.tempCategory.categoryName)
                             }
 
                             var deltaX = connectLine.endPositionLineX - connectLine.startPositionLineX;
@@ -349,6 +379,8 @@ Page {
                             if (selectedObjectIndex >= 0) {
                                 var selectedCategory = categoriesModel.get(selectedObjectIndex);
                                 var clickedCategory = categoriesModel.get(clickedObjectIndex);
+                                connectLine.selectedCategory = selectedCategory
+                                connectLine.clickedCategory = clickedCategory
                                 selectedCategory.categoryColor = newCategoryColor;
                                 selectedCategory.textConnectLabel = categoriesModel.get(clickedObjectIndex).categoryName;
                                 selectedCategory.boolConnectLabel = true;
@@ -368,13 +400,14 @@ Page {
 
                         }
                     }
+
                 }
 
                 Dialog {
                     id: dateDialog
                     title: "Category Creation Date"
                     standardButtons: Dialog.Ok
-                    anchors.centerIn: root.verticalCenter
+                    //anchors.horizontalCenter: root.horizontalCenter
                     //anchors.verticalCenter: root.verticalCenter
                     Text {
                         text: "Category \"" + categoryName + "\" was created on " + new Date().toLocaleDateString()
