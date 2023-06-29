@@ -460,6 +460,36 @@ Page {
                 }
             }
         }
+    Rectangle{
+        id: timeRectangle
+        color: colorPurple
+        height: dateTimeText.height + 20
+        width: dateTimeText.width + 20
+        radius: 10
+        border.color: "black"
+        border.width: 2
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.margins: 10
+        Text {
+            id: dateTimeText
+            text: Qt.formatDateTime(new Date(), "hh:mm:ss dd.MM.yyyy")
+            color: backgroundColor
+            font.pixelSize: 16
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.margins: 10
+        }
+        Timer {
+            id: timer
+            interval: 1000
+            running: true
+            repeat: true
+            onTriggered: {
+                dateTimeText.text = Qt.formatDateTime(new Date(), "hh:mm:ss dd.MM.yyyy")
+            }
+        }
+    }
 
     Button{
         id: navButton
