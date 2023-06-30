@@ -28,20 +28,47 @@ Page {
                 categoryDialog.open()
             }
         }
-        Button {
-            id: backgroundChangeColorButton
-            text: "Change Color"
+        //Button {
+        //    id: backgroundChangeColorButton
+        //    text: "Change Color"
+        //    anchors.right: addCategoryButton.left
+        //    anchors.bottom: parent.bottom
+        //    anchors.margins: 10
+        //    onClicked: {
+        //        colorDialog.open()
+        //    }
+        //    ColorDialog{
+        //        id: colorDialog
+        //        title: "Please choose a color"
+        //        onAccepted: {
+        //            backgroundColor = colorDialog.selectedColor
+        //        }
+        //    }
+        //}
+        Rectangle{
+            id: backgroundChangeColorButton2
+            height: textAreaBackgroundChangeColor.height
+            width: textAreaBackgroundChangeColor.width + 20
             anchors.right: addCategoryButton.left
             anchors.bottom: parent.bottom
             anchors.margins: 10
-            onClicked: {
-                colorDialog.open()
+            TextArea{
+                id: textAreaBackgroundChangeColor
+                text: "Change Color"
+                font.pixelSize: 16
+                color: backgroundColor
             }
-            ColorDialog{
-                id: colorDialog
-                title: "Please choose a color"
-                onAccepted: {
-                    backgroundColor = colorDialog.selectedColor
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    colorDialog.open()
+                }
+                ColorDialog{
+                    id: colorDialog
+                    title: "Please choose a color"
+                    onAccepted: {
+                        backgroundColor = colorDialog.selectedColor
+                    }
                 }
             }
         }
@@ -450,6 +477,7 @@ Page {
             TextField {
                 id: centerTextLineName
                 text: centerText.text
+                anchors.left: parent
                 placeholderText: "Line Name"
                 width: textLineDialog.width - 14
             }
@@ -464,13 +492,15 @@ Page {
         id: timeRectangle
         color: colorPurple
         height: dateTimeText.height + 20
-        width: dateTimeText.width + 20
+        //width: parent.width
         radius: 10
         border.color: "black"
         border.width: 2
-        anchors.top: parent.top
-        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.right: backgroundChangeColorButton2.left
+        anchors.left: parent.left
         anchors.margins: 10
+
         Text {
             id: dateTimeText
             text: Qt.formatDateTime(new Date(), "hh:mm:ss dd.MM.yyyy")
