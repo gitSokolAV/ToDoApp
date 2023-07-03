@@ -8,12 +8,15 @@ Page {
     id: root
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: navButton.text
-    signal buttonClicked();        
+    signal buttonClicked();
+    property var categoryConnectIndex : []
+
 
         ListModel {
             id: categoriesModel
             dynamicRoles: true
-        }
+        }        
+
         background: Rectangle{
             id: backgroundRect
         }
@@ -95,6 +98,7 @@ Page {
                 var setPositionX = Math.random() * (root.width)
                 var setPositionY = Math.random() * (root.height)
                 var setConnectedBool = false
+                var setDataCellAccess = -1
 
                 if(setCategoryName !== ""){
                     categoriesModel.append({
@@ -105,7 +109,8 @@ Page {
                                                "boolConnectLabel": setBoolConnectLabel,
                                                "positionX": setPositionX,
                                                "positionY": setPositionY,
-                                               "connectedBool": setConnectedBool
+                                               "connectedBool": setConnectedBool,
+                                               "dataCellAccess": setDataCellAccess
                                            })
                 var newCategory =  categoryRectComponent.createObject(root);
                     newCategory.categoryName = categoriesModel.get(setCategoryIndex).categoryName
@@ -141,6 +146,7 @@ Page {
           property var tempCategory
           property int  indexStartPosition: -1
           property real lineAngle: 0
+
 
           anchors.centerIn: parent
           visible: false
@@ -221,6 +227,7 @@ Page {
                 property var positionX
                 property var positionY
                 property var connectedBool
+                property var dataCellAccess
                 width: 300
                 height: 50
                 color: categoriesModel.get(categoryIndex).categoryColor
@@ -257,63 +264,36 @@ Page {
                         stackView.push(toDoListInstance)
                     }
                     onReleased: {
-                        categoriesModel.setProperty(categoryIndex, "positionX", parent.x);
-                        categoriesModel.setProperty(categoryIndex, "positionY", parent.y);
-                        connectLine.clickedCategory = categoriesModel.get(categoryIndex);
-                        connectLine.selectedCategory = categoriesModel.get(connectLine.indexStartPosition)
-                        var clickedCategory = categoriesModel.get(categoryIndex);
-                        var startCategory = categoriesModel.get(connectLine.indexStartPosition)
-                        if(connectLine.visible && categoriesModel.get(categoryIndex).connectedBool
-                                               && categoriesModel.get(connectLine.indexStartPosition).connectedBool){
 
-                            //if (clickedCategory.categoryName !== startCategory.name){
-                            //console.log("Clicked Caterogry name : " + clickedCategory.categoryName)
-                            //console.log("Start Category name : " + startCategory.categoryName)
-                            //console.log("ConnectLine start X : " + connectLine.startPositionLineX)
-                            //console.log("ConnectLine start Y : " + connectLine.startPositionLineY)
-                            //console.log("ConnectLine end X : " + connectLine.endPositionLineX)
-                            //console.log("ConnectLine end Y : " + connectLine.endPositionLineY)
-                            //connectLine.startPositionLineX = startCategory.positionX + 150;
-                            //connectLine.startPositionLineY = startCategory.positionY + 25;
-                            //connectLine.endPositionLineX = clickedCategory.positionX + 150;
-                            //connectLine.endPositionLineY = clickedCategory.positionY + 25;
-                            //}
-                            //else{
-                            //    connectLine.startPositionLineX = clickedCategory.positionX + 150;
-                            //    connectLine.startPositionLineY = clickedCategory.positionY + 25;
-                            //    connectLine.endPositionLineX = startCategory.positionX + 150;
-                            //    connectLine.endPositionLineY = startCategory.positionY + 25;
-                            //}
-                            if(connectLine.clickedCategory !== connectLine.selectedCategory){
-                                connectLine.startPositionLineX = connectLine.clickedCategory.positionX + 150
-                                connectLine.startPositionLineY = connectLine.clickedCategory.positionY + 25
-                                connectLine.endPositionLineX = connectLine.selectedCategory.positionX + 150
-                                connectLine.endPositionLineY = connectLine.selectedCategory.positionY + 25
-                                console.log("Position ONE : NO Change")
-                                console.log("Clicked Caterogry name : " + connectLine.selectedCategory.categoryName)
-                                console.log("Start Category name : " + connectLine.clickedCategory.categoryName)
-                                console.log("ConnectLine start X : " + connectLine.startPositionLineX)
-                                console.log("ConnectLine start Y : " + connectLine.startPositionLineY)
-                                console.log("ConnectLine end X : " + connectLine.endPositionLineX)
-                                console.log("ConnectLine end Y : " + connectLine.endPositionLineY)
-                                //if(connectLine.tempCategory === ""){
-                                //connectLine.tempCategory = connectLine.selectedCategory
-                                //}
-                                //if(connectLine.tempCategory.categoryName !== connectLine.selectedCategory.categoryName){
-                                //    connectLine.tempCategory = connectLine.selectedCategory
-                                //}
-                            }
-                            else{
-                                console.log("ClickedCategory: " + connectLine.clickedCategory.categoryName)
-                                console.log("Selected Category: " + connectLine.selectedCategory.categoryName)
-                                console.log("Temp Category : " + connectLine.tempCategory.categoryName)
-                            }
 
+                        if(connectLine.visible){
+                            var index = categoriesModel.get(categoryIndex).dataCellAccess
+                            var firstIndexCategory = categoriesModel.get(categoryConnectIndex[index][0]).categoryIndex
+                            var secondIndexCategory = categoriesModel.get(categoryConnectIndex[index][1]).categoryIndex
+                            if(categoriesModel.get(firstIndexCategory).connectedBool
+                                    && categoriesModel.get(secondIndexCategory).connectedBool){
+                            categoriesModel.setProperty(firstIndexCategory, "positionX", parent.x)
+                            categoriesModel.setProperty(firstIndexCategory, "positionY", parent.y)
+                            var clickedCategory = categoriesModel.get(categoryConnectIndex[index][0])
+                            var startCategory = categoriesModel.get(categoryConnectIndex[index][1])
+
+                            connectLine.startPositionLineX = clickedCategory.positionX + 150
+                            connectLine.startPositionLineY = clickedCategory.positionY + 25
+                            connectLine.endPositionLineX = startCategory.positionX + 150
+                            connectLine.endPositionLineY = startCategory.positionY + 25
+                            console.log("Position ONE : NO Change")
+                            console.log("Clicked Caterogry name : " + connectLine.selectedCategory.categoryName)
+                            console.log("Start Category name : " + connectLine.clickedCategory.categoryName)
+                            console.log("ConnectLine start X : " + connectLine.startPositionLineX)
+                            console.log("ConnectLine start Y : " + connectLine.startPositionLineY)
+                            console.log("ConnectLine end X : " + connectLine.endPositionLineX)
+                            console.log("ConnectLine end Y : " + connectLine.endPositionLineY)
+                            connectLine.tempCategory = connectLine.selectedCategory
                             var deltaX = connectLine.endPositionLineX - connectLine.startPositionLineX;
                             var deltaY = connectLine.endPositionLineY - connectLine.startPositionLineY;
                             var angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
                             centerText.rotation = angle;
-
+                            }
                         }
                     }
                     onClicked: {
@@ -335,7 +315,7 @@ Page {
                                     centerText.visible = false
                                 }
                                 categoriesModel.remove(index, 1);
-                                mouseArea.parent.destroy();
+                                mouseArea.parent.destroy(categoryIndex);
                                 categoryComboBox.model = categoriesModel;
                             }
                         }
@@ -402,10 +382,13 @@ Page {
                             categoriesModel.setProperty(clickedObjectIndex, "categoryColor", newCategoryColor);
                             categoriesModel.setProperty(clickedObjectIndex, "textConnectLabel", categoriesModel.get(selectedObjectIndex).categoryName);
                             categoriesModel.setProperty(clickedObjectIndex, "boolConnectLabel", true);
+
                             // Если выбран объект из выпадающего списка, обновляем его цвет
                             if (selectedObjectIndex >= 0) {
                                 var selectedCategory = categoriesModel.get(selectedObjectIndex);
                                 var clickedCategory = categoriesModel.get(clickedObjectIndex);
+                                categoriesModel.setProperty(clickedObjectIndex, "dataCellAccess", categoryConnectIndex.length)
+                                categoriesModel.setProperty(selectedObjectIndex, "dataCellAccess", categoryConnectIndex.length)
                                 connectLine.selectedCategory = selectedCategory
                                 connectLine.clickedCategory = clickedCategory
                                 selectedCategory.categoryColor = newCategoryColor;
@@ -423,8 +406,9 @@ Page {
                                 connectLine.lineAngle = Math.atan2(connectLine.endPositionLineY - connectLine.startPositionLineY, connectLine.endPositionLineX - connectLine.startPositionLineX) * 180 / Math.PI
                                 connectLine.visible = true;
                                 textLineDialog.open();
+                                categoryConnectIndex.push([clickedCategory.categoryIndex, selectedCategory.categoryIndex])
+                                console.log(categoryConnectIndex.length)
                             }
-
                         }
                     }
 
