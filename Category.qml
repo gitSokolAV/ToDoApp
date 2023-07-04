@@ -20,15 +20,22 @@ Page {
         background: Rectangle{
             id: backgroundRect
         }
-        Button {
+        Rectangle {
             id: addCategoryButton
-            text: "Add Category"
+            height: textAreaBackgroundChangeColor.height
+            width: textAreaBackgroundChangeColor.width + 20
             anchors.right: navButton.left
             anchors.bottom: parent.bottom
             anchors.margins: 10
+            TextArea{
+            text: "Add Category"
+            }
+            MouseArea{
+                anchors.fill: parent
             onClicked: {
                 newColorDialog.open()
                 categoryDialog.open()
+            }
             }
         }
         //Button {
