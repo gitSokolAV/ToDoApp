@@ -271,8 +271,6 @@ Page {
                         stackView.push(toDoListInstance)
                     }
                     onReleased: {
-
-
                         if(connectLine.visible){
                             var index = categoriesModel.get(categoryIndex).dataCellAccess
                             var firstIndexCategory = categoriesModel.get(categoryConnectIndex[index][0]).categoryIndex
@@ -281,6 +279,7 @@ Page {
                                     && categoriesModel.get(secondIndexCategory).connectedBool){
                             categoriesModel.setProperty(firstIndexCategory, "positionX", parent.x)
                             categoriesModel.setProperty(firstIndexCategory, "positionY", parent.y)
+
                             var clickedCategory = categoriesModel.get(categoryConnectIndex[index][0])
                             var startCategory = categoriesModel.get(categoryConnectIndex[index][1])
 
@@ -301,6 +300,8 @@ Page {
                             var angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
                             centerText.rotation = angle;
                             }
+                            categoriesModel.setProperty(secondIndexCategory, "positionX", parent.x)
+                            categoriesModel.setProperty(secondIndexCategory, "positionY", parent.y)
                         }
                     }
                     onClicked: {
