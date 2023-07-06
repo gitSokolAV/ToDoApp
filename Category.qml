@@ -20,24 +20,7 @@ Page {
         background: Rectangle{
             id: backgroundRect
         }
-        Rectangle {
-            id: addCategoryButton
-            height: textAreaBackgroundChangeColor.height
-            width: textAreaBackgroundChangeColor.width + 20
-            anchors.right: navButton.left
-            anchors.bottom: parent.bottom
-            anchors.margins: 10
-            TextArea{
-            text: "Add Category"
-            }
-            MouseArea{
-                anchors.fill: parent
-            onClicked: {
-                newColorDialog.open()
-                categoryDialog.open()
-            }
-            }
-        }
+
         //Button {
         //    id: backgroundChangeColorButton
         //    text: "Change Color"
@@ -55,33 +38,7 @@ Page {
         //        }
         //    }
         //}
-        Rectangle{
-            id: backgroundChangeColorButton2
-            height: textAreaBackgroundChangeColor.height
-            width: textAreaBackgroundChangeColor.width + 20
-            anchors.right: addCategoryButton.left
-            anchors.bottom: parent.bottom
-            anchors.margins: 10
-            TextArea{
-                id: textAreaBackgroundChangeColor
-                text: "Change Color"
-                font.pixelSize: 16
-                color: backgroundColor
-            }
-            MouseArea{
-                anchors.fill: parent
-                onClicked: {
-                    colorDialog.open()
-                }
-                ColorDialog{
-                    id: colorDialog
-                    title: "Please choose a color"
-                    onAccepted: {
-                        backgroundColor = colorDialog.selectedColor
-                    }
-                }
-            }
-        }
+
 
 
         Dialog {
@@ -480,26 +437,25 @@ Page {
                 }
             }
         }
+
     Rectangle{
-        id: timeRectangle
-        color: colorPurple
-        height: dateTimeText.height + 20
-        //width: parent.width
-        radius: 10
-        border.color: "black"
-        border.width: 2
-        anchors.bottom: parent.bottom
-        anchors.right: backgroundChangeColorButton2.left
+        id: footer
         anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
         anchors.margins: 10
+        radius: 10
+        height: 50
+        color: backgroundColor + 10
 
         Text {
             id: dateTimeText
             text: Qt.formatDateTime(new Date(), "hh:mm:ss dd.MM.yyyy")
             color: backgroundColor
             font.pixelSize: 16
-            anchors.right: parent.right
-            anchors.top: parent.top
+
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
             anchors.margins: 10
         }
         Timer {
@@ -511,15 +467,74 @@ Page {
                 dateTimeText.text = Qt.formatDateTime(new Date(), "hh:mm:ss dd.MM.yyyy")
             }
         }
+        Rectangle{
+            id: backgroundChangeColorButton2
+            height: footer.height
+            width: textAreaBackgroundChangeColor.width + 20
+            anchors.right: addCategoryButton.left
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+            anchors.margins: 10
+            radius: 10
+            color: footer.color + 1
+            TextArea{
+                id: textAreaBackgroundChangeColor
+                text: "Change Color"
+                font.pixelSize: 16
+                color: backgroundColor
+                anchors.centerIn: parent
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    colorDialog.open()
+                }
+                ColorDialog{
+                    id: colorDialog
+                    title: "Please choose a color"
+                    onAccepted: {
+                        backgroundColor = colorDialog.selectedColor
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: addCategoryButton
+            height: footer.height
+            width: textAreaBackgroundChangeColor.width + 20
+            anchors.right: navButton.left
+            anchors.bottom: parent.bottom
+            anchors.top:parent.top
+            anchors.margins: 10
+            radius: 10
+            color: footer.color + 1
+            TextArea{
+            text: "Add Category"
+            anchors.centerIn: parent
+            font.pixelSize: 16
+            color: backgroundColor
+            }
+            MouseArea{
+                anchors.fill: parent
+            onClicked: {
+                newColorDialog.open()
+                categoryDialog.open()
+            }
+            }
+        }
+
+        Button{
+            id: navButton
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.margins: 10
+            onClicked: {
+                root.buttonClicked();
+            }
+        }
+
     }
 
-    Button{
-        id: navButton
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.margins: 10
-        onClicked: {
-            root.buttonClicked();
-        }
-    }
+
 }
