@@ -52,7 +52,7 @@ Window{
         }
         Category{
             id: pageCategory
-            backgroundColor: colorYellow
+            backgroundColor: colorPurple
             visible: false
             buttonText: "Back"
             onButtonClicked: {

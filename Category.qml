@@ -7,9 +7,10 @@ import QtQuick.Shapes
 Page {
     id: root
     property alias backgroundColor: backgroundRect.color
-    property alias buttonText: navButton.text
+    property alias buttonText: textNavButton.text
     signal buttonClicked();
     property var categoryConnectIndex : []
+
 
 
         ListModel {
@@ -20,27 +21,6 @@ Page {
         background: Rectangle{
             id: backgroundRect
         }
-
-        //Button {
-        //    id: backgroundChangeColorButton
-        //    text: "Change Color"
-        //    anchors.right: addCategoryButton.left
-        //    anchors.bottom: parent.bottom
-        //    anchors.margins: 10
-        //    onClicked: {
-        //        colorDialog.open()
-        //    }
-        //    ColorDialog{
-        //        id: colorDialog
-        //        title: "Please choose a color"
-        //        onAccepted: {
-        //            backgroundColor = colorDialog.selectedColor
-        //        }
-        //    }
-        //}
-
-
-
         Dialog {
             id: categoryDialog
             title: "Enter Category Name"
@@ -426,7 +406,7 @@ Page {
             TextField {
                 id: centerTextLineName
                 text: centerText.text
-                anchors.left: parent
+                anchors.left: parent.left
                 placeholderText: "Line Name"
                 width: textLineDialog.width - 14
             }
@@ -446,7 +426,9 @@ Page {
         anchors.margins: 10
         radius: 10
         height: 50
-        color: backgroundColor + 10
+        color: backgroundColor - 10
+        opacity: 0.5
+
 
         Text {
             id: dateTimeText
@@ -476,7 +458,7 @@ Page {
             anchors.top: parent.top
             anchors.margins: 10
             radius: 10
-            color: footer.color + 1
+            color: backgroundColor - 10
             TextArea{
                 id: textAreaBackgroundChangeColor
                 text: "Change Color"
@@ -508,7 +490,7 @@ Page {
             anchors.top:parent.top
             anchors.margins: 10
             radius: 10
-            color: footer.color + 1
+            color: backgroundColor - 10
             TextArea{
             text: "Add Category"
             anchors.centerIn: parent
@@ -523,16 +505,41 @@ Page {
             }
             }
         }
-
-        Button{
+        Rectangle{
             id: navButton
             anchors.right: parent.right
             anchors.bottom: parent.bottom
+            anchors.top: parent.top
             anchors.margins: 10
-            onClicked: {
-                root.buttonClicked();
+            color: backgroundColor - 10
+            radius: 10
+            height: footer.height
+            width: textNavButton.width + 20
+            TextArea{
+                id: textNavButton
+                text: ""
+                anchors.centerIn: parent
+                font.pixelSize: 16
+                color: backgroundColor
+            }
+
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    root.buttonClicked();
+                }
             }
         }
+
+        //Button{
+        //    id: navButton
+        //    anchors.right: parent.right
+        //    anchors.bottom: parent.bottom
+        //    anchors.margins: 10
+        //    onClicked: {
+        //        root.buttonClicked();
+        //    }
+        //}
 
     }
 
