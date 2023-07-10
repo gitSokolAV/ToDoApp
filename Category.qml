@@ -11,12 +11,10 @@ Page {
     signal buttonClicked();
     property var categoryConnectIndex : []
 
-
-
         ListModel {
             id: categoriesModel
             dynamicRoles: true
-        }        
+        }
 
         background: Rectangle{
             id: backgroundRect
@@ -31,7 +29,6 @@ Page {
                 width: categoryDialog.width - 14
                 placeholderText: "Category Name"
             }
-
 
             onAccepted: {
                 var setCategoryColor = newColorDialog.selectedColor
@@ -65,7 +62,6 @@ Page {
                     newCategory.x = categoriesModel.get(setCategoryIndex).positionX
                     newCategory.y = categoriesModel.get(setCategoryIndex).positionY
                     newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool
-
                 }
 
             }
@@ -90,10 +86,9 @@ Page {
           property var tempCategory
           property int  indexStartPosition: -1
           property real lineAngle: 0
-
-
           anchors.centerIn: parent
           visible: false
+
           ShapePath{
                 id: connectLineShape
                 strokeColor: "black"
@@ -107,7 +102,6 @@ Page {
                     y: connectLine.endPositionLineY
                 }
             }
-
 
           Text {
               id: centerText
@@ -137,6 +131,7 @@ Page {
                 connectLineShape.startY = height / 2;
             }
         }
+
         Binding{
             target: connectLineShape
             property: "startX"
@@ -157,7 +152,6 @@ Page {
             property: "y"
             value: connectLine.endPositionLineY
         }
-
 
         Component {
             id: categoryRectComponent            
@@ -183,6 +177,7 @@ Page {
                     color: colorYellow
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
+
                 Label{
                     id: connectLabel
                     text: "Connected with " + categoriesModel.get(categoryIndex).textConnectLabel
@@ -190,6 +185,7 @@ Page {
                     visible: categoriesModel.get(categoryIndex).boolConnectLabel
                     anchors.margins: 10
                 }
+
                 MouseArea {
                     property int clickedIndex: -1
                     id: mouseArea
@@ -202,45 +198,59 @@ Page {
                     drag.maximumY: parent.parent.height - parent.height
 
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
+
                     onDoubleClicked: {
                         var toDoListInstance = Qt.createComponent("ToDoList.qml")
                         toDoListInstance.category = categoryName
                         stackView.push(toDoListInstance)
                     }
+
                     onReleased: {
+                        clickedIndex = categoryIndex
+                        categoriesModel.setProperty(clickedIndex, "positionX", parent.x)
+                        categoriesModel.setProperty(clickedIndex, "positionY", parent.y)
+                        console.log("\n################################### " +
+                                    "\nClicked Index: " + clickedIndex +
+                                    "\nCategory Name : " + categoriesModel.get(clickedIndex).categoryName +
+                                    "\nPosition X : " + categoriesModel.get(clickedIndex).positionX +
+                                    "\nPosition Y : " + categoriesModel.get(clickedIndex).positionY +
+                                    "\n###################################")
+
                         if(connectLine.visible){
                             var index = categoriesModel.get(categoryIndex).dataCellAccess
                             var firstIndexCategory = categoriesModel.get(categoryConnectIndex[index][0]).categoryIndex
                             var secondIndexCategory = categoriesModel.get(categoryConnectIndex[index][1]).categoryIndex
+
                             if(categoriesModel.get(firstIndexCategory).connectedBool
                                     && categoriesModel.get(secondIndexCategory).connectedBool){
-                            categoriesModel.setProperty(firstIndexCategory, "positionX", parent.x)
-                            categoriesModel.setProperty(firstIndexCategory, "positionY", parent.y)
+                                categoriesModel.setProperty(firstIndexCategory, "positionX", parent.x)
+                                categoriesModel.setProperty(firstIndexCategory, "positionY", parent.y)
 
-                            var clickedCategory = categoriesModel.get(categoryConnectIndex[index][0])
-                            var startCategory = categoriesModel.get(categoryConnectIndex[index][1])
+                                var clickedCategory = categoriesModel.get(categoryConnectIndex[index][0])
+                                var startCategory = categoriesModel.get(categoryConnectIndex[index][1])
 
-                            connectLine.startPositionLineX = clickedCategory.positionX + 150
-                            connectLine.startPositionLineY = clickedCategory.positionY + 25
-                            connectLine.endPositionLineX = startCategory.positionX + 150
-                            connectLine.endPositionLineY = startCategory.positionY + 25
-                            console.log("Position ONE : NO Change")
-                            console.log("Clicked Caterogry name : " + connectLine.selectedCategory.categoryName)
-                            console.log("Start Category name : " + connectLine.clickedCategory.categoryName)
-                            console.log("ConnectLine start X : " + connectLine.startPositionLineX)
-                            console.log("ConnectLine start Y : " + connectLine.startPositionLineY)
-                            console.log("ConnectLine end X : " + connectLine.endPositionLineX)
-                            console.log("ConnectLine end Y : " + connectLine.endPositionLineY)
-                            connectLine.tempCategory = connectLine.selectedCategory
-                            var deltaX = connectLine.endPositionLineX - connectLine.startPositionLineX;
-                            var deltaY = connectLine.endPositionLineY - connectLine.startPositionLineY;
-                            var angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
-                            centerText.rotation = angle;
+                                connectLine.startPositionLineX = clickedCategory.positionX + 150
+                                connectLine.startPositionLineY = clickedCategory.positionY + 25
+                                connectLine.endPositionLineX = startCategory.positionX + 150
+                                connectLine.endPositionLineY = startCategory.positionY + 25
+                                console.log("Position ONE : NO Change")
+                                console.log("Clicked Caterogry name : " + connectLine.selectedCategory.categoryName)
+                                console.log("Start Category name : " + connectLine.clickedCategory.categoryName)
+                                console.log("ConnectLine start X : " + connectLine.startPositionLineX)
+                                console.log("ConnectLine start Y : " + connectLine.startPositionLineY)
+                                console.log("ConnectLine end X : " + connectLine.endPositionLineX)
+                                console.log("ConnectLine end Y : " + connectLine.endPositionLineY)
+                                connectLine.tempCategory = connectLine.selectedCategory
+                                var deltaX = connectLine.endPositionLineX - connectLine.startPositionLineX;
+                                var deltaY = connectLine.endPositionLineY - connectLine.startPositionLineY;
+                                var angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+                                centerText.rotation = angle;
                             }
                             categoriesModel.setProperty(secondIndexCategory, "positionX", parent.x)
                             categoriesModel.setProperty(secondIndexCategory, "positionY", parent.y)
                         }
                     }
+
                     onClicked: {
                         if (mouse.button === Qt.RightButton) {
                             clickedIndex = categoryIndex
@@ -356,15 +366,12 @@ Page {
                             }
                         }
                     }
-
                 }
 
                 Dialog {
                     id: dateDialog
                     title: "Category Creation Date"
-                    standardButtons: Dialog.Ok
-                    //anchors.horizontalCenter: root.horizontalCenter
-                    //anchors.verticalCenter: root.verticalCenter
+                    standardButtons: Dialog.Ok                    
                     Text {
                         text: "Category \"" + categoryName + "\" was created on " + new Date().toLocaleDateString()
                         color: "black"
@@ -389,13 +396,12 @@ Page {
                             // Обновляем элементы в массиве категорий
                             categoriesModel.setProperty(categoryIndex, "categoryName", newCategoryText);
                             categoryName = newCategoryText;
-
                         }
                     }
                 }
-
             }
         }
+
         Dialog{
             id: textLineDialog
             title: "Enter name Line"
@@ -403,6 +409,7 @@ Page {
             anchors.centerIn: parent
             width: 300
             height: 300
+
             TextField {
                 id: centerTextLineName
                 text: centerText.text
@@ -410,6 +417,7 @@ Page {
                 placeholderText: "Line Name"
                 width: textLineDialog.width - 14
             }
+
             onAccepted: {
                 var newNameLine = centerTextLineName.text.trim();
                 if(newNameLine !== "" && newNameLine !== centerText.text){
@@ -429,7 +437,6 @@ Page {
         color: backgroundColor - 10
         opacity: 0.5
 
-
         Text {
             id: dateTimeText
             text: Qt.formatDateTime(new Date(), "hh:mm:ss dd.MM.yyyy")
@@ -440,6 +447,7 @@ Page {
             anchors.left: parent.left
             anchors.margins: 10
         }
+
         Timer {
             id: timer
             interval: 1000
@@ -449,6 +457,7 @@ Page {
                 dateTimeText.text = Qt.formatDateTime(new Date(), "hh:mm:ss dd.MM.yyyy")
             }
         }
+
         Rectangle{
             id: backgroundChangeColorButton2
             height: footer.height
@@ -459,6 +468,7 @@ Page {
             anchors.margins: 10
             radius: 10
             color: backgroundColor - 10
+
             TextArea{
                 id: textAreaBackgroundChangeColor
                 text: "Change Color"
@@ -498,11 +508,12 @@ Page {
             color: backgroundColor
             }
             MouseArea{
-                anchors.fill: parent
-            onClicked: {
-                newColorDialog.open()
-                categoryDialog.open()
-            }
+            anchors.fill: parent
+
+                onClicked: {
+                    newColorDialog.open()
+                    categoryDialog.open()
+                }
             }
         }
         Rectangle{
@@ -515,6 +526,7 @@ Page {
             radius: 10
             height: footer.height
             width: textNavButton.width + 20
+
             TextArea{
                 id: textNavButton
                 text: ""
@@ -530,18 +542,5 @@ Page {
                 }
             }
         }
-
-        //Button{
-        //    id: navButton
-        //    anchors.right: parent.right
-        //    anchors.bottom: parent.bottom
-        //    anchors.margins: 10
-        //    onClicked: {
-        //        root.buttonClicked();
-        //    }
-        //}
-
     }
-
-
 }

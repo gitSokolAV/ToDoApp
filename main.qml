@@ -4,6 +4,7 @@ import QtQuick.Controls
 Window{
     width: 1000
     height: 700
+    visibility: Window.FullScreen
     visible: true
     title: "Bubble app"
     property color colorDarkGray: "#2D2727"
