@@ -435,26 +435,89 @@ Page {
         radius: 10
         height: 50
         color: backgroundColor - 10
-        opacity: 0.5
+        opacity: 0.8
 
-        Text {
-            id: dateTimeText
-            text: Qt.formatDateTime(new Date(), "hh:mm:ss dd.MM.yyyy")
-            color: backgroundColor
-            font.pixelSize: 16
-
-            anchors.verticalCenter: parent.verticalCenter
+        Rectangle{
+            id: dateTime
             anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            width: dateTimeText.width + 20
             anchors.margins: 10
+            radius: 10
+            color: backgroundColor - 10
+
+            Text {
+                id: dateTimeText
+                text: Qt.formatDateTime(new Date(), "hh:mm:ss dd.MM.yyyy")
+                color: backgroundColor
+                font.pixelSize: 16
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.margins: 10
+            }
+
+            Timer {
+                id: timer
+                interval: 1000
+                running: true
+                repeat: true
+                onTriggered: {
+                    dateTimeText.text = Qt.formatDateTime(new Date(), "hh:mm:ss dd.MM.yyyy")
+                }
+            }
         }
 
-        Timer {
-            id: timer
-            interval: 1000
-            running: true
-            repeat: true
-            onTriggered: {
-                dateTimeText.text = Qt.formatDateTime(new Date(), "hh:mm:ss dd.MM.yyyy")
+
+        Rectangle{
+            id: centerTextButton
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.left: dateTime.right
+            anchors.right: backgroundChangeColorButton2.left
+            anchors.margins: 10
+            radius: 10
+            color: backgroundColor - 10
+            Rectangle {
+                id: quitButton
+                width: centerTextButton.width * 0.2
+                height: parent
+                color: "red"
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                radius: 10
+                visible: false
+                z: 1
+                Text {
+                    text: "QUIT"
+                    anchors.centerIn: parent
+                }
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: Qt.quit()
+                }
+            }
+
+            MouseArea{
+                anchors.fill: parent
+                hoverEnabled: true
+                onEntered: {
+                    quitButton.visible = true
+
+                }
+                onExited: {
+                    quitButton.visible = false
+                }
+            }
+
+
+            Text{
+                anchors.centerIn: parent
+                text: "Bubble app"
+                font.pixelSize: 20
+                color: backgroundColor
+
             }
         }
 
