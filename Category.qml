@@ -10,6 +10,7 @@ Page {
     property alias buttonText: textNavButton.text
     signal buttonClicked();
     property var categoryConnectIndex : []
+    property bool stopRepeater: false
 
         ListModel {
             id: categoriesModel
@@ -30,9 +31,21 @@ Page {
                 placeholderText: "Category Name"
             }
 
-            onAccepted: {
-                var setCategoryColor = newColorDialog.selectedColor
-                var setCategoryName = categoryNameInput.text.trim()
+            onAccepted: {                
+                var temp = categoryNameInput.text.trim()
+                var setCategoryName
+                console.log(temp)
+                console.log(categoriesModel.count)
+                for (var i = 0; i <= categoriesModel.count; i++) {
+                    if (categoriesModel.count === 0 || categoriesModel.get(i).categoryName !== temp ){
+                        setCategoryName = temp
+                    }
+
+                    else{
+                        categoryDialog.open()
+                    }
+                }
+                var setCategoryColor = newColorDialog.selectedColor                
                 var setCategoryIndex = categoriesModel.count
                 var setTextConnectLabel = ""
                 var setBoolConnectLabel = false
@@ -61,10 +74,11 @@ Page {
                     newCategory.boolConnectLabel = categoriesModel.get(setCategoryIndex).boolConnectLabel
                     newCategory.x = categoriesModel.get(setCategoryIndex).positionX
                     newCategory.y = categoriesModel.get(setCategoryIndex).positionY
-                    newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool
+                    newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool                    
                 }
 
             }
+
             ColorDialog{
                 id: newColorDialog
                 title: "Select a color for the category"

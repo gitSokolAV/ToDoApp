@@ -83,7 +83,7 @@ Page {
                         border.color: colorYellow
 
                         Column{
-                            //anchors.fill: columnRectangle
+
                             anchors.margins: 10
                             spacing: 10
                             Text{
