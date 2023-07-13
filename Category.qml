@@ -20,7 +20,7 @@ Page {
         background: Rectangle{
             id: backgroundRect
         }
-        Dialog {
+        Dialog {            
             id: categoryDialog
             title: "Enter Category Name"
             anchors.centerIn: parent
@@ -28,22 +28,48 @@ Page {
             TextField {
                 id: categoryNameInput
                 width: categoryDialog.width - 14
-                placeholderText: "Category Name"
+                placeholderText: "Category Name"                
             }
+            Popup {
+                id: alarmPopup
+                modal: true
+                closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+                contentItem: Rectangle {
+                    anchors.centerIn: parent
+                    width: 500
+                    height: 250
+                    color: "red"
+
+                    Text {
+                        anchors.centerIn: parent
+                        text: "There's already a category with that name. \nPlease create a category with a different name."
+                        color: "white"
+                        font.pixelSize: 24
+                    }
+                }
+            }
+
 
             onAccepted: {                
                 var temp = categoryNameInput.text.trim()
-                var setCategoryName
-                console.log(temp)
-                console.log(categoriesModel.count)
-                for (var i = 0; i <= categoriesModel.count; i++) {
-                    if (categoriesModel.count === 0 || categoriesModel.get(i).categoryName !== temp ){
-                        setCategoryName = temp
+                var flag = true
+                for(var i = 0; i < categoriesModel.count; i++){
+                    if(temp !== categoriesModel.get(i).categoryName){
+                        flag = true
                     }
-
                     else{
-                        categoryDialog.open()
+                        flag = false
+                        console.log("Name: " + temp + " " + " FIND : " + categoriesModel.get(i).categoryName)
+
+                        break
                     }
+                }
+
+
+                var setCategoryName
+                if(flag){
+                    setCategoryName = temp
                 }
                 var setCategoryColor = newColorDialog.selectedColor                
                 var setCategoryIndex = categoriesModel.count
@@ -54,7 +80,8 @@ Page {
                 var setConnectedBool = false
                 var setDataCellAccess = -1
 
-                if(setCategoryName !== ""){
+                if(flag){
+                    console.log("SETCATEGORYNAME : " + setCategoryName)
                     categoriesModel.append({
                                                "categoryName": setCategoryName,
                                                "categoryColor": setCategoryColor,
@@ -76,6 +103,10 @@ Page {
                     newCategory.y = categoriesModel.get(setCategoryIndex).positionY
                     newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool                    
                 }
+                else{
+                    alarmPopup.open()
+                }
+
 
             }
 
