@@ -31,19 +31,36 @@ Page {
                 placeholderText: "Category Name"                
             }
             Popup {
-                id: alarmPopup
+                id: namePopup
                 modal: true
+                anchors.centerIn: parent
+
                 closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
                 contentItem: Rectangle {
-                    anchors.centerIn: parent
-                    width: 500
-                    height: 250
+                    anchors.fill: parent
                     color: "red"
-
                     Text {
                         anchors.centerIn: parent
                         text: "There's already a category with that name. \nPlease create a category with a different name."
+                        color: "white"
+                        font.pixelSize: 24
+                    }
+                }
+            }
+            Popup {
+                id: emptyNamePopup
+                modal: true
+                anchors.centerIn: parent
+
+                closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+                contentItem: Rectangle {
+                    anchors.fill: parent
+                    color: "red"
+                    Text {
+                        anchors.centerIn: parent
+                        text: "Empty name. \nPlease create a category with a different name."
                         color: "white"
                         font.pixelSize: 24
                     }
@@ -54,6 +71,7 @@ Page {
             onAccepted: {                
                 var temp = categoryNameInput.text.trim()
                 var flag = true
+                var flag2 = true
                 for(var i = 0; i < categoriesModel.count; i++){
                     if(temp !== categoriesModel.get(i).categoryName){
                         flag = true
@@ -61,14 +79,17 @@ Page {
                     else{
                         flag = false
                         console.log("Name: " + temp + " " + " FIND : " + categoriesModel.get(i).categoryName)
-
                         break
                     }
                 }
 
 
                 var setCategoryName
-                if(flag){
+                if(temp === ""){
+                    flag2 = false
+                }
+
+                if(flag && flag2){
                     setCategoryName = temp
                 }
                 var setCategoryColor = newColorDialog.selectedColor                
@@ -80,8 +101,7 @@ Page {
                 var setConnectedBool = false
                 var setDataCellAccess = -1
 
-                if(flag){
-                    console.log("SETCATEGORYNAME : " + setCategoryName)
+                if(flag && flag2){
                     categoriesModel.append({
                                                "categoryName": setCategoryName,
                                                "categoryColor": setCategoryColor,
@@ -103,11 +123,13 @@ Page {
                     newCategory.y = categoriesModel.get(setCategoryIndex).positionY
                     newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool                    
                 }
-                else{
-                    alarmPopup.open()
+                else if (flag2 === false){
+                    emptyNamePopup.open()
                 }
 
-
+                else{
+                    namePopup.open()
+                }
             }
 
             ColorDialog{
@@ -344,6 +366,7 @@ Page {
                     id: connectDialog
                     title: "Connect to Category"
                     standardButtons: Dialog.Ok | Dialog.Cancel
+                    anchors.centerIn: parent
                     ComboBox {
                         id: categoryComboBox
                         model: categoriesModel
@@ -431,6 +454,7 @@ Page {
                     anchors.centerIn: parent
                     standardButtons: Dialog.Ok | Dialog.Cancel
                     TextField {
+                        anchors.centerIn: parent
                         id: categoryNameInputRename
                         text: categoryName
                         placeholderText: "Category Name"
