@@ -83,7 +83,6 @@ Page {
                     }
                 }
 
-
                 var setCategoryName
                 if(temp === ""){
                     flag2 = false
@@ -497,13 +496,14 @@ Page {
 
     Rectangle{
         id: footer
+        property string footerColor: "white"
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.margins: 10
         radius: 10
         height: 50
-        color: backgroundColor - 10
+        color: footerColor
         opacity: 0.8
 
         Rectangle{
@@ -514,7 +514,7 @@ Page {
             width: dateTimeText.width + 20
             anchors.margins: 10
             radius: 10
-            color: backgroundColor - 10
+            color: footer.footerColor
 
             Text {
                 id: dateTimeText
@@ -546,7 +546,7 @@ Page {
             anchors.right: backgroundChangeColorButton2.left
             anchors.margins: 10
             radius: 10
-            color: backgroundColor - 10
+            color: footer.footerColor
             Rectangle {
                 id: quitButton
                 width: centerTextButton.width * 0.2
@@ -599,7 +599,7 @@ Page {
             anchors.top: parent.top
             anchors.margins: 10
             radius: 10
-            color: backgroundColor - 10
+            color: footer.footerColor
 
             TextArea{
                 id: textAreaBackgroundChangeColor
@@ -632,7 +632,7 @@ Page {
             anchors.top:parent.top
             anchors.margins: 10
             radius: 10
-            color: backgroundColor - 10
+            color: footer.footerColor
             TextArea{
             text: "Add Category"
             anchors.centerIn: parent
@@ -654,7 +654,7 @@ Page {
             anchors.bottom: parent.bottom
             anchors.top: parent.top
             anchors.margins: 10
-            color: backgroundColor - 10
+            color: footer.footerColor
             radius: 10
             height: footer.height
             width: textNavButton.width + 20

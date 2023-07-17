@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 Window{
-    width: 1000
-    height: 700
+    //width: 1000
+    //height: 700
     visibility: Window.FullScreen
     visible: true
     title: "Bubble app"
