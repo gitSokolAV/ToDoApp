@@ -4,8 +4,9 @@ import QtQuick.Controls
 Window{
     width: 1000
     height: 700
+    visibility: Window.FullScreen
     visible: true
-    title: "Hello"
+    title: "Bubble app"
     property color colorDarkGray: "#2D2727"
     property color colorLightGray: "#413543"
     property color colorPurple: "#8F43EE"
@@ -52,13 +53,14 @@ Window{
         }
         Category{
             id: pageCategory
-            backgroundColor: colorYellow
+            backgroundColor: colorPurple
             visible: false
             buttonText: "Back"
             onButtonClicked: {
                 stackView.pop()
             }
         }
+
     }
 }
 

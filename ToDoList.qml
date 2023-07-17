@@ -1,12 +1,11 @@
 import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
-
+import QtQuick.Dialogs
 
 
 Page {
     id: toDoList
-    //property alias backgroundColor: backgroundRect.color
 
     Rectangle{
         id: backgroundRect
@@ -25,7 +24,7 @@ Page {
 
         Text{
             //text: "Bubble To Do List"
-            text: "To Do List from : " + categoryText
+            text: "To Do List from : " + categoryName
             font.bold: true
             font.pixelSize: 40
             anchors.left: parent.left
@@ -84,7 +83,7 @@ Page {
                         border.color: colorYellow
 
                         Column{
-                            anchors.fill: columnRectangle
+
                             anchors.margins: 10
                             spacing: 10
                             Text{
@@ -226,7 +225,24 @@ Page {
         width: parent.width
         color: colorPurple
         anchors.bottom: parent.bottom
-
+        Button {
+            id: colorButton
+            text: "Change Color"
+            anchors.right:  addCategoryButton.left
+            anchors.bottom: parent.bottom
+            anchors.margins: 10
+            onClicked: {
+                colorDialog.open()
+            }
+            ColorDialog{
+                id: colorDialog
+                title: "please choose a color"
+                onAccepted: {
+                    topRectangle.color = colorDialog.selectedColor
+                    bottomRectangle.color = colorDialog.selectedColor
+                }
+            }
+        }
         //return Button
         Button{
             id: navButton
