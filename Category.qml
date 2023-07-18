@@ -458,12 +458,64 @@ Page {
                         text: categoryName
                         placeholderText: "Category Name"
                     }
+                    Popup {
+                        id: emptyNamePopup
+                        modal: true
+                        anchors.centerIn: parent
+
+                        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+                        contentItem: Rectangle {
+                            anchors.fill: parent
+                            color: "red"
+                            Text {
+                                anchors.centerIn: parent
+                                text: "Empty name. \nPlease create a category with a different name."
+                                color: "white"
+                                font.pixelSize: 24
+                            }
+                        }
+                    }
+                    Popup {
+                        id: reusingAnExistingName
+                        modal: true
+                        anchors.centerIn: parent
+                        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+                        contentItem: Rectangle {
+                            anchors.fill: parent
+                            color: "red"
+                            Text {
+                                anchors.centerIn: parent
+                                text: "A category with this name already exists. \nPlease select a new category name."
+                                color: "white"
+                                font.pixelSize: 24
+                            }
+                        }
+                    }
                     onAccepted: {
                         var newCategoryText = categoryNameInputRename.text.trim();
-                        if (newCategoryText !== "" && newCategoryText !== categoryName) {
+                        var flag = true
+                        for(var i = 0; i < categoriesModel.count; i++){
+                            if(newCategoryText !== categoriesModel.get(i).categoryName){
+                                flag = true
+                            }
+                            else{
+                                flag = false
+                                break
+                            }
+                        }
+                        if (newCategoryText !== "" && newCategoryText !== categoryName && flag) {
                             // Обновляем элементы в массиве категорий
                             categoriesModel.setProperty(categoryIndex, "categoryName", newCategoryText);
                             categoryName = newCategoryText;
+                        }
+                        else if(newCategoryText === ""){
+                        emptyNamePopup.open()
+                    }
+
+                        else{
+                            reusingAnExistingName.open()
                         }
                     }
                 }
