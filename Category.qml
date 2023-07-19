@@ -335,7 +335,7 @@ Page {
                                     connectLine.visible = false
                                     centerText.visible = false
                                 }
-                                categoriesModel.remove(index, 1);
+                                categoriesModel.remove(index);
                                 mouseArea.parent.destroy(categoryIndex);
                                 categoryComboBox.model = categoriesModel;
                             }
