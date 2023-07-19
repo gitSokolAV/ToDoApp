@@ -83,7 +83,6 @@ Page {
                     }
                 }
 
-
                 var setCategoryName
                 if(temp === ""){
                     flag2 = false
@@ -336,7 +335,7 @@ Page {
                                     connectLine.visible = false
                                     centerText.visible = false
                                 }
-                                categoriesModel.remove(index, 1);
+                                categoriesModel.remove(index);
                                 mouseArea.parent.destroy(categoryIndex);
                                 categoryComboBox.model = categoriesModel;
                             }
@@ -459,12 +458,64 @@ Page {
                         text: categoryName
                         placeholderText: "Category Name"
                     }
+                    Popup {
+                        id: emptyNamePopup
+                        modal: true
+                        anchors.centerIn: parent
+
+                        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+                        contentItem: Rectangle {
+                            anchors.fill: parent
+                            color: "red"
+                            Text {
+                                anchors.centerIn: parent
+                                text: "Empty name. \nPlease create a category with a different name."
+                                color: "white"
+                                font.pixelSize: 24
+                            }
+                        }
+                    }
+                    Popup {
+                        id: reusingAnExistingName
+                        modal: true
+                        anchors.centerIn: parent
+                        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+                        contentItem: Rectangle {
+                            anchors.fill: parent
+                            color: "red"
+                            Text {
+                                anchors.centerIn: parent
+                                text: "A category with this name already exists. \nPlease select a new category name."
+                                color: "white"
+                                font.pixelSize: 24
+                            }
+                        }
+                    }
                     onAccepted: {
                         var newCategoryText = categoryNameInputRename.text.trim();
-                        if (newCategoryText !== "" && newCategoryText !== categoryName) {
+                        var flag = true
+                        for(var i = 0; i < categoriesModel.count; i++){
+                            if(newCategoryText !== categoriesModel.get(i).categoryName){
+                                flag = true
+                            }
+                            else{
+                                flag = false
+                                break
+                            }
+                        }
+                        if (newCategoryText !== "" && newCategoryText !== categoryName && flag) {
                             // Обновляем элементы в массиве категорий
                             categoriesModel.setProperty(categoryIndex, "categoryName", newCategoryText);
                             categoryName = newCategoryText;
+                        }
+                        else if(newCategoryText === ""){
+                        emptyNamePopup.open()
+                    }
+
+                        else{
+                            reusingAnExistingName.open()
                         }
                     }
                 }
@@ -497,13 +548,14 @@ Page {
 
     Rectangle{
         id: footer
+        property string footerColor: "white"
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.margins: 10
         radius: 10
         height: 50
-        color: backgroundColor - 10
+        color: footerColor
         opacity: 0.8
 
         Rectangle{
@@ -514,7 +566,7 @@ Page {
             width: dateTimeText.width + 20
             anchors.margins: 10
             radius: 10
-            color: backgroundColor - 10
+            color: footer.footerColor
 
             Text {
                 id: dateTimeText
@@ -546,7 +598,7 @@ Page {
             anchors.right: backgroundChangeColorButton2.left
             anchors.margins: 10
             radius: 10
-            color: backgroundColor - 10
+            color: footer.footerColor
             Rectangle {
                 id: quitButton
                 width: centerTextButton.width * 0.2
@@ -599,7 +651,7 @@ Page {
             anchors.top: parent.top
             anchors.margins: 10
             radius: 10
-            color: backgroundColor - 10
+            color: footer.footerColor
 
             TextArea{
                 id: textAreaBackgroundChangeColor
@@ -632,7 +684,7 @@ Page {
             anchors.top:parent.top
             anchors.margins: 10
             radius: 10
-            color: backgroundColor - 10
+            color: footer.footerColor
             TextArea{
             text: "Add Category"
             anchors.centerIn: parent
@@ -654,7 +706,7 @@ Page {
             anchors.bottom: parent.bottom
             anchors.top: parent.top
             anchors.margins: 10
-            color: backgroundColor - 10
+            color: footer.footerColor
             radius: 10
             height: footer.height
             width: textNavButton.width + 20
