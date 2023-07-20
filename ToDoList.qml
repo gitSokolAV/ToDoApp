@@ -244,15 +244,41 @@ Page {
             }
         }
         //return Button
-        Button{
+        Rectangle{
             id: navButton
-            text: "Back"
             anchors.right: parent.right
             anchors.bottom: parent.bottom
+            anchors.top: parent.top
             anchors.margins: 10
-            onClicked: {
-                stackView.pop()
+            color: footer.footerColor
+            radius: 10
+            height: footer.height
+            width: textNavButton.width + 20
+
+            TextArea{
+                id: textNavButton
+                text: "Back"
+                anchors.centerIn: parent
+                font.pixelSize: 16
+                color: backgroundColor
+            }
+
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    root.buttonClicked();
+                }
             }
         }
+        //Button{
+        //    id: navButton
+        //    text: "Back"
+        //    anchors.right: parent.right
+        //    anchors.bottom: parent.bottom
+        //    anchors.margins: 10
+        //    onClicked: {
+        //        stackView.pop()
+        //    }
+        //}
     }
 }
