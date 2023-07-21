@@ -6,6 +6,7 @@ import QtQuick.Dialogs
 
 Page {
     id: toDoList
+    property string colorFromHeaderAndFooter: "white"
 
     Rectangle{
         id: backgroundRect
@@ -16,10 +17,10 @@ Page {
     }
 
     Rectangle{
-        id: topRectangle
+        id: headerToDoList
         height: 50
         width: parent.width
-        color: colorPurple
+        color: colorFromHeaderAndFooter
         anchors.top: parent.top
 
         Text{
@@ -35,8 +36,8 @@ Page {
     }
     Item{
         width: parent.width
-        anchors.top: topRectangle.bottom
-        anchors.bottom: bottomRectangle.top
+        anchors.top: headerToDoList.bottom
+        anchors.bottom: footerToDoList.top
 
         Rectangle{
             id: leftRectangle
@@ -220,43 +221,59 @@ Page {
         }
     }
     Rectangle{
-        id: bottomRectangle
-        height: 50
-        width: parent.width
-        color: colorPurple
+        id: footerToDoList
+        anchors.left: parent.left
+        anchors.right: parent.right
         anchors.bottom: parent.bottom
-        Button {
-            id: colorButton
-            text: "Change Color"
-            anchors.right:  addCategoryButton.left
+        height: 50
+        color: colorFromHeaderAndFooter
+        opacity: 0.8
+        Rectangle{
+            id: changeColorButton
+            anchors.right: backButton.left
+            anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.margins: 10
-            onClicked: {
-                colorDialog.open()
+            color: footerToDoList.color
+            radius: 10
+            height: footerToDoList.height
+            width: textChangeColorButton.width + 20
+            TextArea{
+                id: textChangeColorButton
+                anchors.centerIn: parent
+                text: "Change Color"
+                font.pixelSize: 16
+                color: backgroundColor
             }
-            ColorDialog{
-                id: colorDialog
-                title: "please choose a color"
-                onAccepted: {
-                    topRectangle.color = colorDialog.selectedColor
-                    bottomRectangle.color = colorDialog.selectedColor
+            MouseArea{
+                id: mouseChangeColorButton
+                anchors.fill: parent
+                onClicked: {
+                    changeColorDialog.open()
                 }
             }
         }
-        //return Button
+        Dialog{
+            id: changeColorDialog
+            width: 150
+            height: 150
+            title: "Select place"
+            standardButtons: Dialog.Ok | Dialog.Cancel
+        }
+
         Rectangle{
-            id: navButton
+            id: backButton
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             anchors.top: parent.top
             anchors.margins: 10
-            color: footer.footerColor
+            color: footerToDoList.color
             radius: 10
-            height: footer.height
-            width: textNavButton.width + 20
+            height: footerToDoList.height
+            width: textBackButton.width + 20
 
             TextArea{
-                id: textNavButton
+                id: textBackButton
                 text: "Back"
                 anchors.centerIn: parent
                 font.pixelSize: 16
@@ -270,15 +287,5 @@ Page {
                 }
             }
         }
-        //Button{
-        //    id: navButton
-        //    text: "Back"
-        //    anchors.right: parent.right
-        //    anchors.bottom: parent.bottom
-        //    anchors.margins: 10
-        //    onClicked: {
-        //        stackView.pop()
-        //    }
-        //}
     }
 }
