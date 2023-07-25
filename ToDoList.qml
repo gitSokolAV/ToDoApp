@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Dialogs
@@ -7,6 +7,9 @@ import QtQuick.Dialogs
 Page {
     id: toDoList
     property string colorFromHeaderAndFooter: "white"
+    property int redValue: 0
+    property int greenValue: 0
+    property int blueValue: 0
 
     ListModel{
         id: listModel
@@ -14,18 +17,31 @@ Page {
     ColorDialog{
         id: colorDialog
         onAccepted: {
-            var newColor = colorDialog.selectedColor
-
-            headerToDoList.color = newColor
-            footerToDoList.color = newColor
-            newColor.r + 10
-            leftRectangle.color = newColor
-            newColor.g + 20
-            rightRectangle.color = newColor
+            var newColor   = colorDialog.selectedColor
+            redValue = newColor.r * 255;
+            greenValue = newColor.g * 255;
+            blueValue = newColor.b * 255;
+            leftRectangle.color = applyColorChanges(5,5,5)
+            rightRectangle.color = applyColorChanges(10,10,10)
+            headerToDoList.color = applyColorChanges(50,50,50)
+            footerToDoList.color = headerToDoList.color
+            backButton.color = applyColorChanges(15,20,25)
+            changeColorButton.color = backButton.color
+            textBackButton.color = applyColorChanges(100,100,100)
+            textChangeColorButton.color = textBackButton.color
+            headerToDoListText.color = textBackButton.color
 
         }
     }
-
+    function  applyColorChanges(r, g, b) {
+            redValue   = Math.max(0, Math.min(255, redValue));
+            greenValue = Math.max(0, Math.min(255, greenValue));
+            blueValue  = Math.max(0, Math.min(255, blueValue));
+            redValue += r;
+            greenValue += g;
+            blueValue += b;
+            return Qt.rgba(redValue / 255, greenValue / 255, blueValue / 255, 1)
+        }
     Dialog{
         id: changeColorDialog
         anchors.centerIn: parent
@@ -60,11 +76,11 @@ Page {
         id: headerToDoList
         height: 50
         width: parent.width
-        color: colorFromHeaderAndFooter
+        color: footerToDoList.color
         anchors.top: parent.top
 
         Text{
-            //text: "Bubble To Do List"
+            id: headerToDoListText
             text: "To Do List from : " + categoryName
             font.bold: true
             font.pixelSize: 40
