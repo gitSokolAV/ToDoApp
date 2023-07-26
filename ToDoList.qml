@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Dialogs
@@ -6,37 +6,98 @@ import QtQuick.Dialogs
 
 Page {
     id: toDoList
+    property string colorFromHeaderAndFooter: "white"
+    property int redValue: 0
+    property int greenValue: 0
+    property int blueValue: 0
 
-    Rectangle{
-        id: backgroundRect
-        color: purpleColor
-    }
     ListModel{
         id: listModel
     }
+    ColorDialog{
+        id: colorDialog
+        onAccepted: {
+            var newColor   = colorDialog.selectedColor
+            redValue = newColor.r * 255;
+            greenValue = newColor.g * 255;
+            blueValue = newColor.b * 255;
+            leftRectangle.color = applyColorChanges(5,5,5)
+            rightRectangle.color = applyColorChanges(10,10,10)
+            headerToDoList.color = applyColorChanges(50,50,50)
+            footerToDoList.color = headerToDoList.color
+            backButton.color = applyColorChanges(15,20,25)
+            changeColorButton.color = backButton.color
+            quitButtonToDoList.color = backButton.color
+            dateTimeToDoList.color = backButton.color
+            textBackButton.color = applyColorChanges(100,100,100)
+            textChangeColorButton.color = textBackButton.color
+            textQuitButton.color = textBackButton.color
+            textDateTime.color = textBackButton.color
+            headerToDoListText.color = textBackButton.color
+
+        }
+    }
+    function  applyColorChanges(r, g, b) {
+            redValue   = Math.max(0, Math.min(255, redValue));
+            greenValue = Math.max(0, Math.min(255, greenValue));
+            blueValue  = Math.max(0, Math.min(255, blueValue));
+            redValue += r;
+            greenValue += g;
+            blueValue += b;
+            return Qt.rgba(redValue / 255, greenValue / 255, blueValue / 255, 1)
+        }
+    Dialog{
+        id: changeColorDialog
+        anchors.centerIn: parent
+
+        width: standardButton.width
+        height: 150
+        title: "Select place"
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        Rectangle{
+            id: headerFooter
+            height: 50
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 10
+            color: "blue"
+            Text{
+                text: "Сhoose a color"
+                anchors.centerIn: parent
+                font.pixelSize: 16
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    colorDialog.open()
+                }
+            }
+        }
+    }
 
     Rectangle{
-        id: topRectangle
+        id: headerToDoList
         height: 50
         width: parent.width
-        color: colorPurple
+        color: footerToDoList.color
         anchors.top: parent.top
 
         Text{
-            //text: "Bubble To Do List"
+            id: headerToDoListText
             text: "To Do List from : " + categoryName
             font.bold: true
             font.pixelSize: 40
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: 50
-            color: colorYellow
+            color: leftRectangle.color
         }
     }
     Item{
         width: parent.width
-        anchors.top: topRectangle.bottom
-        anchors.bottom: bottomRectangle.top
+        anchors.top: headerToDoList.bottom
+        anchors.bottom: footerToDoList.top
 
         Rectangle{
             id: leftRectangle
@@ -44,7 +105,6 @@ Page {
             height: parent.height
             anchors.left: parent.left
             color: colorLightGray
-
             ListView{
                 id: listView
                 model: listModel
@@ -161,97 +221,180 @@ Page {
 
             }
         }
-    }
-    Item{
-        id: rightItem
-        width: parent.width / 2
-        height: parent.height
-        anchors.right: parent.right
-        Column{
-            anchors.top: parent.top
-            anchors.topMargin: 100
-            spacing: 10
-            anchors.horizontalCenter: parent.horizontalCenter
-            Rectangle{
-                id: textFieldRectangle
-                width: rightItem.width * 0.8
-                height: 50
-                radius: 10
-                color: colorLightGray
-                border.color: colorPurple
-                border.width: 1
+        Rectangle{
+            id: rightRectangle
+            width: parent.width / 2
+            height: parent.height
+            anchors.right: parent.right
+            color: colorLightGray
 
-                TextField{
-                    id: titleToDo
-                    anchors.fill: parent
-                    anchors.margins: 10
-                    placeholderText: "Enter To Do Title"
-                    color: colorPurple
+            Column{
+                anchors.top: parent.top
+                anchors.topMargin: 100
+                spacing: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                Rectangle{
+                    id: textFieldRectangle
+                    width: rightRectangle.width * 0.8
+                    height: 50
+                    radius: 10
+                    color: colorLightGray
+                    border.color: colorPurple
+                    border.width: 1
+
+                    TextField{
+                        id: titleToDo
+                        anchors.fill: parent
+                        anchors.margins: 10
+                        placeholderText: "Enter To Do Title"
+                        color: colorPurple
+                    }
                 }
-            }
-            Rectangle{
-                width: rightItem.width * 0.8
-                height: rightItem.height * 0.6
-                color: colorLightGray
-                border.color: colorPurple
-                border.width: 1
-                radius: 10
-                clip: true
-
-                TextArea{
-                    id: descriptionToDo
-                    placeholderText: "Enter the To Do item description"
+                Rectangle{
+                    width: rightRectangle.width * 0.8
+                    height: rightRectangle.height * 0.6
+                    color: colorLightGray
+                    border.color: colorPurple
+                    border.width: 1
+                    radius: 10
                     clip: true
-                    wrapMode: TextEdit.Wrap
-                    anchors.fill: parent
-                    color: colorYellow
+
+                    TextArea{
+                        id: descriptionToDo
+                        placeholderText: "Enter the To Do item description"
+                        clip: true
+                        wrapMode: TextEdit.Wrap
+                        anchors.fill: parent
+                        color: colorYellow
+                    }
                 }
-            }
-            Button{
-                text: "Add"
-                height: 50
-                width: rightItem.width * 0.5
-                onClicked: {
-                    listModel.append({"_title": titleToDo.text, "_description": descriptionToDo.text})
-                    titleToDo.text=""
-                    descriptionToDo.text=""
+                Button{
+                    text: "Add"
+                    height: 50
+                    width: rightRectangle.width * 0.5
+                    onClicked: {
+                        listModel.append({"_title": titleToDo.text, "_description": descriptionToDo.text})
+                        titleToDo.text=""
+                        descriptionToDo.text=""
+                    }
                 }
             }
         }
     }
+
     Rectangle{
-        id: bottomRectangle
-        height: 50
-        width: parent.width
-        color: colorPurple
+        id: footerToDoList
+        anchors.left: parent.left
+        anchors.right: parent.right
         anchors.bottom: parent.bottom
-        Button {
-            id: colorButton
-            text: "Change Color"
-            anchors.right:  addCategoryButton.left
+        height: 50
+        color: colorFromHeaderAndFooter
+        Rectangle {
+            id: quitButtonToDoList
+
+            anchors.left: parent.left
+            anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.margins: 10
-            onClicked: {
-                colorDialog.open()
+            color: footerToDoList.color
+            radius: 10
+            height: footerToDoList.height
+            width: textQuitButton.width + 20
+
+            Text {
+                id: textQuitButton
+                anchors.centerIn: parent
+                text: "Quit"
+                font.pixelSize: 16
+                color: backgroundColor
             }
-            ColorDialog{
-                id: colorDialog
-                title: "please choose a color"
-                onAccepted: {
-                    topRectangle.color = colorDialog.selectedColor
-                    bottomRectangle.color = colorDialog.selectedColor
+            MouseArea{
+                anchors.fill: parent
+                onClicked: Qt.quit()
+            }
+        }
+        Rectangle{
+            id: dateTimeToDoList
+            anchors.centerIn: parent
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+
+            width: dateTimeText.width + 20
+            anchors.margins: 10
+            radius: 10
+            color: footerToDoList.color
+
+            Text {
+                id: textDateTime
+                text: Qt.formatDateTime(new Date(), "hh:mm:ss dd.MM.yyyy")
+                color: backgroundColor
+                font.pixelSize: 20
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.margins: 10
+            }
+
+            Timer {
+                id: timer
+                interval: 1000
+                running: true
+                repeat: true
+                onTriggered: {
+                    textDateTime.text = Qt.formatDateTime(new Date(), "hh:mm:ss dd.MM.yyyy")
                 }
             }
         }
-        //return Button
-        Button{
-            id: navButton
-            text: "Back"
+        Rectangle{
+            id: changeColorButton
+            anchors.right: backButton.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.margins: 10
+            color: footerToDoList.color
+            radius: 10
+            height: footerToDoList.height
+            width: textChangeColorButton.width + 20
+            TextArea{
+                id: textChangeColorButton
+                anchors.centerIn: parent
+                text: "Change Color"
+                font.pixelSize: 16
+                color: backgroundColor
+            }
+            MouseArea{
+                id: mouseChangeColorButton
+                anchors.fill: parent
+                onClicked: {
+                    changeColorDialog.open()
+                }
+            }
+        }
+
+
+        Rectangle{
+            id: backButton
             anchors.right: parent.right
             anchors.bottom: parent.bottom
+            anchors.top: parent.top
             anchors.margins: 10
-            onClicked: {
-                stackView.pop()
+            color: footerToDoList.color
+            radius: 10
+            height: footerToDoList.height
+            width: textBackButton.width + 20
+
+            TextArea{
+                id: textBackButton
+                text: "Back"
+                anchors.centerIn: parent
+                font.pixelSize: 16
+                color: backgroundColor
+            }
+
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    root.buttonClicked();
+                }
             }
         }
     }

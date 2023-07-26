@@ -449,8 +449,9 @@ Page {
 
                 Dialog {
                     id: renameDialog
+
                     title: "Rename Category"
-                    anchors.centerIn: parent
+                    anchors.centerIn: root
                     standardButtons: Dialog.Ok | Dialog.Cancel
                     TextField {
                         anchors.centerIn: parent

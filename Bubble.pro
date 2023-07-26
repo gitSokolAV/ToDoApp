@@ -3,7 +3,7 @@ QT += quick
 SOURCES += \
         main.cpp
 
-resources.files = main.qml AddCategoryBtn.qml ToDoList.qml Category.qml Arrow.qml
+resources.files = main.qml AddCategoryBtn.qml ToDoList.qml Category.qml
 resources.prefix = /$${TARGET}
 RESOURCES += resources
 
