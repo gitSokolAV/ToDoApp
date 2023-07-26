@@ -27,8 +27,12 @@ Page {
             footerToDoList.color = headerToDoList.color
             backButton.color = applyColorChanges(15,20,25)
             changeColorButton.color = backButton.color
+            quitButtonToDoList.color = backButton.color
+            dateTimeToDoList.color = backButton.color
             textBackButton.color = applyColorChanges(100,100,100)
             textChangeColorButton.color = textBackButton.color
+            textQuitButton.color = textBackButton.color
+            textDateTime.color = textBackButton.color
             headerToDoListText.color = textBackButton.color
 
         }
@@ -284,7 +288,62 @@ Page {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         height: 50
-        color: colorFromHeaderAndFooter        
+        color: colorFromHeaderAndFooter
+        Rectangle {
+            id: quitButtonToDoList
+
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.margins: 10
+            color: footerToDoList.color
+            radius: 10
+            height: footerToDoList.height
+            width: textQuitButton.width + 20
+
+            Text {
+                id: textQuitButton
+                anchors.centerIn: parent
+                text: "Quit"
+                font.pixelSize: 16
+                color: backgroundColor
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: Qt.quit()
+            }
+        }
+        Rectangle{
+            id: dateTimeToDoList
+            anchors.centerIn: parent
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+
+            width: dateTimeText.width + 20
+            anchors.margins: 10
+            radius: 10
+            color: footerToDoList.color
+
+            Text {
+                id: textDateTime
+                text: Qt.formatDateTime(new Date(), "hh:mm:ss dd.MM.yyyy")
+                color: backgroundColor
+                font.pixelSize: 20
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.margins: 10
+            }
+
+            Timer {
+                id: timer
+                interval: 1000
+                running: true
+                repeat: true
+                onTriggered: {
+                    textDateTime.text = Qt.formatDateTime(new Date(), "hh:mm:ss dd.MM.yyyy")
+                }
+            }
+        }
         Rectangle{
             id: changeColorButton
             anchors.right: backButton.left
