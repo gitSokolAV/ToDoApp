@@ -99,6 +99,7 @@ Page {
                 var setPositionY = Math.random() * (root.height)
                 var setConnectedBool = false
                 var setDataCellAccess = -1
+                var setToDoList = Qt.createComponent("ToDoList.qml")
 
                 if(flag && flag2){
                     categoriesModel.append({
@@ -110,7 +111,8 @@ Page {
                                                "positionX": setPositionX,
                                                "positionY": setPositionY,
                                                "connectedBool": setConnectedBool,
-                                               "dataCellAccess": setDataCellAccess
+                                               "dataCellAccess": setDataCellAccess,
+                                               "toDoListData": setToDoList
                                            })
                 var newCategory =  categoryRectComponent.createObject(root);
                     newCategory.categoryName = categoriesModel.get(setCategoryIndex).categoryName
@@ -120,7 +122,8 @@ Page {
                     newCategory.boolConnectLabel = categoriesModel.get(setCategoryIndex).boolConnectLabel
                     newCategory.x = categoriesModel.get(setCategoryIndex).positionX
                     newCategory.y = categoriesModel.get(setCategoryIndex).positionY
-                    newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool                    
+                    newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool
+                    newCategory.toDoListData = categoriesModel.get(setCategoryIndex).ToDoListData
                 }
                 else if (flag2 === false){
                     emptyNamePopup.open()
@@ -232,6 +235,7 @@ Page {
                 property var positionY
                 property var connectedBool
                 property var dataCellAccess
+                property var toDoListData
                 width: 300
                 height: 50
                 color: categoriesModel.get(categoryIndex).categoryColor
@@ -266,7 +270,10 @@ Page {
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
 
                     onDoubleClicked: {
-                        var toDoListInstance = Qt.createComponent("ToDoList.qml")
+                        //var toDoListInstance = Qt.createComponent("ToDoList.qml")
+                        //toDoListInstance.category = categoryName
+                        //stackView.push(toDoListInstance)
+                        var toDoListInstance = categoriesModel.get(categoryIndex).toDoListData
                         toDoListInstance.category = categoryName
                         stackView.push(toDoListInstance)
                     }
