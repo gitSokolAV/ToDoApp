@@ -123,7 +123,7 @@ Page {
                     newCategory.x = categoriesModel.get(setCategoryIndex).positionX
                     newCategory.y = categoriesModel.get(setCategoryIndex).positionY
                     newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool
-                    newCategory.toDoListData = categoriesModel.get(setCategoryIndex).ToDoListData
+                    newCategory.toDoListData = categoriesModel.get(setCategoryIndex).toDoListData
                 }
                 else if (flag2 === false){
                     emptyNamePopup.open()
@@ -273,21 +273,17 @@ Page {
                         //var toDoListInstance = Qt.createComponent("ToDoList.qml")
                         //toDoListInstance.category = categoryName
                         //stackView.push(toDoListInstance)
-                        var toDoListInstance = categoriesModel.get(categoryIndex).toDoListData
-                        toDoListInstance.category = categoryName
-                        stackView.push(toDoListInstance)
+                        //var toDoListInstance =
+                        //toDoListInstance.category = categoryName
+                        stackView.push(categoriesModel.get(categoryIndex).toDoListData)
+                        categoriesModel.get(categoryIndex).toDoListData.todoListChanged()
                     }
+
 
                     onReleased: {
                         clickedIndex = categoryIndex
                         categoriesModel.setProperty(clickedIndex, "positionX", parent.x)
-                        categoriesModel.setProperty(clickedIndex, "positionY", parent.y)
-                        console.log("\n################################### " +
-                                    "\nClicked Index: " + clickedIndex +
-                                    "\nCategory Name : " + categoriesModel.get(clickedIndex).categoryName +
-                                    "\nPosition X : " + categoriesModel.get(clickedIndex).positionX +
-                                    "\nPosition Y : " + categoriesModel.get(clickedIndex).positionY +
-                                    "\n###################################")
+                        categoriesModel.setProperty(clickedIndex, "positionY", parent.y);
 
                         if(connectLine.visible){
                             var index = categoriesModel.get(categoryIndex).dataCellAccess

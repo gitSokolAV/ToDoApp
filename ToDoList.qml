@@ -6,6 +6,7 @@ import QtQuick.Dialogs
 
 Page {
     id: toDoList
+    signal todoListChanged()
     property string colorFromHeaderAndFooter: "white"
     property int redValue: 0
     property int greenValue: 0
@@ -34,6 +35,7 @@ Page {
             textQuitButton.color = textBackButton.color
             textDateTime.color = textBackButton.color
             headerToDoListText.color = textBackButton.color
+            todoListChanged()
 
         }
     }
@@ -85,7 +87,7 @@ Page {
 
         Text{
             id: headerToDoListText
-            text: "To Do List from : " + categoryName
+            text: "To Do List from : "
             font.bold: true
             font.pixelSize: 40
             anchors.left: parent.left
@@ -392,7 +394,7 @@ Page {
 
             MouseArea{
                 anchors.fill: parent
-                onClicked: {
+                onClicked: {                    
                     root.buttonClicked();
                 }
             }
