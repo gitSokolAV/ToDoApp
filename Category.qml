@@ -10,6 +10,7 @@ Page {
     property alias buttonText: textNavButton.text
     signal buttonClicked();
     property var categoryConnectIndex : []
+    property var toDoListData: []
     property bool stopRepeater: false
 
         ListModel {
@@ -99,7 +100,7 @@ Page {
                 var setPositionY = Math.random() * (root.height)
                 var setConnectedBool = false
                 var setDataCellAccess = -1
-                var setToDoList = Qt.createComponent("ToDoList.qml")
+
 
                 if(flag && flag2){
                     categoriesModel.append({
@@ -112,8 +113,9 @@ Page {
                                                "positionY": setPositionY,
                                                "connectedBool": setConnectedBool,
                                                "dataCellAccess": setDataCellAccess,
-                                               "toDoListData": setToDoList
+
                                            })
+                var toDoListInstance = Qt.createComponent("ToDoList.qml")
                 var newCategory =  categoryRectComponent.createObject(root);
                     newCategory.categoryName = categoriesModel.get(setCategoryIndex).categoryName
                     newCategory.categoryColor = categoriesModel.get(setCategoryIndex).categoryColor
@@ -123,7 +125,9 @@ Page {
                     newCategory.x = categoriesModel.get(setCategoryIndex).positionX
                     newCategory.y = categoriesModel.get(setCategoryIndex).positionY
                     newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool
-                    newCategory.toDoListData = categoriesModel.get(setCategoryIndex).toDoListData
+                    //toDoListData.append(toDoListInstance)
+                    toDoListData.push(toDoListInstance)
+
                 }
                 else if (flag2 === false){
                     emptyNamePopup.open()
@@ -235,7 +239,7 @@ Page {
                 property var positionY
                 property var connectedBool
                 property var dataCellAccess
-                property var toDoListData
+
                 width: 300
                 height: 50
                 color: categoriesModel.get(categoryIndex).categoryColor
@@ -275,8 +279,9 @@ Page {
                         //stackView.push(toDoListInstance)
                         //var toDoListInstance =
                         //toDoListInstance.category = categoryName
-                        stackView.push(categoriesModel.get(categoryIndex).toDoListData)
-                        categoriesModel.get(categoryIndex).toDoListData.todoListChanged()
+                        //stackView.push(categoriesModel.get(categoryIndex).toDoListData)
+                        //categoriesModel.get(categoryIndex).toDoListData.todoListChanged()
+                        stackView.push(toDoListData[categoryIndex])
                     }
 
 
