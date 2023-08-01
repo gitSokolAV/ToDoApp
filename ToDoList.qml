@@ -12,14 +12,14 @@ Page {
     property int redValue: 0
     property int greenValue: 0
     property int blueValue: 0
-
+    property string categoryName: ""
     ListModel{
         id: listModel
     }
     ColorDialog{
         id: colorDialog
         onAccepted: {
-            var newColor   = colorDialog.selectedColor
+            var newColor = colorDialog.selectedColor
             redValue = newColor.r * 255;
             greenValue = newColor.g * 255;
             blueValue = newColor.b * 255;
@@ -36,7 +36,7 @@ Page {
             textQuitButton.color = textBackButton.color
             textDateTime.color = textBackButton.color
             headerToDoListText.color = textBackButton.color
-            todoListChanged()
+
 
         }
     }
@@ -88,8 +88,7 @@ Page {
 
         Text{
             id: headerToDoListText
-            text: "To Do List from : "
-            font.bold: true
+            text: "To Do List from : " + categoryName
             font.pixelSize: 40
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
@@ -271,15 +270,28 @@ Page {
                         color: colorYellow
                     }
                 }
-                Button{
-                    text: "Add"
+                Rectangle{
+                    id: addBtn
                     height: 50
-                    width: rightRectangle.width * 0.5
-                    onClicked: {
-                        listModel.append({"_title": titleToDo.text, "_description": descriptionToDo.text})
-                        titleToDo.text=""
-                        descriptionToDo.text=""
+                    width: rightRectangle.width * 0.8
+                    radius: 10
+                    Text{
+                        id: textAddBtn
+                        anchors.centerIn: parent
+                        text: "Add"
+                        font.pixelSize: 20
+                        color: colorPurple
                     }
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: {
+                            listModel.append({"_title": titleToDo.text, "_description": descriptionToDo.text})
+                            titleToDo.text=""
+                            descriptionToDo.text=""
+                        }
+                    }
+
+
                 }
             }
         }

@@ -116,6 +116,7 @@ Page {
 
                                            })
                 var toDoListInstance = Qt.createComponent("ToDoList.qml")
+
                 var newCategory =  categoryRectComponent.createObject(root);
                     newCategory.categoryName = categoriesModel.get(setCategoryIndex).categoryName
                     newCategory.categoryColor = categoriesModel.get(setCategoryIndex).categoryColor
@@ -126,7 +127,9 @@ Page {
                     newCategory.y = categoriesModel.get(setCategoryIndex).positionY
                     newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool
                     //toDoListData.append(toDoListInstance)
+
                     toDoListData.push(toDoListInstance)
+
 
                 }
                 else if (flag2 === false){
@@ -281,6 +284,7 @@ Page {
                         //toDoListInstance.category = categoryName
                         //stackView.push(categoriesModel.get(categoryIndex).toDoListData)
                         //categoriesModel.get(categoryIndex).toDoListData.todoListChanged()
+                        toDoListData[categoryIndex].categoryName = categoryName
                         stackView.push(toDoListData[categoryIndex])
                     }
 
