@@ -12,7 +12,9 @@ Page {
     property int redValue: 0
     property int greenValue: 0
     property int blueValue: 0
-    property string categoryName: ""
+    property string category: ""
+
+
     ListModel{
         id: listModel
     }
@@ -36,8 +38,6 @@ Page {
             textQuitButton.color = textBackButton.color
             textDateTime.color = textBackButton.color
             headerToDoListText.color = textBackButton.color
-
-
         }
     }
     function  applyColorChanges(r, g, b) {
@@ -88,7 +88,8 @@ Page {
 
         Text{
             id: headerToDoListText
-            text: "To Do List from : " + categoryName
+
+            text: "To Do List from : " + category
             font.pixelSize: 40
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
@@ -131,6 +132,7 @@ Page {
                     border.width: 1
                     border.color: colorYellow
 
+
                     Rectangle{
 
                         id: columnRectangle
@@ -144,6 +146,7 @@ Page {
                         border.width: 1
                         border.color: colorYellow
 
+
                         Column{
 
                             anchors.margins: 10
@@ -156,6 +159,7 @@ Page {
                                 text: delegateRectangle.title
                                 font.pixelSize: 20
                                 color: colorYellow
+
                             }
                             Text{
                                 id:descriptionText
@@ -166,6 +170,7 @@ Page {
                                 color: colorDarkGray
                                 wrapMode: TextEdit.Wrap
                                 clip: true
+
                             }
                         }
                     }
@@ -381,6 +386,7 @@ Page {
                 anchors.fill: parent
                 onClicked: {
                     changeColorDialog.open()
+                    console.log(toDoCategoryName)
                 }
             }
         }

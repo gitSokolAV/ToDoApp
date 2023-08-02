@@ -9,13 +9,28 @@ Page {
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: textNavButton.text
     signal buttonClicked();
-    property var categoryConnectIndex : []
-    property var toDoListData: []
+    property var categoryConnectIndex : []    
     property bool stopRepeater: false
 
         ListModel {
             id: categoriesModel
             dynamicRoles: true
+        }
+        function onCategoryClicked(categoryName){
+            var component = Qt.createComponent("ToDoList.qml")
+            if(component.status === Component.Ready){
+                var properties ={category: categoryName}
+                var todoList = component.createObject(parent,properties)
+                if(todoList === null){
+                    console.log("Error creating ToDoList component")
+                }
+                else{
+                    stackView.push(todoList)
+                }
+            }
+            else{
+                console.log("ERROR: loading todolist component")
+            }
         }
 
         background: Rectangle{
@@ -112,10 +127,9 @@ Page {
                                                "positionX": setPositionX,
                                                "positionY": setPositionY,
                                                "connectedBool": setConnectedBool,
-                                               "dataCellAccess": setDataCellAccess,
-
+                                               "dataCellAccess": setDataCellAccess
                                            })
-                var toDoListInstance = Qt.createComponent("ToDoList.qml")
+
 
                 var newCategory =  categoryRectComponent.createObject(root);
                     newCategory.categoryName = categoriesModel.get(setCategoryIndex).categoryName
@@ -126,10 +140,6 @@ Page {
                     newCategory.x = categoriesModel.get(setCategoryIndex).positionX
                     newCategory.y = categoriesModel.get(setCategoryIndex).positionY
                     newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool
-                    //toDoListData.append(toDoListInstance)
-
-                    toDoListData.push(toDoListInstance)
-
 
                 }
                 else if (flag2 === false){
@@ -243,6 +253,7 @@ Page {
                 property var connectedBool
                 property var dataCellAccess
 
+
                 width: 300
                 height: 50
                 color: categoriesModel.get(categoryIndex).categoryColor
@@ -274,18 +285,15 @@ Page {
                     drag.minimumY: 0
                     drag.maximumY: parent.parent.height - parent.height
 
+
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
 
                     onDoubleClicked: {
                         //var toDoListInstance = Qt.createComponent("ToDoList.qml")
                         //toDoListInstance.category = categoryName
                         //stackView.push(toDoListInstance)
-                        //var toDoListInstance =
-                        //toDoListInstance.category = categoryName
-                        //stackView.push(categoriesModel.get(categoryIndex).toDoListData)
-                        //categoriesModel.get(categoryIndex).toDoListData.todoListChanged()
-                        toDoListData[categoryIndex].categoryName = categoryName
-                        stackView.push(toDoListData[categoryIndex])
+
+                        onCategoryClicked()
                     }
 
 
@@ -293,6 +301,7 @@ Page {
                         clickedIndex = categoryIndex
                         categoriesModel.setProperty(clickedIndex, "positionX", parent.x)
                         categoriesModel.setProperty(clickedIndex, "positionY", parent.y);
+
 
                         if(connectLine.visible){
                             var index = categoriesModel.get(categoryIndex).dataCellAccess
