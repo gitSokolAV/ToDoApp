@@ -16,10 +16,10 @@ Page {
             id: categoriesModel
             dynamicRoles: true
         }
-        function onCategoryClicked(categoryName){
+        function onCategoryClicked(categoryNames){
             var component = Qt.createComponent("ToDoList.qml")
             if(component.status === Component.Ready){
-                var properties ={category: categoryName}
+                var properties = {category: categoryNames}
                 var todoList = component.createObject(parent,properties)
                 if(todoList === null){
                     console.log("Error creating ToDoList component")
@@ -293,7 +293,7 @@ Page {
                         //toDoListInstance.category = categoryName
                         //stackView.push(toDoListInstance)
 
-                        onCategoryClicked()
+                        onCategoryClicked(categoryName)
                     }
 
 
