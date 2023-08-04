@@ -386,7 +386,7 @@ Page {
                 anchors.fill: parent
                 onClicked: {
                     changeColorDialog.open()
-                    console.log(toDoCategoryName)
+                    console.log(categoriesModel.count)
                 }
             }
         }
