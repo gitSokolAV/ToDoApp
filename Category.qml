@@ -115,6 +115,7 @@ Page {
                 var setPositionY = Math.random() * (root.height)
                 var setConnectedBool = false
                 var setDataCellAccess = -1
+                var setToDoListInstance = Qt.createComponent("ToDoList.qml")
 
 
                 if(flag && flag2){
@@ -127,7 +128,8 @@ Page {
                                                "positionX": setPositionX,
                                                "positionY": setPositionY,
                                                "connectedBool": setConnectedBool,
-                                               "dataCellAccess": setDataCellAccess
+                                               "dataCellAccess": setDataCellAccess,
+                                               "toDoListInstance" : setToDoListInstance
                                            })
 
 
@@ -254,6 +256,7 @@ Page {
                 property var dataCellAccess
 
 
+
                 width: 300
                 height: 50
                 color: categoriesModel.get(categoryIndex).categoryColor
@@ -293,7 +296,8 @@ Page {
                         //toDoListInstance.category = categoryName
                         //stackView.push(toDoListInstance)
 
-                        onCategoryClicked(categoryName)
+                        //onCategoryClicked(categoryName)
+                        stackView.push(categoriesModel.get(categoryIndex).toDoListInstance)
                     }
 
 
