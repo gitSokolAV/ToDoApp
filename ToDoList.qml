@@ -4,12 +4,16 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 
 
+
 Page {
     id: toDoList
+    signal todoListChanged()
     property string colorFromHeaderAndFooter: "white"
     property int redValue: 0
     property int greenValue: 0
     property int blueValue: 0
+    property string category: ""
+
 
     ListModel{
         id: listModel
@@ -17,7 +21,7 @@ Page {
     ColorDialog{
         id: colorDialog
         onAccepted: {
-            var newColor   = colorDialog.selectedColor
+            var newColor = colorDialog.selectedColor
             redValue = newColor.r * 255;
             greenValue = newColor.g * 255;
             blueValue = newColor.b * 255;
@@ -34,7 +38,6 @@ Page {
             textQuitButton.color = textBackButton.color
             textDateTime.color = textBackButton.color
             headerToDoListText.color = textBackButton.color
-
         }
     }
     function  applyColorChanges(r, g, b) {
@@ -85,8 +88,8 @@ Page {
 
         Text{
             id: headerToDoListText
-            text: "To Do List from : " + categoryName
-            font.bold: true
+
+            text: "To Do List from : " + category
             font.pixelSize: 40
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
@@ -129,6 +132,7 @@ Page {
                     border.width: 1
                     border.color: colorYellow
 
+
                     Rectangle{
 
                         id: columnRectangle
@@ -142,6 +146,7 @@ Page {
                         border.width: 1
                         border.color: colorYellow
 
+
                         Column{
 
                             anchors.margins: 10
@@ -154,6 +159,7 @@ Page {
                                 text: delegateRectangle.title
                                 font.pixelSize: 20
                                 color: colorYellow
+
                             }
                             Text{
                                 id:descriptionText
@@ -164,6 +170,7 @@ Page {
                                 color: colorDarkGray
                                 wrapMode: TextEdit.Wrap
                                 clip: true
+
                             }
                         }
                     }
@@ -268,15 +275,28 @@ Page {
                         color: colorYellow
                     }
                 }
-                Button{
-                    text: "Add"
+                Rectangle{
+                    id: addBtn
                     height: 50
-                    width: rightRectangle.width * 0.5
-                    onClicked: {
-                        listModel.append({"_title": titleToDo.text, "_description": descriptionToDo.text})
-                        titleToDo.text=""
-                        descriptionToDo.text=""
+                    width: rightRectangle.width * 0.8
+                    radius: 10
+                    Text{
+                        id: textAddBtn
+                        anchors.centerIn: parent
+                        text: "Add"
+                        font.pixelSize: 20
+                        color: colorPurple
                     }
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: {
+                            listModel.append({"_title": titleToDo.text, "_description": descriptionToDo.text})
+                            titleToDo.text=""
+                            descriptionToDo.text=""
+                        }
+                    }
+
+
                 }
             }
         }
@@ -366,6 +386,7 @@ Page {
                 anchors.fill: parent
                 onClicked: {
                     changeColorDialog.open()
+                    console.log(categoriesModel.count)
                 }
             }
         }
@@ -392,7 +413,7 @@ Page {
 
             MouseArea{
                 anchors.fill: parent
-                onClicked: {
+                onClicked: {                    
                     root.buttonClicked();
                 }
             }

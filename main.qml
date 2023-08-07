@@ -17,6 +17,9 @@ Window{
         anchors.fill: parent
         initialItem: mainWindow
     }
+    ListModel{
+        id: categoryListModel
+    }
 
     Rectangle {
         id: mainWindow
