@@ -413,7 +413,7 @@ Page {
 
             MouseArea{
                 anchors.fill: parent
-                onClicked: {                    
+                onClicked: {
                     root.buttonClicked();
                 }
             }
