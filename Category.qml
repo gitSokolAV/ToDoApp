@@ -16,22 +16,22 @@ Page {
             id: categoriesModel
             dynamicRoles: true
         }
-        function onCategoryClicked(categoryNames){
-            var component = Qt.createComponent("ToDoList.qml")
-            if(component.status === Component.Ready){
-                var properties = {category: categoryNames}
-                var todoList = component.createObject(parent,properties)
-                if(todoList === null){
-                    console.log("Error creating ToDoList component")
-                }
-                else{
-                    stackView.push(todoList)
-                }
-            }
-            else{
-                console.log("ERROR: loading todolist component")
-            }
-        }
+        //function onCategoryClicked(categoryNames){
+        //    var component = Qt.createComponent("ToDoList.qml")
+        //    if(component.status === Component.Ready){
+        //        var properties = {category: categoryNames}
+        //        var todoList = component.createObject(parent,properties)
+        //        if(todoList === null){
+        //            console.log("Error creating ToDoList component")
+        //        }
+        //        else{
+        //            stackView.push(todoList)
+        //        }
+        //    }
+        //    else{
+        //        console.log("ERROR: loading todolist component")
+        //    }
+        //}
 
         background: Rectangle{
             id: backgroundRect
@@ -115,6 +115,7 @@ Page {
                 var setPositionY = Math.random() * (root.height)
                 var setConnectedBool = false
                 var setDataCellAccess = -1
+                var setToDoListInstance = Qt.createComponent("ToDoList.qml")
 
 
                 if(flag && flag2){
@@ -127,7 +128,8 @@ Page {
                                                "positionX": setPositionX,
                                                "positionY": setPositionY,
                                                "connectedBool": setConnectedBool,
-                                               "dataCellAccess": setDataCellAccess
+                                               "dataCellAccess": setDataCellAccess,
+                                               "toDoListInstance" : setToDoListInstance
                                            })
 
 
@@ -140,6 +142,7 @@ Page {
                     newCategory.x = categoriesModel.get(setCategoryIndex).positionX
                     newCategory.y = categoriesModel.get(setCategoryIndex).positionY
                     newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool
+
 
                 }
                 else if (flag2 === false){
@@ -253,7 +256,6 @@ Page {
                 property var connectedBool
                 property var dataCellAccess
 
-
                 width: 300
                 height: 50
                 color: categoriesModel.get(categoryIndex).categoryColor
@@ -288,12 +290,21 @@ Page {
 
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-                    onDoubleClicked: {
-                        //var toDoListInstance = Qt.createComponent("ToDoList.qml")
-                        //toDoListInstance.category = categoryName
-                        //stackView.push(toDoListInstance)
-
-                        onCategoryClicked(categoryName)
+                    onDoubleClicked: {                        
+                        var component = categoriesModel.get(categoryIndex).toDoListInstance
+                        if(component.status === Component.Ready){
+                            var properties = {category: categoryName}
+                            var goToDoList = component.createObject(parent,properties)
+                            if(goToDoList ===null){
+                                console.log("Error creating ToDoList component")
+                            }
+                            else{
+                                stackView.push(goToDoList)
+                            }
+                        }
+                        else{
+                            console.log("ERROR: loading todolist component")
+                        }
                     }
 
 
