@@ -16,22 +16,10 @@ Page {
             id: categoriesModel
             dynamicRoles: true
         }
-        //function onCategoryClicked(categoryNames){
-        //    var component = Qt.createComponent("ToDoList.qml")
-        //    if(component.status === Component.Ready){
-        //        var properties = {category: categoryNames}
-        //        var todoList = component.createObject(parent,properties)
-        //        if(todoList === null){
-        //            console.log("Error creating ToDoList component")
-        //        }
-        //        else{
-        //            stackView.push(todoList)
-        //        }
-        //    }
-        //    else{
-        //        console.log("ERROR: loading todolist component")
-        //    }
-        //}
+        ListModel{
+            id: toDoListModel
+            dynamicRoles: true
+        }
 
         background: Rectangle{
             id: backgroundRect
@@ -129,7 +117,8 @@ Page {
                                                "positionY": setPositionY,
                                                "connectedBool": setConnectedBool,
                                                "dataCellAccess": setDataCellAccess,
-                                               "toDoListInstance" : setToDoListInstance
+                                               "toDoListInstance" : setToDoListInstance,
+                                               "testColor" : "Red"
                                            })
 
 
@@ -293,10 +282,15 @@ Page {
                     onDoubleClicked: {                        
                         var component = categoriesModel.get(categoryIndex).toDoListInstance
                         if(component.status === Component.Ready){
-                            var properties = {category: categoryName}
+                            var properties = {category: categoryName,
+                                              indexCategory: categoryIndex,
+                                              testColor : categoriesModel.get(categoryIndex).testColor}
                             var goToDoList = component.createObject(parent,properties)
+                            goToDoList.toDoListChanged(function(categoryIndex, newColor) {categoriesModel.setProperty(categoryIndex, "testColor",newColor)})
+
                             if(goToDoList ===null){
                                 console.log("Error creating ToDoList component")
+
                             }
                             else{
                                 stackView.push(goToDoList)

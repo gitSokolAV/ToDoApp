@@ -7,12 +7,14 @@ import QtQuick.Dialogs
 
 Page {
     id: toDoList
-    signal todoListChanged()
+    signal todoListChanged(int indexCategory, string newColor)
     property string colorFromHeaderAndFooter: "white"
     property int redValue: 0
     property int greenValue: 0
     property int blueValue: 0
     property string category: ""
+    property int indexCategory
+    property var testColor:
 
 
     ListModel{
@@ -38,6 +40,7 @@ Page {
             textQuitButton.color = textBackButton.color
             textDateTime.color = textBackButton.color
             headerToDoListText.color = textBackButton.color
+            todoListChanged(indexCategory, newColor)
         }
     }
     function  applyColorChanges(r, g, b) {
@@ -94,7 +97,8 @@ Page {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: 50
-            color: leftRectangle.color
+            //color: leftRectangle.color
+            color: testColor
         }
     }
     Item{
