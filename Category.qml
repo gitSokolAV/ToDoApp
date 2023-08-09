@@ -290,8 +290,7 @@ Page {
 
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-                    onDoubleClicked: {
-                        //var toDoListInstance = Qt.createComponent("ToDoList.qml")
+                    onDoubleClicked: {                        
                         var component = categoriesModel.get(categoryIndex).toDoListInstance
                         if(component.status === Component.Ready){
                             var properties = {category: categoryName}
@@ -306,8 +305,6 @@ Page {
                         else{
                             console.log("ERROR: loading todolist component")
                         }
-
-                        //stackView.push(categoriesModel.get(categoryIndex).toDoListInstance)
                     }
 
 
