@@ -106,6 +106,8 @@ Page {
                 var setToDoListInstance = Qt.createComponent("ToDoList.qml")
 
 
+
+
                 if(flag && flag2){
                     categoriesModel.append({
                                                "categoryName": setCategoryName,
@@ -117,8 +119,7 @@ Page {
                                                "positionY": setPositionY,
                                                "connectedBool": setConnectedBool,
                                                "dataCellAccess": setDataCellAccess,
-                                               "toDoListInstance" : setToDoListInstance,
-                                               "testColor" : "Red"
+                                               "toDoListInstance": setToDoListInstance
                                            })
 
 
@@ -131,6 +132,16 @@ Page {
                     newCategory.x = categoriesModel.get(setCategoryIndex).positionX
                     newCategory.y = categoriesModel.get(setCategoryIndex).positionY
                     newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool
+
+                    if(setToDoListInstance.status === Component.Ready){
+                        var properties = {
+                            category : newCategory.categoryName,
+                            indexCategory : newCategory.categoryIndex
+                        }
+                        var toDoListInstance = setToDoListInstance.createObject(categoryRectComponent, properties)
+                        categoriesModel.setProperty(setCategoryIndex, "toDoListInstance", toDoListInstance)
+                    }
+
 
 
                 }
@@ -245,6 +256,8 @@ Page {
                 property var connectedBool
                 property var dataCellAccess
 
+
+
                 width: 300
                 height: 50
                 color: categoriesModel.get(categoryIndex).categoryColor
@@ -280,25 +293,29 @@ Page {
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
 
                     onDoubleClicked: {                        
-                        var component = categoriesModel.get(categoryIndex).toDoListInstance
-                        if(component.status === Component.Ready){
-                            var properties = {category: categoryName,
-                                              indexCategory: categoryIndex,
-                                              testColor : categoriesModel.get(categoryIndex).testColor}
-                            var goToDoList = component.createObject(parent,properties)
-                            goToDoList.toDoListChanged(function(categoryIndex, newColor) {categoriesModel.setProperty(categoryIndex, "testColor",newColor)})
+                        //var component = categoriesModel.get(categoryIndex).toDoListInstance
+                        //if(component.status === Component.Ready){
+                        //    var properties = {category: categoryName,
+                        //                      indexCategory: categoryIndex,
+                        //                      testColor : categoriesModel.get(categoryIndex).testColor}
+                        //    var goToDoList = component.createObject(parent,properties)
+                        //
+//
+                        //    if(goToDoList !==null){
+                        //        console.log("Error creating ToDoList component")
+                        //         goToDoList.categoriesModel = categoriesModel
+//
+                        //    }
+                        //    else{
+                        //        stackView.push(goToDoList)
+                        //    }
+                        //}
+                        //else{
+                        //    console.log("ERROR: loading todolist component")
+                        //}
 
-                            if(goToDoList ===null){
-                                console.log("Error creating ToDoList component")
 
-                            }
-                            else{
-                                stackView.push(goToDoList)
-                            }
-                        }
-                        else{
-                            console.log("ERROR: loading todolist component")
-                        }
+                        stackView.push(categoriesModel.get(categoryIndex).toDoListInstance)
                     }
 
 
