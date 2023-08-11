@@ -16,23 +16,6 @@ Page {
             id: categoriesModel
             dynamicRoles: true
         }
-        //function onCategoryClicked(categoryNames){
-        //    var component = Qt.createComponent("ToDoList.qml")
-        //    if(component.status === Component.Ready){
-        //        var properties = {category: categoryNames}
-        //        var todoList = component.createObject(parent,properties)
-        //        if(todoList === null){
-        //            console.log("Error creating ToDoList component")
-        //        }
-        //        else{
-        //            stackView.push(todoList)
-        //        }
-        //    }
-        //    else{
-        //        console.log("ERROR: loading todolist component")
-        //    }
-        //}
-
         background: Rectangle{
             id: backgroundRect
         }
@@ -116,8 +99,6 @@ Page {
                 var setConnectedBool = false
                 var setDataCellAccess = -1
                 var setToDoListInstance = Qt.createComponent("ToDoList.qml")
-
-
                 if(flag && flag2){
                     categoriesModel.append({
                                                "categoryName": setCategoryName,
@@ -129,7 +110,7 @@ Page {
                                                "positionY": setPositionY,
                                                "connectedBool": setConnectedBool,
                                                "dataCellAccess": setDataCellAccess,
-                                               "toDoListInstance" : setToDoListInstance
+                                               "toDoListInstance": setToDoListInstance
                                            })
 
 
@@ -143,7 +124,14 @@ Page {
                     newCategory.y = categoriesModel.get(setCategoryIndex).positionY
                     newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool
 
-
+                    if(setToDoListInstance.status === Component.Ready){
+                        var properties = {
+                            category : newCategory.categoryName,
+                            indexCategory : newCategory.categoryIndex
+                        }
+                        var toDoListInstance = setToDoListInstance.createObject(categoryRectComponent, properties)
+                        categoriesModel.setProperty(setCategoryIndex, "toDoListInstance", toDoListInstance)
+                    }
                 }
                 else if (flag2 === false){
                     emptyNamePopup.open()
@@ -256,6 +244,8 @@ Page {
                 property var connectedBool
                 property var dataCellAccess
 
+
+
                 width: 300
                 height: 50
                 color: categoriesModel.get(categoryIndex).categoryColor
@@ -290,21 +280,8 @@ Page {
 
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-                    onDoubleClicked: {                        
-                        var component = categoriesModel.get(categoryIndex).toDoListInstance
-                        if(component.status === Component.Ready){
-                            var properties = {category: categoryName}
-                            var goToDoList = component.createObject(parent,properties)
-                            if(goToDoList ===null){
-                                console.log("Error creating ToDoList component")
-                            }
-                            else{
-                                stackView.push(goToDoList)
-                            }
-                        }
-                        else{
-                            console.log("ERROR: loading todolist component")
-                        }
+                    onDoubleClicked: {
+                        stackView.push(categoriesModel.get(categoryIndex).toDoListInstance)
                     }
 
 
@@ -540,8 +517,11 @@ Page {
                         }
                         if (newCategoryText !== "" && newCategoryText !== categoryName && flag) {
                             // Обновляем элементы в массиве категорий
-                            categoriesModel.setProperty(categoryIndex, "categoryName", newCategoryText);
-                            categoryName = newCategoryText;
+                            categoriesModel.setProperty(categoryIndex, "categoryName", newCategoryText)
+                            var newName = categoriesModel.get(categoryIndex).toDoListInstance
+                            newName.category = newCategoryText
+                            categoriesModel.setProperty(categoryIndex, "toDoListInstance", newName)
+                            categoryName = newCategoryText
                         }
                         else if(newCategoryText === ""){
                         emptyNamePopup.open()
