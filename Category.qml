@@ -247,15 +247,90 @@ Page {
 
 
                 width: 300
-                height: 50
+                height: 200
                 color: categoriesModel.get(categoryIndex).categoryColor
                 radius: 10
+                Rectangle{
+                    id: nameRectangle
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.margins: 5
+                    height: 25
+                    radius: 5
+                    color: categoriesModel.get(categoryIndex).categoryColor
+                    border.color: colorYellow
+                    border.width: 1
 
-                Text {                    
-                    text: categoryName
-                    font.pixelSize: 20
-                    color: colorYellow
-                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    Text {
+                        text: categoryName
+                        font.pixelSize: 20
+                        color: colorYellow
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.left: parent.left
+                        anchors.margins: 5
+                    }
+                }
+                Rectangle{
+                    id: footerCategory
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    anchors.margins: 5
+                    height: 40
+                    radius: 5
+                    color: categoriesModel.get(categoryIndex).categoryColor
+                    border.color: colorYellow
+                    border.width: 1
+
+                    Rectangle{
+                        id: overdueCounter
+                        width: parent.width * 0.3
+                        radius: 5
+                        color: "Red"
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.right: parent.right
+                        anchors.margins: 5
+                        Text{
+                            text: "Overdue: "
+                            anchors.margins: 2
+                            anchors.left: parent.left
+                        }
+                    }
+
+                    Rectangle{
+                        id: completedCounter
+                        width: parent.width * 0.3
+                        radius: 5
+                        color: "Green"
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.left: parent.left
+                        anchors.margins: 5
+                        Text{
+                            text: "Completed: "
+                            anchors.margins: 2
+                            anchors.left: parent.left
+                        }
+                    }
+                    Rectangle{
+                        id: сreatedCounter
+                        width: parent.width * 0.3
+                        radius: 5
+                        color: "Yellow"
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.left: completedCounter.right
+                        anchors.right: overdueCounter.left
+                        anchors.margins: 5
+                        Text{
+                            text: "Created: "
+                            anchors.margins: 2
+                            anchors.left: parent.left
+                        }
+                    }
                 }
 
                 Label{
