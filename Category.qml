@@ -272,6 +272,11 @@ Page {
                         anchors.margins: 5
                     }
                 }
+                Text{
+                    id:dateTime
+                    text: ""
+                }
+
                 Rectangle{
                     id: footerCategory
                     anchors.left: parent.left
@@ -340,6 +345,27 @@ Page {
                     visible: categoriesModel.get(categoryIndex).boolConnectLabel
                     anchors.margins: 10
                 }
+                Rectangle{
+                    id: editButton
+                    height: 50
+                    width: 50
+                    radius: 10
+                    color: "gray"
+                    anchors.top: nameRectangle.bottom
+                    anchors.right: parent.right
+                    anchors.margins: 10
+                    z: 1
+                    visible: false
+                    MouseArea{
+                        Text{
+                            text: "edit"
+                            anchors.centerIn: parent
+                        }
+
+                        anchors.fill: parent
+                        onClicked: stackView.push(categoriesModel.get(categoryIndex).toDoListInstance)
+                    }
+                }
 
                 MouseArea {
                     property int clickedIndex: -1
@@ -351,6 +377,14 @@ Page {
                     drag.maximumX: parent.parent.width - parent.width
                     drag.minimumY: 0
                     drag.maximumY: parent.parent.height - parent.height
+                    hoverEnabled: true
+                    onEntered: {
+                        editButton.visible = true
+
+                    }
+                    onExited: {
+                        editButton.visible = false
+                    }
 
 
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
