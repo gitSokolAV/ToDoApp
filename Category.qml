@@ -299,7 +299,7 @@ Page {
                         anchors.right: parent.right
                         anchors.margins: 5
                         Text{
-                            text: "Overdue: "
+                            text: "Deleted: " + categoriesModel.get(categoryIndex).toDoListInstance.counterDeleted
                             anchors.margins: 2
                             anchors.left: parent.left
                         }
@@ -315,7 +315,7 @@ Page {
                         anchors.left: parent.left
                         anchors.margins: 5
                         Text{
-                            text: "Completed: "
+                            text: "Completed: " + categoriesModel.get(categoryIndex).toDoListInstance.counterDone
                             anchors.margins: 2
                             anchors.left: parent.left
                         }
@@ -330,14 +330,13 @@ Page {
                         anchors.left: completedCounter.right
                         anchors.right: overdueCounter.left
                         anchors.margins: 5
-                        Text{
-                            text: "Created: "
+                        Text{                            
+                            text: "Created: " + categoriesModel.get(categoryIndex).toDoListInstance.counterCreated
                             anchors.margins: 2
                             anchors.left: parent.left
                         }
                     }
                 }
-
                 Label{
                     id: connectLabel
                     text: "Connected with " + categoriesModel.get(categoryIndex).textConnectLabel

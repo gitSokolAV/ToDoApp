@@ -15,6 +15,9 @@ Page {
     property int blueValue: 0
     property string category
     property int indexCategory
+    property int counterCreated: 0
+    property int counterDone: 0
+    property int counterDeleted: 0
     //property var testColor:
 
 
@@ -202,6 +205,8 @@ Page {
                                 anchors.fill: parent
                                 onClicked: {
                                     listModel.remove(index)
+                                    counterDeleted += 1
+                                    counterCreated -= 1
                                 }
                             }
 
@@ -227,6 +232,7 @@ Page {
                                 anchors.fill: parent
                                 onClicked: {
                                     columnRectangle.color = "green"
+                                    counterDone += 1
                             }
                         }
                     }
@@ -296,9 +302,11 @@ Page {
                     MouseArea{
                         anchors.fill: parent
                         onClicked: {
-                            listModel.append({"_title": titleToDo.text, "_description": descriptionToDo.text})
+                            listModel.append({"_title": titleToDo.text,
+                                              "_description": descriptionToDo.text})
                             titleToDo.text=""
                             descriptionToDo.text=""
+                            counterCreated += 1
                         }
                     }
 
