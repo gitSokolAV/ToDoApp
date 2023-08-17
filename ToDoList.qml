@@ -8,7 +8,7 @@ import QtQuick.Dialogs
 
 Page {
     id: toDoList
-    signal todoListChanged(int indexCategory, string newColor)
+    //signal todoListChanged(int indexCategory, string newColor)
     property string colorFromHeaderAndFooter: "white"
     property int redValue: 0
     property int greenValue: 0
@@ -155,14 +155,11 @@ Page {
                         border.width: 1
                         border.color: colorYellow
 
-
-                        Column{
-
-                            anchors.margins: 10
-                            spacing: 10
                             Text{
                                 id:titleText
-                                anchors.fill: parent
+                                anchors.top: parent.top
+                                anchors.left: parent.left
+                                anchors.margins: 10
                                 wrapMode: TextEdit.Wrap
                                 clip: true
                                 text: delegateRectangle.title
@@ -171,9 +168,12 @@ Page {
 
                             }
                             Text{
-                                id:descriptionText
-                                anchors.fill: parent
-                                anchors.topMargin: titleText.contentHeight
+                                id:descriptionText                                
+                                anchors.top: titleText.bottom
+                                anchors.bottom: parent.bottom
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.margins: 10
                                 text: delegateRectangle.description
                                 font.pixelSize: 16
                                 color: colorDarkGray
@@ -181,7 +181,7 @@ Page {
                                 clip: true
 
                             }
-                        }
+
                     }
 
                     Rectangle{
@@ -303,7 +303,7 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             listModel.append({"_title": titleToDo.text,
-                                              "_description": descriptionToDo.text})
+                                              "_description": descriptionToDo.text})                            
                             titleToDo.text=""
                             descriptionToDo.text=""
                             counterCreated += 1
