@@ -147,7 +147,7 @@ Page {
                         id: columnRectangle
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
-                        anchors.right: deleteButton.left
+                        anchors.right: buttonArea.left
                         anchors.left: parent.left
                         anchors.margins: 10
                         color: colorPurple
@@ -183,57 +183,87 @@ Page {
                             }
 
                     }
-
                     Rectangle{
-                        id: deleteButton
-                        implicitWidth: 80
-                        radius: 10
-                        color: colorYellow
-                        anchors.top: delegateRectangle.verticalCenter
-                        anchors.bottom: delegateRectangle.bottom
+                        id: buttonArea
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
                         anchors.right: parent.right
                         anchors.margins: 10
+                        radius: 10
+                        border.width: 1
+                        border.color: colorYellow
+                        width: 100
+                        color: colorPurple
 
-                        Text{
-                            text: "Delete"
-                            anchors.centerIn: parent
-                            color: colorPurple
-                            font.bold: true
-                            font.pixelSize: 20
-                        }
-                        MouseArea{
-                                anchors.fill: parent
-                                onClicked: {
-                                    listModel.remove(index)
-                                    counterDeleted += 1
-                                    counterCreated -= 1
+                        Rectangle{
+                            id: doneButton
+                            radius: 10
+                            color: colorYellow
+                            anchors.top: parent.top
+                            anchors.right: parent.right
+                            anchors.left: parent.left
+                            anchors.margins: 5
+                            height: parent.height / 3.33
+
+                            Text{
+                                text: "Done"
+                                anchors.centerIn: parent
+                                color: colorPurple
+                                font.bold: true
+                                font.pixelSize: 20
+                            }
+                            MouseArea{
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        columnRectangle.color = "green"
+                                        counterDone += 1
                                 }
                             }
-
-                    }
-                    Rectangle{
-                        id: doneButton
-                        implicitWidth: 80
-                        radius: 10
-                        color: colorYellow
-                        anchors.bottom: delegateRectangle.verticalCenter
-                        anchors.top: delegateRectangle.top
-                        anchors.right: parent.right
-                        anchors.margins: 10
-
-                        Text{
-                            text: "Done"
-                            anchors.centerIn: parent
-                            color: colorPurple
-                            font.bold: true
-                            font.pixelSize: 20
                         }
-                        MouseArea{
-                                anchors.fill: parent
-                                onClicked: {
-                                    columnRectangle.color = "green"
-                                    counterDone += 1
+                        Rectangle{
+                            id: editButton
+                            anchors.top: doneButton.bottom
+                            anchors.right: parent.right
+                            anchors.left: parent.left
+                            anchors.margins: 5
+                            radius: 10
+                            color: colorYellow
+                            height: parent.height / 3.33
+                            Text{
+                                text: "Edit"
+                                anchors.centerIn: parent
+                                color: colorPurple
+                                font.bold: true
+                                font.pixelSize: 20
                             }
+                        }
+                        Rectangle{
+                            id: deleteButton
+                            radius: 10
+                            color: colorYellow
+                            anchors.top: editButton.bottom
+                            anchors.bottom: parent.bottom
+                            anchors.right: parent.right
+                            anchors.left: parent.left
+                            anchors.margins: 5
+                            height: parent.height / 3.33
+
+                            Text{
+                                text: "Delete"
+                                anchors.centerIn: parent
+                                color: colorPurple
+                                font.bold: true
+                                font.pixelSize: 20
+                            }
+                            MouseArea{
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        listModel.remove(index)
+                                        counterDeleted += 1
+                                        counterCreated -= 1
+                                    }
+                                }
+
                         }
                     }
                 }
