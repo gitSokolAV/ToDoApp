@@ -7,8 +7,7 @@ import QtQuick.Dialogs
 
 
 Page {
-    id: toDoList
-    //signal todoListChanged(int indexCategory, string newColor)
+    id: toDoList    
     property string colorFromHeaderAndFooter: "white"
     property int redValue: 0
     property int greenValue: 0
@@ -18,13 +17,10 @@ Page {
     property int counterCreated: 0
     property int counterDone: 0
     property int counterDeleted: 0
-    //property var testColor:
-
 
     ListModel{
         id: listModel
     }
-
 
     ColorDialog{
         id: colorDialog
@@ -46,7 +42,6 @@ Page {
             textQuitButton.color = textBackButton.color
             textDateTime.color = textBackButton.color
             headerToDoListText.color = textBackButton.color
-
         }
     }
     function  applyColorChanges(r, g, b) {
@@ -103,7 +98,51 @@ Page {
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: 50
             color: leftRectangle.color
-            //color: testColor
+        }
+    }
+    Rectangle{
+        id:editWindow
+        height: 500
+        width: 500
+        color: "Yellow"
+        radius: 10
+        property string title: ""
+        property string description: ""
+        anchors.centerIn: parent
+        z: 1
+        visible: false
+
+        TextArea{
+            id: editTitleWindowText
+            anchors.top: parent.top
+            anchors.left: parent.left
+            text: ""
+            color: colorPurple
+        }
+        TextArea{
+            id: editDescriptionWindowText
+            anchors.top: editTitleWindowText.bottom
+            anchors.left: parent.left
+            text: ""
+            color: colorPurple
+        }
+        Rectangle{
+            height: 50
+            width: 100
+            color: colorPurple
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            radius: 10
+            anchors.margins: 10
+            Text{
+                text: "Cansel"
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    editWindow.visible = false
+                }
+            }
         }
     }
     Item{
@@ -127,10 +166,12 @@ Page {
                 delegate: Rectangle{
                     property string title
                     property string description
+                    property int currentIndex: -1
                     title: _title
                     description: _description
 
                     id: delegateRectangle
+
                     width: listView.width
                     height: descriptionText.contentHeight + titleText.contentHeight < 50 ?
                                 listView.height * 0.3 : descriptionText.contentHeight + titleText.contentHeight
@@ -183,6 +224,8 @@ Page {
                             }
 
                     }
+
+
                     Rectangle{
                         id: buttonArea
                         anchors.top: parent.top
@@ -236,6 +279,18 @@ Page {
                                 font.bold: true
                                 font.pixelSize: 20
                             }
+                            MouseArea{
+                                id: editButtonMouseArea
+                                property var clickedIndexEtid
+                                anchors.fill: parent
+                                onClicked: {
+                                    currentIndex = index
+                                    editWindow.visible = true
+                                    editTitleWindowText.text = listModel.get(currentIndex)._title
+                                    editDescriptionWindowText.text = listModel.get(currentIndex)._description
+                                }
+                            }
+
                         }
                         Rectangle{
                             id: deleteButton
@@ -265,6 +320,7 @@ Page {
                                 }
 
                         }
+
                     }
                 }
 
@@ -337,6 +393,7 @@ Page {
                             titleToDo.text=""
                             descriptionToDo.text=""
                             counterCreated += 1
+
                         }
                     }
 
