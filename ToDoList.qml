@@ -111,22 +111,73 @@ Page {
         anchors.centerIn: parent
         z: 1
         visible: false
-
-        TextArea{
-            id: editTitleWindowText
+        Rectangle{
+            id: titleRect
             anchors.top: parent.top
             anchors.left: parent.left
-            text: ""
-            color: colorPurple
-        }
-        TextArea{
-            id: editDescriptionWindowText
-            anchors.top: editTitleWindowText.bottom
-            anchors.left: parent.left
-            text: ""
-            color: colorPurple
+            anchors.right: parent.right
+            anchors.margins: 10
+            height: 50
+            radius: 10
+            color: colorLightGray
+            TextInput{
+                id: editTitleWindowText
+                text: ""
+                anchors.centerIn: parent
+                selectByMouse: true
+                wrapMode: TextInput.Wrap
+                horizontalAlignment: TextInput.AlignHCenter
+                verticalAlignment: TextInput.AlignVCenter
+                font.pointSize: 16
+                cursorVisible: true
+                onEditingFinished: {
+                    editTitleWindowText.focus = false;
+                }
+            }
+            MouseArea {
+                id: editTitleMouseArea
+                anchors.fill: parent
+                onClicked: {
+                    editTitleWindowText.focus = true;
+                }
+            }
         }
         Rectangle{
+            id: descriptionRect
+            anchors.top: titleRect.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: editCanselButton.top
+            anchors.margins: 10
+            height: 50
+            radius: 10
+            color: colorLightGray
+            TextInput{
+                id: editDescriptionWindowText
+                text: ""
+                anchors.top: parent.top
+                anchors.left: parent.left
+                color: colorYellow
+                selectByMouse: true
+                wrapMode: TextInput.Wrap
+                horizontalAlignment: TextInput.AlignHCenter
+                verticalAlignment: TextInput.AlignVCenter
+                font.pointSize: 16
+                cursorVisible: true
+                onEditingFinished: {
+                    editDescriptionWindowText.focus = false;
+                }
+            }
+            MouseArea {
+                id: editDescriptionMouseArea
+                anchors.fill: parent
+                onClicked: {
+                    editDescriptionWindowText.focus = true;
+                }
+            }
+        }
+        Rectangle{
+            id: editCanselButton
             height: 50
             width: 100
             color: colorPurple
@@ -135,6 +186,7 @@ Page {
             radius: 10
             anchors.margins: 10
             Text{
+                anchors.centerIn: parent
                 text: "Cansel"
             }
             MouseArea{
