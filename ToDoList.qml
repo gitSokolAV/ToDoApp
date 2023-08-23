@@ -106,6 +106,7 @@ Page {
         width: 500
         color: "Yellow"
         radius: 10
+        property int index
         property string title: ""
         property string description: ""
         anchors.centerIn: parent
@@ -152,18 +153,18 @@ Page {
             height: 50
             radius: 10
             color: colorLightGray
-            TextInput{
+            TextArea{
                 id: editDescriptionWindowText
                 text: ""
-                anchors.top: parent.top
-                anchors.left: parent.left
+                anchors.fill: parent
+                anchors.margins: 10
                 color: colorYellow
                 selectByMouse: true
-                wrapMode: TextInput.Wrap
-                horizontalAlignment: TextInput.AlignHCenter
-                verticalAlignment: TextInput.AlignVCenter
+                wrapMode: TextInput.Wrap                
                 font.pointSize: 16
                 cursorVisible: true
+                clip: true
+
                 onEditingFinished: {
                     editDescriptionWindowText.focus = false;
                 }
@@ -193,6 +194,27 @@ Page {
                 anchors.fill: parent
                 onClicked: {
                     editWindow.visible = false
+                }
+            }
+        }
+        Rectangle{
+            id: editSaveButton
+            height: 50
+            width: 100
+            color: colorPurple
+            anchors.bottom: parent.bottom
+            anchors.right: editCanselButton.left
+            radius: 10
+            anchors.margins: 10
+            Text{
+                anchors.centerIn: parent
+                text: "Save"
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    listModel.setProperty(editWindow.index, "_title",  editTitleWindowText.text)
+                    listModel.setProperty(editWindow.index, "_description", editDescriptionWindowText.text)
                 }
             }
         }
@@ -338,6 +360,7 @@ Page {
                                 onClicked: {
                                     currentIndex = index
                                     editWindow.visible = true
+                                    editWindow.index = currentIndex
                                     editTitleWindowText.text = listModel.get(currentIndex)._title
                                     editDescriptionWindowText.text = listModel.get(currentIndex)._description
                                 }
