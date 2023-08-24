@@ -449,6 +449,89 @@ Page {
                     }
                 }
                 Rectangle{
+                    id: priorityRect
+                    height: 50
+                    width: rightRectangle.width * 0.8
+                    radius: 10
+                    color: colorYellow
+                    Rectangle{
+                        id: labelPriorityText
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.left: parent.left
+                        anchors.right: lowPriority.left
+                        width: priorityRectText.width
+                        radius: 10
+                        color: colorYellow
+                        Text{
+                            id: priorityRectText
+                            text: "Preority: "
+                            font.pixelSize: 20
+                            anchors.centerIn: parent
+                            anchors.margins: 10
+                        }
+                    }
+                    Rectangle{
+                        id: priorityOptions
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.left: labelPriorityText.right
+                        color: colorYellow
+                        radius: 10
+                        Rectangle{
+                            id: lowPriority
+                            anchors.left: parent.left
+                            anchors.top: parent.top
+                            anchors.bottom: parent.bottom
+                            width: (priorityOptions.width / 3) - 10
+                            anchors.margins: 5
+                            color: "Yellow"
+                            radius: 10
+                            Text{
+                                text: "Low"
+                                anchors.centerIn: parent
+                                font.pixelSize: 20
+                            }
+                        }
+                    }
+
+
+                    Rectangle{
+                        id: averagePriority
+                        anchors.left: lowPriority.right
+                        anchors.right: highPriority.left
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        width: (priorityOptions.width / 3) - 10
+                        anchors.margins: 5
+                        color: "Green"
+                        radius: 10
+                        Text{
+                            text: "Average"
+                            anchors.centerIn: parent
+                            font.pixelSize: 20
+                        }
+                    }
+                    Rectangle{
+                        id: highPriority
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        width: priorityOptions.width / 3
+                        anchors.margins: 5
+                        color: "red"
+                        radius: 10
+                        Text{
+                            text: "High"
+                            anchors.centerIn: parent
+                            font.pixelSize: 20
+                            anchors.margins: 5
+                        }
+                    }
+                }
+
+                Rectangle{
                     id: addBtn
                     height: 50
                     width: rightRectangle.width * 0.8
@@ -464,7 +547,7 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             listModel.append({"_title": titleToDo.text,
-                                              "_description": descriptionToDo.text})                            
+                                              "_description": descriptionToDo.text})
                             titleToDo.text=""
                             descriptionToDo.text=""
                             counterCreated += 1
