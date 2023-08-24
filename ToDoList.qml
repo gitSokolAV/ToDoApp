@@ -7,21 +7,20 @@ import QtQuick.Dialogs
 
 
 Page {
-    id: toDoList
-    signal todoListChanged(int indexCategory, string newColor)
+    id: toDoList    
     property string colorFromHeaderAndFooter: "white"
     property int redValue: 0
     property int greenValue: 0
     property int blueValue: 0
     property string category
     property int indexCategory
-    //property var testColor:
-
+    property int counterCreated: 0
+    property int counterDone: 0
+    property int counterDeleted: 0
 
     ListModel{
         id: listModel
     }
-
 
     ColorDialog{
         id: colorDialog
@@ -43,7 +42,6 @@ Page {
             textQuitButton.color = textBackButton.color
             textDateTime.color = textBackButton.color
             headerToDoListText.color = textBackButton.color
-
         }
     }
     function  applyColorChanges(r, g, b) {
@@ -100,7 +98,125 @@ Page {
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: 50
             color: leftRectangle.color
-            //color: testColor
+        }
+    }
+    Rectangle{
+        id:editWindow
+        height: 500
+        width: 500
+        color: "Yellow"
+        radius: 10
+        property int index
+        property string title: ""
+        property string description: ""
+        anchors.centerIn: parent
+        z: 1
+        visible: false
+        Rectangle{
+            id: titleRect
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 10
+            height: 50
+            radius: 10
+            color: colorLightGray
+            TextInput{
+                id: editTitleWindowText
+                text: ""
+                anchors.centerIn: parent
+                selectByMouse: true
+                wrapMode: TextInput.Wrap
+                horizontalAlignment: TextInput.AlignHCenter
+                verticalAlignment: TextInput.AlignVCenter
+                font.pointSize: 16
+                cursorVisible: true
+                onEditingFinished: {
+                    editTitleWindowText.focus = false;
+                }
+            }
+            MouseArea {
+                id: editTitleMouseArea
+                anchors.fill: parent
+                onClicked: {
+                    editTitleWindowText.focus = true;
+                }
+            }
+        }
+        Rectangle{
+            id: descriptionRect
+            anchors.top: titleRect.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: editCanselButton.top
+            anchors.margins: 10
+            height: 50
+            radius: 10
+            color: colorLightGray
+            TextArea{
+                id: editDescriptionWindowText
+                text: ""
+                anchors.fill: parent
+                anchors.margins: 10
+                color: colorYellow
+                selectByMouse: true
+                wrapMode: TextInput.Wrap                
+                font.pointSize: 16
+                cursorVisible: true
+                clip: true
+
+                onEditingFinished: {
+                    editDescriptionWindowText.focus = false;
+                }
+            }
+            MouseArea {
+                id: editDescriptionMouseArea
+                anchors.fill: parent
+                onClicked: {
+                    editDescriptionWindowText.focus = true;
+                }
+            }
+        }
+        Rectangle{
+            id: editCanselButton
+            height: 50
+            width: 100
+            color: colorPurple
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            radius: 10
+            anchors.margins: 10
+            Text{
+                anchors.centerIn: parent
+                text: "Cansel"
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    editWindow.visible = false
+                }
+            }
+        }
+        Rectangle{
+            id: editSaveButton
+            height: 50
+            width: 100
+            color: colorPurple
+            anchors.bottom: parent.bottom
+            anchors.right: editCanselButton.left
+            radius: 10
+            anchors.margins: 10
+            Text{
+                anchors.centerIn: parent
+                text: "Save"
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    listModel.setProperty(editWindow.index, "_title",  editTitleWindowText.text)
+                    listModel.setProperty(editWindow.index, "_description", editDescriptionWindowText.text)
+                }
+            }
         }
     }
     Item{
@@ -124,10 +240,12 @@ Page {
                 delegate: Rectangle{
                     property string title
                     property string description
+                    property int currentIndex: -1
                     title: _title
                     description: _description
 
                     id: delegateRectangle
+
                     width: listView.width
                     height: descriptionText.contentHeight + titleText.contentHeight < 50 ?
                                 listView.height * 0.3 : descriptionText.contentHeight + titleText.contentHeight
@@ -144,7 +262,7 @@ Page {
                         id: columnRectangle
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
-                        anchors.right: deleteButton.left
+                        anchors.right: buttonArea.left
                         anchors.left: parent.left
                         anchors.margins: 10
                         color: colorPurple
@@ -152,14 +270,11 @@ Page {
                         border.width: 1
                         border.color: colorYellow
 
-
-                        Column{
-
-                            anchors.margins: 10
-                            spacing: 10
                             Text{
                                 id:titleText
-                                anchors.fill: parent
+                                anchors.top: parent.top
+                                anchors.left: parent.left
+                                anchors.margins: 10
                                 wrapMode: TextEdit.Wrap
                                 clip: true
                                 text: delegateRectangle.title
@@ -168,9 +283,12 @@ Page {
 
                             }
                             Text{
-                                id:descriptionText
-                                anchors.fill: parent
-                                anchors.topMargin: titleText.contentHeight
+                                id:descriptionText                                
+                                anchors.top: titleText.bottom
+                                anchors.bottom: parent.bottom
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.margins: 10
                                 text: delegateRectangle.description
                                 font.pixelSize: 16
                                 color: colorDarkGray
@@ -178,57 +296,106 @@ Page {
                                 clip: true
 
                             }
-                        }
+
                     }
 
+
                     Rectangle{
-                        id: deleteButton
-                        implicitWidth: 80
-                        radius: 10
-                        color: colorYellow
-                        anchors.top: delegateRectangle.verticalCenter
-                        anchors.bottom: delegateRectangle.bottom
+                        id: buttonArea
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
                         anchors.right: parent.right
                         anchors.margins: 10
+                        radius: 10
+                        border.width: 1
+                        border.color: colorYellow
+                        width: 100
+                        color: colorPurple
 
-                        Text{
-                            text: "Delete"
-                            anchors.centerIn: parent
-                            color: colorPurple
-                            font.bold: true
-                            font.pixelSize: 20
+                        Rectangle{
+                            id: doneButton
+                            radius: 10
+                            color: colorYellow
+                            anchors.top: parent.top
+                            anchors.right: parent.right
+                            anchors.left: parent.left
+                            anchors.margins: 5
+                            height: parent.height / 3.33
+
+                            Text{
+                                text: "Done"
+                                anchors.centerIn: parent
+                                color: colorPurple
+                                font.bold: true
+                                font.pixelSize: 20
+                            }
+                            MouseArea{
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        columnRectangle.color = "green"
+                                        counterDone += 1
+                                }
+                            }
                         }
-                        MouseArea{
+                        Rectangle{
+                            id: editButton
+                            anchors.top: doneButton.bottom
+                            anchors.right: parent.right
+                            anchors.left: parent.left
+                            anchors.margins: 5
+                            radius: 10
+                            color: colorYellow
+                            height: parent.height / 3.33
+                            Text{
+                                text: "Edit"
+                                anchors.centerIn: parent
+                                color: colorPurple
+                                font.bold: true
+                                font.pixelSize: 20
+                            }
+                            MouseArea{
+                                id: editButtonMouseArea
+                                property var clickedIndexEtid
                                 anchors.fill: parent
                                 onClicked: {
-                                    listModel.remove(index)
+                                    currentIndex = index
+                                    editWindow.visible = true
+                                    editWindow.index = currentIndex
+                                    editTitleWindowText.text = listModel.get(currentIndex)._title
+                                    editDescriptionWindowText.text = listModel.get(currentIndex)._description
                                 }
                             }
 
-                    }
-                    Rectangle{
-                        id: doneButton
-                        implicitWidth: 80
-                        radius: 10
-                        color: colorYellow
-                        anchors.bottom: delegateRectangle.verticalCenter
-                        anchors.top: delegateRectangle.top
-                        anchors.right: parent.right
-                        anchors.margins: 10
+                        }
+                        Rectangle{
+                            id: deleteButton
+                            radius: 10
+                            color: colorYellow
+                            anchors.top: editButton.bottom
+                            anchors.bottom: parent.bottom
+                            anchors.right: parent.right
+                            anchors.left: parent.left
+                            anchors.margins: 5
+                            height: parent.height / 3.33
 
-                        Text{
-                            text: "Done"
-                            anchors.centerIn: parent
-                            color: colorPurple
-                            font.bold: true
-                            font.pixelSize: 20
-                        }
-                        MouseArea{
-                                anchors.fill: parent
-                                onClicked: {
-                                    columnRectangle.color = "green"
+                            Text{
+                                text: "Delete"
+                                anchors.centerIn: parent
+                                color: colorPurple
+                                font.bold: true
+                                font.pixelSize: 20
                             }
+                            MouseArea{
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        listModel.remove(index)
+                                        counterDeleted += 1
+                                        counterCreated -= 1
+                                    }
+                                }
+
                         }
+
                     }
                 }
 
@@ -296,9 +463,12 @@ Page {
                     MouseArea{
                         anchors.fill: parent
                         onClicked: {
-                            listModel.append({"_title": titleToDo.text, "_description": descriptionToDo.text})
+                            listModel.append({"_title": titleToDo.text,
+                                              "_description": descriptionToDo.text})                            
                             titleToDo.text=""
                             descriptionToDo.text=""
+                            counterCreated += 1
+
                         }
                     }
 

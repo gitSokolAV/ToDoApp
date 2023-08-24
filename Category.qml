@@ -247,23 +247,123 @@ Page {
 
 
                 width: 300
-                height: 50
+                height: 200
                 color: categoriesModel.get(categoryIndex).categoryColor
                 radius: 10
+                Rectangle{
+                    id: nameRectangle
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.margins: 5
+                    height: 25
+                    radius: 5
+                    color: categoriesModel.get(categoryIndex).categoryColor
+                    border.color: colorYellow
+                    border.width: 1
 
-                Text {                    
-                    text: categoryName
-                    font.pixelSize: 20
-                    color: colorYellow
-                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    Text {
+                        text: categoryName
+                        font.pixelSize: 20
+                        color: colorYellow
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.left: parent.left
+                        anchors.margins: 5
+                    }
+                }
+                Text{
+                    id:dateTime
+                    text: ""
                 }
 
+                Rectangle{
+                    id: footerCategory
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    anchors.margins: 5
+                    height: 40
+                    radius: 5
+                    color: categoriesModel.get(categoryIndex).categoryColor
+                    border.color: colorYellow
+                    border.width: 1
+
+                    Rectangle{
+                        id: overdueCounter
+                        width: parent.width * 0.3
+                        radius: 5
+                        color: "Red"
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.right: parent.right
+                        anchors.margins: 5
+                        Text{
+                            text: "Deleted: " + categoriesModel.get(categoryIndex).toDoListInstance.counterDeleted
+                            anchors.margins: 2
+                            anchors.left: parent.left
+                        }
+                    }
+
+                    Rectangle{
+                        id: completedCounter
+                        width: parent.width * 0.3
+                        radius: 5
+                        color: "Green"
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.left: parent.left
+                        anchors.margins: 5
+                        Text{
+                            text: "Completed: " + categoriesModel.get(categoryIndex).toDoListInstance.counterDone
+                            anchors.margins: 2
+                            anchors.left: parent.left
+                        }
+                    }
+                    Rectangle{
+                        id: сreatedCounter
+                        width: parent.width * 0.3
+                        radius: 5
+                        color: "Yellow"
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.left: completedCounter.right
+                        anchors.right: overdueCounter.left
+                        anchors.margins: 5
+                        Text{                            
+                            text: "Created: " + categoriesModel.get(categoryIndex).toDoListInstance.counterCreated
+                            anchors.margins: 2
+                            anchors.left: parent.left
+                        }
+                    }
+                }
                 Label{
                     id: connectLabel
                     text: "Connected with " + categoriesModel.get(categoryIndex).textConnectLabel
                     anchors.bottom: parent.bottom
                     visible: categoriesModel.get(categoryIndex).boolConnectLabel
                     anchors.margins: 10
+                }
+                Rectangle{
+                    id: editButton
+                    height: 50
+                    width: 50
+                    radius: 10
+                    color: "gray"
+                    anchors.top: nameRectangle.bottom
+                    anchors.right: parent.right
+                    anchors.margins: 10
+                    z: 1
+                    visible: false
+                    MouseArea{
+                        Text{
+                            text: "edit"
+                            anchors.centerIn: parent
+                        }
+
+                        anchors.fill: parent
+                        onClicked: stackView.push(categoriesModel.get(categoryIndex).toDoListInstance)
+                    }
                 }
 
                 MouseArea {
@@ -276,6 +376,14 @@ Page {
                     drag.maximumX: parent.parent.width - parent.width
                     drag.minimumY: 0
                     drag.maximumY: parent.parent.height - parent.height
+                    hoverEnabled: true
+                    onEntered: {
+                        editButton.visible = true
+
+                    }
+                    onExited: {
+                        editButton.visible = false
+                    }
 
 
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
