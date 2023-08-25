@@ -240,9 +240,11 @@ Page {
                 delegate: Rectangle{
                     property string title
                     property string description
+                    property string colorPriority
                     property int currentIndex: -1
                     title: _title
                     description: _description
+                    colorPriority: _priority
 
                     id: delegateRectangle
 
@@ -251,7 +253,7 @@ Page {
                                 listView.height * 0.3 : descriptionText.contentHeight + titleText.contentHeight
                     anchors.topMargin: 50
 
-                    color: colorPurple
+                    color: colorPriority
                     radius: 10
                     border.width: 1
                     border.color: colorYellow
@@ -465,7 +467,7 @@ Page {
                         color: colorYellow
                         Text{
                             id: priorityRectText
-                            text: "Preority: "
+                            text: "Priority: "
                             font.pixelSize: 20
                             anchors.centerIn: parent
                             anchors.margins: 10
@@ -493,6 +495,13 @@ Page {
                                 anchors.centerIn: parent
                                 font.pixelSize: 20
                             }
+                            MouseArea{
+                                id: mouseAreaLowPriority
+                                anchors.fill: parent
+                                onClicked: {
+                                    addBtn.priorityTask = "Yellow"
+                                }
+                            }
                         }
                     }
 
@@ -512,6 +521,13 @@ Page {
                             anchors.centerIn: parent
                             font.pixelSize: 20
                         }
+                        MouseArea{
+                            id: mouseAreaAveragePriority
+                            anchors.fill: parent
+                            onClicked: {
+                                addBtn.priorityTask = "Green"
+                            }
+                        }
                     }
                     Rectangle{
                         id: highPriority
@@ -528,6 +544,13 @@ Page {
                             font.pixelSize: 20
                             anchors.margins: 5
                         }
+                        MouseArea{
+                            id: mouseAreaHighPriority
+                            anchors.fill: parent
+                            onClicked: {
+                                addBtn.priorityTask = "Red"
+                            }
+                        }
                     }
                 }
 
@@ -536,6 +559,7 @@ Page {
                     height: 50
                     width: rightRectangle.width * 0.8
                     radius: 10
+                    property string priorityTask: colorPurple
                     Text{
                         id: textAddBtn
                         anchors.centerIn: parent
@@ -547,11 +571,11 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             listModel.append({"_title": titleToDo.text,
-                                              "_description": descriptionToDo.text})
+                                              "_description": descriptionToDo.text,
+                                             "_priority" : addBtn.priorityTask })
                             titleToDo.text=""
                             descriptionToDo.text=""
                             counterCreated += 1
-
                         }
                     }
 
