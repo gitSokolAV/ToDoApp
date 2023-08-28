@@ -109,6 +109,7 @@ Page {
         property int index
         property string title: ""
         property string description: ""
+
         anchors.centerIn: parent
         z: 1
         visible: false
@@ -241,10 +242,12 @@ Page {
                     property string title
                     property string description
                     property string colorPriority
+                    property string date
                     property int currentIndex: -1
                     title: _title
                     description: _description
                     colorPriority: _priority
+                    date: _date
 
                     id: delegateRectangle
 
@@ -296,6 +299,16 @@ Page {
                                 color: colorDarkGray
                                 wrapMode: TextEdit.Wrap
                                 clip: true
+
+                            }
+                            Text{
+                                id: dateText
+                                anchors.top: parent.top
+                                anchors.left: titleText.right
+                                anchors.margins: 10
+                                text: "Created: " + date
+                                font.pixelSize: 16
+                                color: colorDarkGray
 
                             }
 
@@ -572,7 +585,8 @@ Page {
                         onClicked: {
                             listModel.append({"_title": titleToDo.text,
                                               "_description": descriptionToDo.text,
-                                             "_priority" : addBtn.priorityTask })
+                                             "_priority" : addBtn.priorityTask,
+                                             "_date": new Date().toLocaleDateString()})
                             titleToDo.text=""
                             descriptionToDo.text=""
                             counterCreated += 1
