@@ -145,6 +145,40 @@ Page {
             }
         }
         Rectangle{
+            property int currentIndex
+            id:viewLeftRect
+            height: editWindow.height
+            width: 200
+            radius: 10
+            anchors.right: editWindow.left
+            anchors.margins: 10
+            color: "Yellow"
+            ListView{
+                id: viewLeftRectListView
+                model: listModel
+                spacing: 10
+                clip: true
+                anchors.fill: parent
+                anchors.margins: 10
+                delegate: Rectangle{
+                    property string title
+                    title: _title
+                    width: viewLeftRect.width - 20
+                    height: viewLeftRect.height / 10
+                    border.width: 1
+                    border.color: colorPurple
+                    radius: 10
+                    Text{
+                        text: title
+                        anchors.centerIn: parent
+                        font.pixelSize: 25
+                    }                    
+                }
+            }
+
+        }
+
+        Rectangle{
             id: descriptionRect
             anchors.top: titleRect.bottom
             anchors.left: parent.left
