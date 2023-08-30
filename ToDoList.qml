@@ -172,7 +172,16 @@ Page {
                         text: title
                         anchors.centerIn: parent
                         font.pixelSize: 25
-                    }                    
+                    }
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: {
+                            editWindow.visible = true
+                            editWindow.index = index
+                            editTitleWindowText.text = listModel.get(editWindow.index)._title
+                            editDescriptionWindowText.text = listModel.get(editWindow.index)._description
+                        }
+                    }
                 }
             }
 
