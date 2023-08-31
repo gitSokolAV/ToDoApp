@@ -317,22 +317,33 @@ Page {
                         radius: 10
                         border.width: 1
                         border.color: colorYellow
-
-                            Text{
-                                id:titleText
-                                anchors.top: parent.top
+                            Rectangle{
+                                id: titleTextRect
+                                width: columnRectangle.width / 2
+                                height: 30
                                 anchors.left: parent.left
-                                anchors.margins: 10
-                                wrapMode: TextEdit.Wrap
-                                clip: true
-                                text: delegateRectangle.title
-                                font.pixelSize: 20
-                                color: colorYellow
-
+                                anchors.top: parent.top
+                                anchors.topMargin: 10
+                                anchors.leftMargin: 10
+                                anchors.bottomMargin: 10
+                                anchors.rightMargin: 5
+                                radius: 10
+                                color: "Yellow"
+                                Text{
+                                    id:titleText
+                                    anchors.centerIn: parent
+                                    wrapMode: TextEdit.Wrap
+                                    clip: true
+                                    text: delegateRectangle.title
+                                    font.pixelSize: 16
+                                    color: colorDarkGray
+                                }
                             }
+
+
                             Text{
                                 id:descriptionText                                
-                                anchors.top: titleText.bottom
+                                anchors.top: titleTextRect.bottom
                                 anchors.bottom: parent.bottom
                                 anchors.left: parent.left
                                 anchors.right: parent.right
@@ -344,16 +355,30 @@ Page {
                                 clip: true
 
                             }
-                            Text{
-                                id: dateText
+                            Rectangle{
+                                id: dateTextRect
+                                width: columnRectangle.width / 2
+                                height: 30
                                 anchors.top: parent.top
-                                anchors.left: titleText.right
-                                anchors.margins: 10
-                                text: "Created: " + date
-                                font.pixelSize: 16
-                                color: colorDarkGray
-
+                                anchors.right: parent.right
+                                anchors.left: titleRect.right
+                                anchors.topMargin: 10
+                                anchors.leftMargin: 5
+                                anchors.bottomMargin: 10
+                                anchors.rightMargin: 10
+                                radius: 10
+                                color: "Yellow"
+                                Text{
+                                    id: dateText
+                                    anchors.centerIn: parent
+                                    anchors.margins: 10
+                                    text: "Created: " + date
+                                    font.pixelSize: 16
+                                    color: colorDarkGray
+                                }
                             }
+
+
 
                     }
 
