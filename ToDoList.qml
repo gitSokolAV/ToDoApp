@@ -296,7 +296,7 @@ Page {
 
                     width: listView.width
                     height: descriptionText.contentHeight + titleText.contentHeight < 50 ?
-                                listView.height * 0.3 : descriptionText.contentHeight + titleText.contentHeight
+                                listView.height * 0.3 : (descriptionText.contentHeight + titleText.contentHeight) * 1.2
                     anchors.topMargin: 50
 
                     color: colorPriority
@@ -340,20 +340,29 @@ Page {
                                 }
                             }
 
-
-                            Text{
-                                id:descriptionText                                
+                            Rectangle{
+                                id: descriptionTextRect
+                                width: columnRectangle.width / 2
+                                height: 30
+                                anchors.left: parent.left
                                 anchors.top: titleTextRect.bottom
                                 anchors.bottom: parent.bottom
-                                anchors.left: parent.left
                                 anchors.right: parent.right
                                 anchors.margins: 10
-                                text: delegateRectangle.description
-                                font.pixelSize: 16
-                                color: colorDarkGray
-                                wrapMode: TextEdit.Wrap
-                                clip: true
+                                radius: 10
+                                color: "Yellow"
 
+                                Text{
+                                    id:descriptionText
+                                    anchors.top: titleTextRect.bottom
+                                    anchors.left: parent.left
+                                    anchors.margins: 10
+                                    text: delegateRectangle.description
+                                    font.pixelSize: 16
+                                    color: colorDarkGray
+                                    wrapMode: TextEdit.Wrap
+                                    clip: true
+                                }
                             }
                             Rectangle{
                                 id: dateTextRect
