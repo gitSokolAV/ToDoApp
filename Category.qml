@@ -345,6 +345,80 @@ Page {
                     anchors.margins: 10
                 }
                 Rectangle{
+                    id: priorityRect
+                    height: parent.height / 2
+                    width: parent.width / 2
+                    color: "gray"
+                    radius: 10
+                    anchors.left: parent.left
+                    anchors.top: nameRectangle.bottom
+                    anchors.margins: 10
+                    Rectangle{
+                        id:priorityLabel
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.margins: 5
+                        radius: 10
+                        height: parent.height / 4
+                        color: "DarkGray"
+                        Text{
+                            anchors.centerIn: parent
+                            text: "Task priority"
+                            font.pixelSize: 16
+                        }
+                    }
+                    Rectangle{
+                        id:lowLabel
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: priorityLabel.bottom
+                        anchors.margins: 5
+                        radius: 10
+                        height: parent.height / 6
+                        color: "Yellow"
+                        Text{
+                            text: "Low"
+                            font.pixelSize: 16
+                            anchors.left: parent.left
+                            anchors.margins: 10
+                        }
+                    }
+                    Rectangle{
+                        id:averageLabel
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: lowLabel.bottom
+                        anchors.margins: 5
+                        radius: 10
+                        height: parent.height / 6
+                        color: "Green"
+                        Text{
+                            text: "Average"
+                            font.pixelSize: 16
+                            anchors.left: parent.left
+                            anchors.margins: 10
+                        }
+                    }
+                    Rectangle{
+                        id:highLabel
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: averageLabel.bottom
+                        anchors.margins: 5
+                        radius: 10
+                        height: parent.height / 6
+                        color: "Red"
+                        Text{
+                            text: "High"
+                            font.pixelSize: 16
+                            anchors.left: parent.left
+                            anchors.margins: 10
+                        }
+                    }
+                }
+
+                Rectangle{
                     id: editButton
                     height: 50
                     width: 50
