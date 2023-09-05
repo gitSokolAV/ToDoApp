@@ -378,7 +378,7 @@ Page {
                         height: parent.height / 6
                         color: "Yellow"
                         Text{
-                            text: "Low"
+                            text: "Low : " + categoriesModel.get(categoryIndex).toDoListInstance.counterLow
                             font.pixelSize: 16
                             anchors.left: parent.left
                             anchors.margins: 10
@@ -394,7 +394,7 @@ Page {
                         height: parent.height / 6
                         color: "Green"
                         Text{
-                            text: "Average"
+                            text: "Average : " + categoriesModel.get(categoryIndex).toDoListInstance.counterAverage
                             font.pixelSize: 16
                             anchors.left: parent.left
                             anchors.margins: 10
@@ -410,7 +410,7 @@ Page {
                         height: parent.height / 6
                         color: "Red"
                         Text{
-                            text: "High"
+                            text: "High : " + categoriesModel.get(categoryIndex).toDoListInstance.counterHigh
                             font.pixelSize: 16
                             anchors.left: parent.left
                             anchors.margins: 10

@@ -17,6 +17,9 @@ Page {
     property int counterCreated: 0
     property int counterDone: 0
     property int counterDeleted: 0
+    property int counterLow: 0
+    property int counterAverage: 0
+    property int counterHigh: 0
 
     ListModel{
         id: listModel
@@ -590,6 +593,7 @@ Page {
                                 anchors.fill: parent
                                 onClicked: {
                                     addBtn.priorityTask = "Yellow"
+                                    counterLow += 1
                                 }
                             }
                         }
@@ -616,6 +620,7 @@ Page {
                             anchors.fill: parent
                             onClicked: {
                                 addBtn.priorityTask = "Green"
+                                counterAverage += 1
                             }
                         }
                     }
@@ -639,6 +644,7 @@ Page {
                             anchors.fill: parent
                             onClicked: {
                                 addBtn.priorityTask = "Red"
+                                counterHigh += 1
                             }
                         }
                     }
