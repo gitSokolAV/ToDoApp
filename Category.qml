@@ -99,6 +99,7 @@ Page {
                 var setConnectedBool = false
                 var setDataCellAccess = -1
                 var setToDoListInstance = Qt.createComponent("ToDoList.qml")
+                var setCategoryHide = true
                 if(flag && flag2){
                     categoriesModel.append({
                                                "categoryName": setCategoryName,
@@ -110,7 +111,8 @@ Page {
                                                "positionY": setPositionY,
                                                "connectedBool": setConnectedBool,
                                                "dataCellAccess": setDataCellAccess,
-                                               "toDoListInstance": setToDoListInstance
+                                               "toDoListInstance": setToDoListInstance,
+                                               "categoryHide": setCategoryHide
                                            })
 
 
@@ -123,6 +125,7 @@ Page {
                     newCategory.x = categoriesModel.get(setCategoryIndex).positionX
                     newCategory.y = categoriesModel.get(setCategoryIndex).positionY
                     newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool
+                    newCategory.categoryHide = categoriesModel.get(setCategoryIndex).categoryHide
 
                     if(setToDoListInstance.status === Component.Ready){
                         var properties = {
@@ -243,6 +246,7 @@ Page {
                 property var positionY
                 property var connectedBool
                 property var dataCellAccess
+                property bool categoryHide
 
 
 
@@ -250,6 +254,7 @@ Page {
                 height: 200
                 color: categoriesModel.get(categoryIndex).categoryColor
                 radius: 10
+                visible: categoriesModel.get(categoryIndex).categoryHide
                 Rectangle{
                     id: nameRectangle
                     anchors.left: parent.left
@@ -453,7 +458,6 @@ Page {
                     hoverEnabled: true
                     onEntered: {
                         editButton.visible = true
-
                     }
                     onExited: {
                         editButton.visible = false
@@ -547,6 +551,13 @@ Page {
                             text: "Connect"
                             onClicked: {
                                 connectDialog.open()
+                            }
+                        }
+                        MenuItem{
+                            text: "Hide"
+
+                            onClicked: {
+                                categoriesModel.setProperty(mouseArea.clickedIndex, "categoryHide", false)
                             }
                         }
 
