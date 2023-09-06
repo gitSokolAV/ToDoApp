@@ -17,6 +17,9 @@ Page {
     property int counterCreated: 0
     property int counterDone: 0
     property int counterDeleted: 0
+    property int counterLow: 0
+    property int counterAverage: 0
+    property int counterHigh: 0
 
     ListModel{
         id: listModel
@@ -109,6 +112,7 @@ Page {
         property int index
         property string title: ""
         property string description: ""
+
         anchors.centerIn: parent
         z: 1
         visible: false
@@ -143,6 +147,49 @@ Page {
                 }
             }
         }
+        Rectangle{
+            property int currentIndex
+            id:viewLeftRect
+            height: editWindow.height
+            width: 200
+            radius: 10
+            anchors.right: editWindow.left
+            anchors.margins: 10
+            color: "Yellow"
+            ListView{
+                id: viewLeftRectListView
+                model: listModel
+                spacing: 10
+                clip: true
+                anchors.fill: parent
+                anchors.margins: 10
+                delegate: Rectangle{
+                    property string title
+                    title: _title
+                    width: viewLeftRect.width - 20
+                    height: viewLeftRect.height / 10
+                    border.width: 1
+                    border.color: colorPurple
+                    radius: 10
+                    Text{
+                        text: title
+                        anchors.centerIn: parent
+                        font.pixelSize: 25
+                    }
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: {
+                            editWindow.visible = true
+                            editWindow.index = index
+                            editTitleWindowText.text = listModel.get(editWindow.index)._title
+                            editDescriptionWindowText.text = listModel.get(editWindow.index)._description
+                        }
+                    }
+                }
+            }
+
+        }
+
         Rectangle{
             id: descriptionRect
             anchors.top: titleRect.bottom
@@ -240,18 +287,22 @@ Page {
                 delegate: Rectangle{
                     property string title
                     property string description
+                    property string colorPriority
+                    property string date
                     property int currentIndex: -1
                     title: _title
                     description: _description
+                    colorPriority: _priority
+                    date: _date
 
                     id: delegateRectangle
 
                     width: listView.width
                     height: descriptionText.contentHeight + titleText.contentHeight < 50 ?
-                                listView.height * 0.3 : descriptionText.contentHeight + titleText.contentHeight
+                                listView.height * 0.3 : (descriptionText.contentHeight + titleText.contentHeight) * 1.2
                     anchors.topMargin: 50
 
-                    color: colorPurple
+                    color: colorPriority
                     radius: 10
                     border.width: 1
                     border.color: colorYellow
@@ -269,33 +320,77 @@ Page {
                         radius: 10
                         border.width: 1
                         border.color: colorYellow
-
-                            Text{
-                                id:titleText
+                            Rectangle{
+                                id: titleTextRect
+                                width: columnRectangle.width / 2
+                                height: 30
+                                anchors.left: parent.left
                                 anchors.top: parent.top
-                                anchors.left: parent.left
-                                anchors.margins: 10
-                                wrapMode: TextEdit.Wrap
-                                clip: true
-                                text: delegateRectangle.title
-                                font.pixelSize: 20
-                                color: colorYellow
-
+                                anchors.topMargin: 10
+                                anchors.leftMargin: 10
+                                anchors.bottomMargin: 10
+                                anchors.rightMargin: 5
+                                radius: 10
+                                color: "Yellow"
+                                Text{
+                                    id:titleText
+                                    anchors.centerIn: parent
+                                    wrapMode: TextEdit.Wrap
+                                    clip: true
+                                    text: delegateRectangle.title
+                                    font.pixelSize: 16
+                                    color: colorDarkGray
+                                }
                             }
-                            Text{
-                                id:descriptionText                                
-                                anchors.top: titleText.bottom
-                                anchors.bottom: parent.bottom
+
+                            Rectangle{
+                                id: descriptionTextRect
+                                width: columnRectangle.width / 2
+                                height: 30
                                 anchors.left: parent.left
+                                anchors.top: titleTextRect.bottom
+                                anchors.bottom: parent.bottom
                                 anchors.right: parent.right
                                 anchors.margins: 10
-                                text: delegateRectangle.description
-                                font.pixelSize: 16
-                                color: colorDarkGray
-                                wrapMode: TextEdit.Wrap
-                                clip: true
+                                radius: 10
+                                color: "Yellow"
 
+                                Text{
+                                    id:descriptionText
+                                    anchors.top: titleTextRect.bottom
+                                    anchors.left: parent.left
+                                    anchors.margins: 10
+                                    text: delegateRectangle.description
+                                    font.pixelSize: 16
+                                    color: colorDarkGray
+                                    wrapMode: TextEdit.Wrap
+                                    clip: true
+                                }
                             }
+                            Rectangle{
+                                id: dateTextRect
+                                width: columnRectangle.width / 2
+                                height: 30
+                                anchors.top: parent.top
+                                anchors.right: parent.right
+                                anchors.left: titleRect.right
+                                anchors.topMargin: 10
+                                anchors.leftMargin: 5
+                                anchors.bottomMargin: 10
+                                anchors.rightMargin: 10
+                                radius: 10
+                                color: "Yellow"
+                                Text{
+                                    id: dateText
+                                    anchors.centerIn: parent
+                                    anchors.margins: 10
+                                    text: "Created: " + date
+                                    font.pixelSize: 16
+                                    color: colorDarkGray
+                                }
+                            }
+
+
 
                     }
 
@@ -449,10 +544,118 @@ Page {
                     }
                 }
                 Rectangle{
+                    id: priorityRect
+                    height: 50
+                    width: rightRectangle.width * 0.8
+                    radius: 10
+                    color: colorYellow
+                    Rectangle{
+                        id: labelPriorityText
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.left: parent.left
+                        anchors.right: lowPriority.left
+                        width: priorityRectText.width
+                        radius: 10
+                        color: colorYellow
+                        Text{
+                            id: priorityRectText
+                            text: "Priority: "
+                            font.pixelSize: 20
+                            anchors.centerIn: parent
+                            anchors.margins: 10
+                        }
+                    }
+                    Rectangle{
+                        id: priorityOptions
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.left: labelPriorityText.right
+                        color: colorYellow
+                        radius: 10
+                        Rectangle{
+                            id: lowPriority
+                            anchors.left: parent.left
+                            anchors.top: parent.top
+                            anchors.bottom: parent.bottom
+                            width: (priorityOptions.width / 3) - 10
+                            anchors.margins: 5
+                            color: "Yellow"
+                            radius: 10
+                            Text{
+                                text: "Low"
+                                anchors.centerIn: parent
+                                font.pixelSize: 20
+                            }
+                            MouseArea{
+                                id: mouseAreaLowPriority
+                                anchors.fill: parent
+                                onClicked: {
+                                    addBtn.priorityTask = "Yellow"
+                                    counterLow += 1
+                                }
+                            }
+                        }
+                    }
+
+
+                    Rectangle{
+                        id: averagePriority
+                        anchors.left: lowPriority.right
+                        anchors.right: highPriority.left
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        width: (priorityOptions.width / 3) - 10
+                        anchors.margins: 5
+                        color: "Green"
+                        radius: 10
+                        Text{
+                            text: "Average"
+                            anchors.centerIn: parent
+                            font.pixelSize: 20
+                        }
+                        MouseArea{
+                            id: mouseAreaAveragePriority
+                            anchors.fill: parent
+                            onClicked: {
+                                addBtn.priorityTask = "Green"
+                                counterAverage += 1
+                            }
+                        }
+                    }
+                    Rectangle{
+                        id: highPriority
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        width: priorityOptions.width / 3
+                        anchors.margins: 5
+                        color: "red"
+                        radius: 10
+                        Text{
+                            text: "High"
+                            anchors.centerIn: parent
+                            font.pixelSize: 20
+                            anchors.margins: 5
+                        }
+                        MouseArea{
+                            id: mouseAreaHighPriority
+                            anchors.fill: parent
+                            onClicked: {
+                                addBtn.priorityTask = "Red"
+                                counterHigh += 1
+                            }
+                        }
+                    }
+                }
+
+                Rectangle{
                     id: addBtn
                     height: 50
                     width: rightRectangle.width * 0.8
                     radius: 10
+                    property string priorityTask: colorPurple
                     Text{
                         id: textAddBtn
                         anchors.centerIn: parent
@@ -464,11 +667,12 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             listModel.append({"_title": titleToDo.text,
-                                              "_description": descriptionToDo.text})                            
+                                              "_description": descriptionToDo.text,
+                                             "_priority" : addBtn.priorityTask,
+                                             "_date": new Date().toLocaleDateString()})
                             titleToDo.text=""
                             descriptionToDo.text=""
                             counterCreated += 1
-
                         }
                     }
 
