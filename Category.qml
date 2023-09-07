@@ -578,6 +578,8 @@ Page {
                         colorDialog2.open();
                     }
                 }
+
+
                 Dialog {
                     id: colorDialog2
                     width: 180
@@ -825,6 +827,44 @@ Page {
                     onClicked: Qt.quit()
                 }
             }
+            Rectangle {
+                id: showButton
+                width: centerTextButton.width * 0.2
+                height: parent
+                color: "red"
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                radius: 10
+                z: 1
+                Text {
+                    text: "Display hidden categories"
+                    anchors.centerIn: parent
+                }
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: hideDialog.open()
+                }
+            }
+            Dialog{
+                id:hideDialog
+                title: "Hides Category"
+                standardButtons: Dialog.Ok | Dialog. Cansel
+                anchors.centerIn: backgroundRect
+                ComboBox{
+                    id: hideComboBox
+                    model: categoriesModel
+                    delegate: Item {
+                        width: parent.width
+                        Text {
+                            text: model.categoryName
+                        }
+                    }
+
+                    anchors.fill: parent
+                }
+            }
+
 
             MouseArea{
                 anchors.fill: parent
