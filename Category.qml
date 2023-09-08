@@ -16,6 +16,11 @@ Page {
             id: categoriesModel
             dynamicRoles: true
         }
+        ListModel{
+            id:hideModel
+            dynamicRoles: true
+        }
+
         background: Rectangle{
             id: backgroundRect
         }
@@ -558,6 +563,7 @@ Page {
 
                             onClicked: {
                                 categoriesModel.setProperty(mouseArea.clickedIndex, "categoryHide", false)
+                                hideModel.append(categoriesModel.get(mouseArea.clickedIndex))
                             }
                         }
 
@@ -853,15 +859,18 @@ Page {
                 anchors.centerIn: backgroundRect
                 ComboBox{
                     id: hideComboBox
-                    model: categoriesModel
-                    delegate: Item {
-                        width: parent.width
-                        Text {
-                            text: model.categoryName
-                        }
-                    }
-
+                    model: hideModel
+                    textRole: "categoryName"                    
                     anchors.fill: parent
+                }
+                onAccepted: {
+
+                var selectedObjectIndex = hideComboBox.currentIndex
+                console.log(selectedObjectIndex)
+                console.log(hideModel.get(selectedObjectIndex).categoryIndex)
+
+                categoriesModel.setProperty(hideModel.get(selectedObjectIndex).categoryIndex, "categoryHide", true)
+                hideModel.remove(selectedObjectIndex)
                 }
             }
 
