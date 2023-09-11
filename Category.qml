@@ -3,6 +3,7 @@ import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Shapes
+import QtMultimedia
 
 Page {
     id: root
@@ -11,6 +12,15 @@ Page {
     signal buttonClicked();
     property var categoryConnectIndex : []    
     property bool stopRepeater: false
+        SoundEffect{
+            id: soundEffect
+            source: "audio/sound.wav"
+        }
+        onVisibleChanged: {
+            if(visible){
+                soundEffect.play()
+            }
+        }
 
         ListModel {
             id: categoriesModel
