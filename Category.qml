@@ -3,6 +3,7 @@ import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Shapes
+import QtMultimedia
 
 Page {
     id: root
@@ -11,11 +12,25 @@ Page {
     signal buttonClicked();
     property var categoryConnectIndex : []    
     property bool stopRepeater: false
+        SoundEffect{
+            id: soundEffect
+            source: "audio/sound.wav"
+        }
+        onVisibleChanged: {
+            if(visible){
+                soundEffect.play()
+            }
+        }
 
         ListModel {
             id: categoriesModel
             dynamicRoles: true
         }
+        ListModel{
+            id:hideModel
+            dynamicRoles: true
+        }
+
         background: Rectangle{
             id: backgroundRect
         }
@@ -99,6 +114,7 @@ Page {
                 var setConnectedBool = false
                 var setDataCellAccess = -1
                 var setToDoListInstance = Qt.createComponent("ToDoList.qml")
+                var setCategoryHide = true
                 if(flag && flag2){
                     categoriesModel.append({
                                                "categoryName": setCategoryName,
@@ -110,7 +126,8 @@ Page {
                                                "positionY": setPositionY,
                                                "connectedBool": setConnectedBool,
                                                "dataCellAccess": setDataCellAccess,
-                                               "toDoListInstance": setToDoListInstance
+                                               "toDoListInstance": setToDoListInstance,
+                                               "categoryHide": setCategoryHide
                                            })
 
 
@@ -123,6 +140,7 @@ Page {
                     newCategory.x = categoriesModel.get(setCategoryIndex).positionX
                     newCategory.y = categoriesModel.get(setCategoryIndex).positionY
                     newCategory.connectedBool = categoriesModel.get(setCategoryIndex).connectedBool
+                    newCategory.categoryHide = categoriesModel.get(setCategoryIndex).categoryHide
 
                     if(setToDoListInstance.status === Component.Ready){
                         var properties = {
@@ -243,6 +261,7 @@ Page {
                 property var positionY
                 property var connectedBool
                 property var dataCellAccess
+                property bool categoryHide
 
 
 
@@ -250,6 +269,7 @@ Page {
                 height: 200
                 color: categoriesModel.get(categoryIndex).categoryColor
                 radius: 10
+                visible: categoriesModel.get(categoryIndex).categoryHide
                 Rectangle{
                     id: nameRectangle
                     anchors.left: parent.left
@@ -453,7 +473,6 @@ Page {
                     hoverEnabled: true
                     onEntered: {
                         editButton.visible = true
-
                     }
                     onExited: {
                         editButton.visible = false
@@ -549,6 +568,14 @@ Page {
                                 connectDialog.open()
                             }
                         }
+                        MenuItem{
+                            text: "Hide"
+
+                            onClicked: {
+                                categoriesModel.setProperty(mouseArea.clickedIndex, "categoryHide", false)
+                                hideModel.append(categoriesModel.get(mouseArea.clickedIndex))
+                            }
+                        }
 
                     }
                 }
@@ -567,6 +594,8 @@ Page {
                         colorDialog2.open();
                     }
                 }
+
+
                 Dialog {
                     id: colorDialog2
                     width: 180
@@ -814,6 +843,47 @@ Page {
                     onClicked: Qt.quit()
                 }
             }
+            Rectangle {
+                id: showButton
+                width: centerTextButton.width * 0.2
+                height: parent
+                color: "red"
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                radius: 10
+                z: 1
+                Text {
+                    text: "Display hidden categories"
+                    anchors.centerIn: parent
+                }
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: hideDialog.open()
+                }
+            }
+            Dialog{
+                id:hideDialog
+                title: "Hides Category"
+                standardButtons: Dialog.Ok | Dialog. Cansel
+                anchors.centerIn: backgroundRect
+                ComboBox{
+                    id: hideComboBox
+                    model: hideModel
+                    textRole: "categoryName"                    
+                    anchors.fill: parent
+                }
+                onAccepted: {
+
+                var selectedObjectIndex = hideComboBox.currentIndex
+                console.log(selectedObjectIndex)
+                console.log(hideModel.get(selectedObjectIndex).categoryIndex)
+
+                categoriesModel.setProperty(hideModel.get(selectedObjectIndex).categoryIndex, "categoryHide", true)
+                hideModel.remove(selectedObjectIndex)
+                }
+            }
+
 
             MouseArea{
                 anchors.fill: parent

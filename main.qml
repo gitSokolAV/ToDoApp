@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
+
 Window{
     //width: 1000
     //height: 700
@@ -20,6 +21,7 @@ Window{
     ListModel{
         id: categoryListModel
     }
+
 
     Rectangle {
         id: mainWindow
@@ -48,7 +50,7 @@ Window{
                 }
                 MouseArea{
                     anchors.fill: parent
-                    onClicked: {                        
+                    onClicked: {
                         stackView.push(pageCategory)
                     }
                 }
