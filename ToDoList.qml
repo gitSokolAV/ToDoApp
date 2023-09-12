@@ -307,7 +307,6 @@ Page {
                     border.width: 1
                     border.color: colorYellow
 
-
                     Rectangle{
 
                         id: columnRectangle
@@ -320,6 +319,7 @@ Page {
                         radius: 10
                         border.width: 1
                         border.color: colorYellow
+
                             Rectangle{
                                 id: titleTextRect
                                 width: columnRectangle.width / 2
@@ -508,6 +508,8 @@ Page {
                 anchors.topMargin: 100
                 spacing: 10
                 anchors.horizontalCenter: parent.horizontalCenter
+
+
                 Rectangle{
                     id: textFieldRectangle
                     width: rightRectangle.width * 0.8
@@ -648,6 +650,26 @@ Page {
                             }
                         }
                     }
+                }
+                Rectangle{
+                    id: deadLine
+                    height: 50
+                    width: rightRectangle.width * 0.8
+                    radius: 10
+
+                    Text{
+                        text: "Select dead line"
+                        anchors.centerIn: parent
+                        font.pixelSize: 20
+                        color: colorPurple
+                    }
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: {
+                        }
+                    }
+
+
                 }
 
                 Rectangle{
