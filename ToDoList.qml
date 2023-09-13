@@ -666,10 +666,58 @@ Page {
                     MouseArea{
                         anchors.fill: parent
                         onClicked: {
+                           deadLineCalendar.visible = true
                         }
                     }
+                    Rectangle {
+                                id: deadLineCalendar
+                                width: 300
+                                height: 300
+                                color: "white"
+                                visible: false
 
+                                GridView {
+                                    id: calendarGrid
+                                    anchors.fill: parent
+                                    cellWidth: 50
+                                    cellHeight: 50
+                                    model: ListModel {
+                                        ListElement { day: "Su" }
+                                        ListElement { day: "Mo" }
+                                        ListElement { day: "Tu" }
+                                        ListElement { day: "We" }
+                                        ListElement { day: "Th" }
+                                        ListElement { day: "Fr" }
+                                        ListElement { day: "Sa" }
+                                    }
 
+                                    delegate: Item {
+                                        width: calendarGrid.cellWidth
+                                        height: calendarGrid.cellHeight
+
+                                        Rectangle {
+                                            width: parent.width
+                                            height: parent.height
+                                            color: "transparent"
+                                            border.color: "lightgray"
+
+                                            Text {
+                                                text: model.day
+                                                anchors.centerIn: parent
+                                            }
+
+                                            MouseArea {
+                                                anchors.fill: parent
+                                                onClicked: {
+                                                    // Обработка выбора даты
+                                                    console.log("Selected day: " + model.day);
+                                                    deadLineCalendar.visible = false;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                 }
 
                 Rectangle{
