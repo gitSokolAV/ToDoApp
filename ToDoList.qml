@@ -9,6 +9,8 @@ import QtQuick.Dialogs
 Page {
     id: toDoList    
     property string colorFromHeaderAndFooter: "white"
+    property int currentYear: Qt.formatDate(new Date(), "yyyy")
+    property int currentMonth: Qt.formatDate(new Date(), "MM")
     property int redValue: 0
     property int greenValue: 0
     property int blueValue: 0
@@ -56,6 +58,14 @@ Page {
             blueValue += b;
             return Qt.rgba(redValue / 255, greenValue / 255, blueValue / 255, 1)
         }
+    function generateCalendarDates() {
+        calendarModel.clear()
+        var startDate = new Date(currentYear, currentMonth - 1, 1);
+        var endDate = new Date(currentYear, currentMonth, 0)
+        for (var date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
+            calendarModel.append({ day: date.getDate() })
+        }
+    }
     Dialog{
         id: changeColorDialog
         anchors.centerIn: parent
@@ -551,6 +561,7 @@ Page {
                     width: rightRectangle.width * 0.8
                     radius: 10
                     color: colorYellow
+
                     Rectangle{
                         id: labelPriorityText
                         anchors.top: parent.top
@@ -651,11 +662,16 @@ Page {
                         }
                     }
                 }
+
                 Rectangle{
                     id: deadLine
                     height: 50
                     width: rightRectangle.width * 0.8
-                    radius: 10
+                    radius: 10                    
+
+                    ListModel{
+                        id: calendarModel
+                    }
 
                     Text{
                         text: "Select dead line"
@@ -666,9 +682,11 @@ Page {
                     MouseArea{
                         anchors.fill: parent
                         onClicked: {
+                           generateCalendarDates()
                            deadLineCalendar.visible = true
                         }
                     }
+
                     Rectangle {
                                 id: deadLineCalendar
                                 width: 300
@@ -676,20 +694,13 @@ Page {
                                 color: "white"
                                 visible: false
 
+
                                 GridView {
                                     id: calendarGrid
                                     anchors.fill: parent
                                     cellWidth: 50
                                     cellHeight: 50
-                                    model: ListModel {
-                                        ListElement { day: "Su" }
-                                        ListElement { day: "Mo" }
-                                        ListElement { day: "Tu" }
-                                        ListElement { day: "We" }
-                                        ListElement { day: "Th" }
-                                        ListElement { day: "Fr" }
-                                        ListElement { day: "Sa" }
-                                    }
+                                    model: calendarModel
 
                                     delegate: Item {
                                         width: calendarGrid.cellWidth
