@@ -58,12 +58,12 @@ Page {
             blueValue += b;
             return Qt.rgba(redValue / 255, greenValue / 255, blueValue / 255, 1)
         }
-    function generateCalendarDates() {
+    function generateCalendarDates(year, month) {
         calendarModel.clear()
-        var startDate = new Date(currentYear, currentMonth - 1, 1);
-        var endDate = new Date(currentYear, currentMonth, 0)
+        var startDate = new Date(year, month - 1, 1);
+        var endDate = new Date(year, month, 0)
         for (var date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-            calendarModel.append({ day: date.getDate() })
+            calendarModel.append({ day: date.getDate() });
         }
     }
     Dialog{
@@ -515,6 +515,9 @@ Page {
 
             Column{
                 anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
                 anchors.topMargin: 100
                 spacing: 10
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -538,6 +541,7 @@ Page {
                     }
                 }
                 Rectangle{
+                    id: textDescritionRectangle
                     width: rightRectangle.width * 0.8
                     height: rightRectangle.height * 0.6
                     color: colorLightGray
@@ -685,51 +689,87 @@ Page {
                            generateCalendarDates()
                            deadLineCalendar.visible = true
                         }
-                    }
+                    }                    
+                }
+                Row {
+                            spacing: 10
+                            anchors.horizontalCenter: parent.horizontalCenter
 
-                    Rectangle {
-                                id: deadLineCalendar
-                                width: 300
-                                height: 300
-                                color: "white"
-                                visible: false
+                            Button {
+                                text: "<"
+                                onClicked: {
+                                    currentMonth--;
+                                    if (currentMonth < 1) {
+                                        currentYear--;
+                                        currentMonth = 12;
+                                    }
+                                    generateCalendarDates(currentYear, currentMonth);
+                                }
+                            }
+
+                            Text {
+                                text: currentYear + " year, " + currentMonth + " month"
+                            }
+
+                            Button {
+                                text: ">"
+                                onClicked: {
+                                    currentMonth++;
+                                    if (currentMonth > 12) {
+                                        currentYear++;
+                                        currentMonth = 1;
+                                    }
+                                    generateCalendarDates(currentYear, currentMonth);
+                                }
+                            }
+                        }
+                Rectangle {
+                            id: deadLineCalendar
+                            width: 300
+                            height: 300
+                            color: "white"
+                            visible: false
+                            anchors.centerIn: textDescritionRectangle
 
 
-                                GridView {
-                                    id: calendarGrid
-                                    anchors.fill: parent
-                                    cellWidth: 50
-                                    cellHeight: 50
-                                    model: calendarModel
+                            GridView {
+                                id: calendarGrid
+                                anchors.fill: parent
+                                cellWidth: 50
+                                cellHeight: 50
+                                model: calendarModel
 
-                                    delegate: Item {
-                                        width: calendarGrid.cellWidth
-                                        height: calendarGrid.cellHeight
+                                delegate: Item {
+                                    width: calendarGrid.cellWidth
+                                    height: calendarGrid.cellHeight
 
-                                        Rectangle {
-                                            width: parent.width
-                                            height: parent.height
-                                            color: "transparent"
-                                            border.color: "lightgray"
+                                    Rectangle {
+                                        width: parent.width
+                                        height: parent.height
+                                        color: "transparent"
+                                        border.color: "lightgray"
+                                        Text{
+                                            text: model.month
+                                            anchors.top: parent
+                                        }
 
-                                            Text {
-                                                text: model.day
-                                                anchors.centerIn: parent
-                                            }
+                                        Text {
+                                            text: model.day
+                                            anchors.centerIn: parent
+                                        }
 
-                                            MouseArea {
-                                                anchors.fill: parent
-                                                onClicked: {
-                                                    // Обработка выбора даты
-                                                    console.log("Selected day: " + model.day);
-                                                    deadLineCalendar.visible = false;
-                                                }
+                                        MouseArea {
+                                            anchors.fill: parent
+                                            onClicked: {
+                                                // Обработка выбора даты
+                                                console.log("Selected day: " + model.day);
+                                                deadLineCalendar.visible = false;
                                             }
                                         }
                                     }
                                 }
                             }
-                }
+                        }
 
                 Rectangle{
                     id: addBtn
