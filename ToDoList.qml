@@ -63,8 +63,9 @@ Page {
         var startDate = new Date(year, month - 1, 1);
         var endDate = new Date(year, month, 0)
         for (var date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-            calendarModel.append({ day: date.getDate() });
+            calendarModel.append({ day: date.getDate(), month: date.getMonth() + 1 });
         }
+
     }
     Dialog{
         id: changeColorDialog
@@ -742,18 +743,25 @@ Page {
                                 delegate: Item {
                                     width: calendarGrid.cellWidth
                                     height: calendarGrid.cellHeight
-
-                                    Rectangle {
+                                    Rectangle{
+                                        id: monthRectangle
                                         width: parent.width
-                                        height: parent.height
-                                        color: "transparent"
-                                        border.color: "lightgray"
+                                        height: 50
+                                        color: colorPurple
                                         Text{
+                                            id: textModelMonth
                                             text: model.month
                                             anchors.top: parent
                                         }
 
+                                    }
+                                    Rectangle {
+                                        width: parent.width
+                                        height: parent.height                                        
+                                        color: "transparent"
+                                        border.color: "lightgray"
                                         Text {
+
                                             text: model.day
                                             anchors.centerIn: parent
                                         }
@@ -762,7 +770,7 @@ Page {
                                             anchors.fill: parent
                                             onClicked: {
                                                 // Обработка выбора даты
-                                                console.log("Selected day: " + model.day);
+                                                console.log("Selected day: " + model.day + " Selected month: " + model.month);
                                                 deadLineCalendar.visible = false;
                                             }
                                         }
