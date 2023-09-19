@@ -343,6 +343,39 @@ Page {
                                 anchors.rightMargin: 5
                                 radius: 10
                                 color: "Yellow"
+                                Rectangle{
+                                    id: deadLineButton
+                                    property int day
+                                    property int month
+                                    height: parent.height
+                                    anchors.margins: 10
+                                    width: 50
+                                    radius: 10
+                                    color: "Gray"
+                                    anchors.left: parent.left
+                                    Text {
+                                        id: deadLineText
+                                        text: "DeadLine"
+                                    }
+                                    MouseArea{
+                                        anchors.fill: parent
+                                        onClicked: {
+                                            deadLineDialog.open()
+                                        }
+                                    }
+                                }
+                                Dialog {
+                                    id: deadLineDialog
+                                    title: "DeadLine"
+                                    standardButtons: Dialog.Ok
+                                    Text {
+                                        id: deadLineDialogText
+                                        text: "DeadLine: Day :" + deadLineButton.day + " month : " + deadLineButton.month
+                                        color: "black"
+                                        font.bold: true
+                                    }
+                                }
+
                                 Text{
                                     id:titleText
                                     anchors.centerIn: parent
@@ -771,6 +804,8 @@ Page {
                                             onClicked: {
                                                 // Обработка выбора даты
                                                 console.log("Selected day: " + model.day + " Selected month: " + model.month);
+                                                deadLineButton.day = model.day
+                                                deadLineButton.month = model.month
                                                 deadLineCalendar.visible = false;
                                             }
                                         }
