@@ -22,6 +22,8 @@ Page {
     property int counterLow: 0
     property int counterAverage: 0
     property int counterHigh: 0
+    property int deadLineDay
+    property int deadLineMonth
 
     ListModel{
         id: listModel
@@ -344,17 +346,16 @@ Page {
                                 radius: 10
                                 color: "Yellow"
                                 Rectangle{
-                                    id: deadLineButton
-                                    property int day
-                                    property int month
+                                    id: deadLineButton                                    
                                     height: parent.height
                                     anchors.margins: 10
-                                    width: 50
+                                    width: 70
                                     radius: 10
                                     color: "Gray"
                                     anchors.left: parent.left
                                     Text {
                                         id: deadLineText
+                                        anchors.centerIn: parent
                                         text: "DeadLine"
                                     }
                                     MouseArea{
@@ -367,11 +368,12 @@ Page {
                                 Dialog {
                                     id: deadLineDialog
                                     title: "DeadLine"
+
                                     standardButtons: Dialog.Ok
                                     Text {
                                         id: deadLineDialogText
-                                        text: "DeadLine: Day :" + deadLineButton.day + " month : " + deadLineButton.month
-                                        color: "black"
+                                        text: "DeadLine: Day :" + deadLineDay + " month : " + deadLineMonth
+                                        color: "White"
                                         font.bold: true
                                     }
                                 }
@@ -804,8 +806,8 @@ Page {
                                             onClicked: {
                                                 // Обработка выбора даты
                                                 console.log("Selected day: " + model.day + " Selected month: " + model.month);
-                                                deadLineButton.day = model.day
-                                                deadLineButton.month = model.month
+                                                deadLineDay = model.day
+                                                deadLineMonth = model.month
                                                 deadLineCalendar.visible = false;
                                             }
                                         }
