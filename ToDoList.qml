@@ -9,6 +9,8 @@ import QtQuick.Dialogs
 Page {
     id: toDoList    
     property string colorFromHeaderAndFooter: "white"
+    property int currentYear: Qt.formatDate(new Date(), "yyyy")
+    property int currentMonth: Qt.formatDate(new Date(), "MM")
     property int redValue: 0
     property int greenValue: 0
     property int blueValue: 0
@@ -20,6 +22,8 @@ Page {
     property int counterLow: 0
     property int counterAverage: 0
     property int counterHigh: 0
+    property int deadLineDay
+    property int deadLineMonth
 
     ListModel{
         id: listModel
@@ -56,6 +60,15 @@ Page {
             blueValue += b;
             return Qt.rgba(redValue / 255, greenValue / 255, blueValue / 255, 1)
         }
+    function generateCalendarDates(year, month) {
+        calendarModel.clear()
+        var startDate = new Date(year, month - 1, 1);
+        var endDate = new Date(year, month, 0)
+        for (var date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
+            calendarModel.append({ day: date.getDate(), month: date.getMonth() + 1 });
+        }
+
+    }
     Dialog{
         id: changeColorDialog
         anchors.centerIn: parent
@@ -307,7 +320,6 @@ Page {
                     border.width: 1
                     border.color: colorYellow
 
-
                     Rectangle{
 
                         id: columnRectangle
@@ -320,6 +332,7 @@ Page {
                         radius: 10
                         border.width: 1
                         border.color: colorYellow
+
                             Rectangle{
                                 id: titleTextRect
                                 width: columnRectangle.width / 2
@@ -332,6 +345,39 @@ Page {
                                 anchors.rightMargin: 5
                                 radius: 10
                                 color: "Yellow"
+                                Rectangle{
+                                    id: deadLineButton                                    
+                                    height: parent.height
+                                    anchors.margins: 10
+                                    width: 70
+                                    radius: 10
+                                    color: "Gray"
+                                    anchors.left: parent.left
+                                    Text {
+                                        id: deadLineText
+                                        anchors.centerIn: parent
+                                        text: "DeadLine"
+                                    }
+                                    MouseArea{
+                                        anchors.fill: parent
+                                        onClicked: {
+                                            deadLineDialog.open()
+                                        }
+                                    }
+                                }
+                                Dialog {
+                                    id: deadLineDialog
+                                    title: "DeadLine"
+
+                                    standardButtons: Dialog.Ok
+                                    Text {
+                                        id: deadLineDialogText
+                                        text: "DeadLine: Day :" + deadLineDay + " month : " + deadLineMonth
+                                        color: "White"
+                                        font.bold: true
+                                    }
+                                }
+
                                 Text{
                                     id:titleText
                                     anchors.centerIn: parent
@@ -505,9 +551,14 @@ Page {
 
             Column{
                 anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
                 anchors.topMargin: 100
                 spacing: 10
                 anchors.horizontalCenter: parent.horizontalCenter
+
+
                 Rectangle{
                     id: textFieldRectangle
                     width: rightRectangle.width * 0.8
@@ -526,6 +577,7 @@ Page {
                     }
                 }
                 Rectangle{
+                    id: textDescritionRectangle
                     width: rightRectangle.width * 0.8
                     height: rightRectangle.height * 0.6
                     color: colorLightGray
@@ -549,6 +601,7 @@ Page {
                     width: rightRectangle.width * 0.8
                     radius: 10
                     color: colorYellow
+
                     Rectangle{
                         id: labelPriorityText
                         anchors.top: parent.top
@@ -649,6 +702,119 @@ Page {
                         }
                     }
                 }
+
+                Rectangle{
+                    id: deadLine
+                    height: 50
+                    width: rightRectangle.width * 0.8
+                    radius: 10                    
+
+                    ListModel{
+                        id: calendarModel
+                    }
+
+                    Text{
+                        text: "Select dead line"
+                        anchors.centerIn: parent
+                        font.pixelSize: 20
+                        color: colorPurple
+                    }
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: {
+                           generateCalendarDates()
+                           deadLineCalendar.visible = true
+                        }
+                    }                    
+                }
+                Row {
+                            spacing: 10
+                            anchors.horizontalCenter: parent.horizontalCenter
+
+                            Button {
+                                text: "<"
+                                onClicked: {
+                                    currentMonth--;
+                                    if (currentMonth < 1) {
+                                        currentYear--;
+                                        currentMonth = 12;
+                                    }
+                                    generateCalendarDates(currentYear, currentMonth);
+                                }
+                            }
+
+                            Text {
+                                text: currentYear + " year, " + currentMonth + " month"
+                            }
+
+                            Button {
+                                text: ">"
+                                onClicked: {
+                                    currentMonth++;
+                                    if (currentMonth > 12) {
+                                        currentYear++;
+                                        currentMonth = 1;
+                                    }
+                                    generateCalendarDates(currentYear, currentMonth);
+                                }
+                            }
+                        }
+                Rectangle {
+                            id: deadLineCalendar
+                            width: 300
+                            height: 300
+                            color: "white"
+                            visible: false
+                            anchors.centerIn: textDescritionRectangle
+
+
+                            GridView {
+                                id: calendarGrid
+                                anchors.fill: parent
+                                cellWidth: 50
+                                cellHeight: 50
+                                model: calendarModel
+
+                                delegate: Item {
+                                    width: calendarGrid.cellWidth
+                                    height: calendarGrid.cellHeight
+                                    Rectangle{
+                                        id: monthRectangle
+                                        width: parent.width
+                                        height: 50
+                                        color: colorPurple
+                                        Text{
+                                            id: textModelMonth
+                                            text: model.month
+                                            anchors.top: parent
+                                        }
+
+                                    }
+                                    Rectangle {
+                                        width: parent.width
+                                        height: parent.height                                        
+                                        color: "transparent"
+                                        border.color: "lightgray"
+                                        Text {
+
+                                            text: model.day
+                                            anchors.centerIn: parent
+                                        }
+
+                                        MouseArea {
+                                            anchors.fill: parent
+                                            onClicked: {
+                                                // Обработка выбора даты
+                                                console.log("Selected day: " + model.day + " Selected month: " + model.month);
+                                                deadLineDay = model.day
+                                                deadLineMonth = model.month
+                                                deadLineCalendar.visible = false;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
 
                 Rectangle{
                     id: addBtn
