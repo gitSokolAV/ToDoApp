@@ -10,6 +10,10 @@ Page {
     background: Rectangle{
         id: backgroundRect
     }
+    ListModel{
+        id: timeModel
+    }
+
     Rectangle{
         id: menuClock
         width: parent.width * 0.2
@@ -35,6 +39,94 @@ Page {
                 text: "Menu"
                 anchors.centerIn: parent
                 font.pixelSize: 80
+            }            
+        }
+        Rectangle{
+            id: addFocusTimerButton
+            height: 60
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: menuLabel.bottom
+            anchors.margins: 10
+            radius: 10
+            border.width: 1
+            border.color: colorPurple
+            color: "Yellow"
+            Text{
+                id:addFocusTimerButtonText
+                anchors.centerIn: parent
+                font.pixelSize: 20
+                text: "Add your own focus timer."
+            }
+            MouseArea{
+                id: addFocusTimerButtonMouseArea
+                anchors.fill: parent
+                onClicked: {
+                    focusTimerWindow.visible = true
+                }
+            }
+        }
+        Rectangle{
+            id: quitButton
+            height: 60
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.margins: 10
+            anchors.bottomMargin: 50
+            radius: 10
+            border.width: 1
+            border.color: colorPurple
+            color: colorLightGray
+            Text{
+                id:quitButtonText
+                anchors.centerIn: parent
+                font.pixelSize: 20
+                text: "Quit"
+            }
+            MouseArea{
+                id:quitButtonMouseArea
+                anchors.fill: parent
+                onClicked: {
+                    Qt.quit()
+                }
+            }
+        }
+
+    }
+    Rectangle{
+        id: focusTimerWindow
+        width: parent.width / 2
+        height: parent.height / 2
+        color: colorDarkGray
+        radius: 50
+        anchors.centerIn: parent
+        z: 1
+        visible: false
+        Rectangle{
+            id: focusTimerCanselButton
+            height: 50
+            width: 100
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.margins: 10
+            anchors.rightMargin: 50
+            radius: 10
+            color: colorLightGray
+            border.width: 1
+            border.color: colorPurple
+            Text{
+                id:focusTimerCanselButtonText
+                anchors.centerIn: parent
+                font.pixelSize: 20
+                color: "White"
+                text: "Cansel"
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    focusTimerWindow.visible = false
+                }
             }
         }
     }
