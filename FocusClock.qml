@@ -6,6 +6,7 @@ Page {
     id: root
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: textNavButton.text
+    property int numberRectValue: 5
     signal buttonClicked();
     background: Rectangle{
         id: backgroundRect
@@ -121,6 +122,8 @@ Page {
                 text: "Timer range"
             }
         }
+
+
         Rectangle{
             id: mainTimerWindow
             anchors.left: parent.left
@@ -133,18 +136,65 @@ Page {
             border.width: 1
             border.color: colorPurple
             Rectangle{
-                id: numberRect
-                height: parent.height / 2
-                width: parent.width / 3
+                id: leftButton
+                anchors.left: parent.left
+                anchors.right: numberRect.left
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.margins: 20
+                height: mainTimerWindow.height / 4
                 radius: 30
+                color: colorDarkGray
+                Text{
+                    id: leftButtonText
+                    font.pixelSize: 40
+                    color: colorYellow
+                    anchors.centerIn: parent
+                    text: "-"
+                }
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        numberRectValue - 5
+                    }
+                }
+            }
+            Rectangle{
+                id: numberRect
+                anchors.left: leftButton.right
                 anchors.centerIn: parent
+                height: mainTimerWindow.height / 2
+                width: mainTimerWindow.width / 3
+                radius: 30
                 color: colorDarkGray
                 Text{
                     id: numberRectText
                     font.pixelSize: 40
                     color: colorYellow
                     anchors.centerIn: parent
-                    text: "5"
+                    text: numberRectValue + "min"
+                }
+            }
+            Rectangle{
+                id: rightButton
+                anchors.right: parent.right
+                anchors.left: numberRect.right
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.margins: 20
+                height: mainTimerWindow.height / 4
+                radius: 30
+                color: colorDarkGray
+                Text{
+                    id: rightButtonText
+                    font.pixelSize: 40
+                    color: colorYellow
+                    anchors.centerIn: parent
+                    text: "+"
+                }
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        numberRectValue + 5
+                    }
                 }
             }
         }
