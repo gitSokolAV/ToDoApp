@@ -68,6 +68,39 @@ Page {
             }
         }
         Rectangle{
+            id: timeModelRectangle
+            anchors.top: addFocusTimerButton.bottom
+            anchors.bottom: quitButton.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 10
+            radius: 10
+            border.width: 1
+            border.color: colorPurple
+            ListView{
+                id: timeModelView
+                model: timeModel
+                spacing: 10
+                clip: true
+                anchors.fill: parent
+                anchors.margins: 10
+                delegate: Rectangle{
+                    width: parent.width
+                    height: 50
+                    anchors.margins: 10
+                    border.width: 1
+                    border.color: colorPurple
+                    radius: 10
+                    Text{
+                        text: numberRectValue
+                        anchors.centerIn: parent
+                        font.pixelSize: 25
+                    }
+                }
+            }
+        }
+
+        Rectangle{
             id: quitButton
             height: 60
             anchors.left: parent.left
@@ -154,7 +187,12 @@ Page {
                 MouseArea{
                     anchors.fill: parent
                     onClicked: {
-                        numberRectValue - 5
+                        if(numberRectValue === 5){
+                            numberRectValue = 5
+                        }
+                        else{
+                            numberRectValue -= 5
+                        }
                     }
                 }
             }
@@ -171,7 +209,7 @@ Page {
                     font.pixelSize: 40
                     color: colorYellow
                     anchors.centerIn: parent
-                    text: numberRectValue + "min"
+                    text: numberRectValue + " min"
                 }
             }
             Rectangle{
@@ -192,8 +230,9 @@ Page {
                 }
                 MouseArea{
                     anchors.fill: parent
+
                     onClicked: {
-                        numberRectValue + 5
+                        numberRectValue += 5
                     }
                 }
             }
@@ -221,6 +260,7 @@ Page {
             MouseArea{
                 anchors.fill: parent
                 onClicked: {
+                    timeModel.append({"numberRectValue": numberRectValue})
                     focusTimerWindow.visible = false
                 }
             }
