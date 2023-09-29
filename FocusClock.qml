@@ -77,6 +77,7 @@ Page {
             radius: 10
             border.width: 1
             border.color: colorPurple
+            color: colorYellow
             ListView{
                 id: timeModelView
                 model: timeModel
@@ -85,16 +86,47 @@ Page {
                 anchors.fill: parent
                 anchors.margins: 10
                 delegate: Rectangle{
+                    id: viewTimeRectangel
+                    property int clickedIndex: -1
                     width: parent.width
                     height: 50
                     anchors.margins: 10
                     border.width: 1
                     border.color: colorPurple
                     radius: 10
+                    MouseArea{
+                        id:mouseAreaVTR
+                        anchors.fill: parent
+                        onClicked: {
+                            timerText.text = numberRectValue
+                        }
+                    }
+
                     Text{
                         text: numberRectValue
                         anchors.centerIn: parent
                         font.pixelSize: 25
+                    }
+                    Rectangle{
+                        id: deleteButton
+                        width: 20
+                        height: 20
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+                        anchors.margins: 10
+                        radius:10
+                        color: "Red"
+                        Text{
+                            anchors.centerIn: parent
+                            text: "X"
+                        }
+                        MouseArea{
+                            id: mouseAreaDeleteButton
+                            anchors.fill: parent
+                            onClicked: {
+                                timeModel.remove(index)
+                            }
+                        }
                     }
                 }
             }
@@ -314,7 +346,14 @@ Page {
                 text: "Focus Timer"
                 anchors.centerIn: parent
                 font.pixelSize: 80
-            }
+            }            
+        }
+        Text{
+            id:timerText
+            anchors.verticalCenter: mainClock.verticalCenter
+            anchors.horizontalCenter: mainClock.horizontalCenter
+            text: "00:00:00"
+            font.pixelSize: mainClock.width * 0.2
         }
     }
 
