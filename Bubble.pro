@@ -22,3 +22,6 @@ DISTFILES += \
     Category.qml \
     FocusClock.qml \
     ToDoList.qml
+
+HEADERS += \
+    backend.h
