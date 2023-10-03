@@ -10,7 +10,7 @@ class BackEnd : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString timeFromInt READ getTime WRITE setTime NOTIFY timeChanged)
-    Q_PROPERTY(int randomInt READ getRandomInt)
+    //Q_PROPERTY(int randomInt READ getRandomInt)
     QML_ELEMENT
 
         public:

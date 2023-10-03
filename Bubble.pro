@@ -1,6 +1,7 @@
 QT += quick
 
 SOURCES += \
+        backend.cpp \
         main.cpp
 
 resources.files = main.qml AddCategoryBtn.qml ToDoList.qml Category.qml audio/sound.wav FocusClock.qml
