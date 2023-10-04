@@ -355,6 +355,36 @@ Page {
             text: "00:00:00"
             font.pixelSize: mainClock.width * 0.2
         }
+        Rectangle{
+            id: startButton
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: mainClock.horizontalCenter
+            anchors.margins: 20
+            height: 50
+            width: parent.width / 4
+            radius: 10
+            color: colorPurple
+            Text{
+                id: startButtonText
+                anchors.centerIn: parent
+                font.pixelSize: 20
+                text: "START"
+                color: colorYellow
+            }
+            MouseArea{
+                id: startButtonMouseArea
+                anchors.fill: parent
+                onClicked: {
+                    if(startButtonText.text === "START")
+                    {
+                    startButtonText.text = "STOP"
+                    }
+                    else{
+                        startButtonText.text = "START"
+                    }
+                }
+            }
+        }
     }
 
 
