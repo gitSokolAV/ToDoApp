@@ -4,20 +4,17 @@
 #include <QString>
 #include <QTime>
 #include <qqml.h>
-#include <QRandomGenerator>
+
 
 class BackEnd : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString timeFromInt READ getTime WRITE setTime NOTIFY timeChanged)
-    //Q_PROPERTY(int randomInt READ getRandomInt)
+    Q_PROPERTY(QString timeFromInt READ getTime WRITE setTime NOTIFY timeChanged)    
     QML_ELEMENT
 
-        public:
-                 explicit BackEnd(QObject *parent = nullptr);
-
+ public:
+    explicit BackEnd(QObject *parent = nullptr);
     QString getTime();
-    int getRandomInt();
     void setTime(const QString& newTime);
     QString intToTimeString(int timeInSecs);
 
@@ -26,6 +23,5 @@ signals:
 
 private:
     QString timeFromInt;
-    int randomInt;
 };
 #endif // BACKEND_H

@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
+import QtQml
+
 
 Window{
     //width: 1000
@@ -20,7 +22,7 @@ Window{
     }
     ListModel{
         id: categoryListModel
-    }
+    }    
 
 
     Rectangle {
@@ -66,7 +68,8 @@ Window{
                 anchors.top: buttonTodo.bottom
                 anchors.left: buttonTodo.left
                 anchors.right: buttonTodo.right
-                anchors.topMargin: 50
+                anchors.topMargin: 50                
+
                 Text{
                     text: "Focus Clock"
                     color: colorLightGray

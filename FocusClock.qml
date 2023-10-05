@@ -2,17 +2,23 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Dialogs
+import QtQml
 Page {
     id: root
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: textNavButton.text
     property int numberRectValue: 5
+    property int timerMinutesRemainig: 5
+    property bool ticking: false
     signal buttonClicked();
     background: Rectangle{
         id: backgroundRect
     }
     ListModel{
         id: timeModel
+    }
+    BackEnd{
+
     }
 
     Rectangle{
@@ -169,7 +175,8 @@ Page {
         radius: 50
         anchors.centerIn: parent
         z: 1
-        visible: false
+        visible: false        
+
         Rectangle{
             id: titleTimerWindow
             anchors.top: parent.top
@@ -186,7 +193,10 @@ Page {
                 color: "White"
                 text: "Timer range"
             }
+
         }
+
+
 
 
         Rectangle{
@@ -199,7 +209,8 @@ Page {
             radius: 10
             color: colorLightGray
             border.width: 1
-            border.color: colorPurple
+            border.color: colorPurple           
+
             Rectangle{
                 id: leftButton
                 anchors.left: parent.left
@@ -209,6 +220,8 @@ Page {
                 height: mainTimerWindow.height / 4
                 radius: 30
                 color: colorDarkGray
+
+
                 Text{
                     id: leftButtonText
                     font.pixelSize: 40
@@ -264,7 +277,8 @@ Page {
                     anchors.fill: parent
 
                     onClicked: {
-                        numberRectValue += 5
+                        timerMinutesRemainig += 5
+
                     }
                 }
             }

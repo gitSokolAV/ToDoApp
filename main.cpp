@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
             if (!obj && url == objUrl)
                 QCoreApplication::exit(-1);
         }, Qt::QueuedConnection);
-    engine.rootContext() -> setContextProperty("bck", &bck);
+    engine.rootContext()->setContextProperty("bck", &bck);
     engine.load(url);
 
     return app.exec();
