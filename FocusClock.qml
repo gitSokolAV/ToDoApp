@@ -3,6 +3,7 @@ import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQml
+import BackEnd
 Page {
     id: root
     property alias backgroundColor: backgroundRect.color
@@ -18,8 +19,25 @@ Page {
         id: timeModel
     }
     BackEnd{
-
+        id: background
     }
+    Timer {
+        running: ticking
+        repeat: true
+        interval: 1000
+        onTriggered: {
+            if(timerMinutessRemaining === 0) {
+                timerText.text = "STOP";
+                ticking = false;
+                goButton.text = "GO!";
+            } else {
+                timerSecondsRemaining -= 1;
+                backend.timeFromInt = timerSecondsRemaining.toString();
+                timerText.text = backend.timeFromInt;
+            }
+        }
+    }
+
 
     Rectangle{
         id: menuClock

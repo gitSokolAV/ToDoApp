@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
                 QCoreApplication::exit(-1);
         }, Qt::QueuedConnection);
     engine.rootContext()->setContextProperty("bck", &bck);
+    qmlRegisterType<BackEnd>("BackEnd", 1,0,"BackEnd");
     engine.load(url);
 
     return app.exec();
