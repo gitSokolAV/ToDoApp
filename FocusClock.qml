@@ -9,7 +9,7 @@ Page {
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: textNavButton.text
     property int numberRectValue: 5
-    property int timerMinutesRemainig: 5
+    property int timerMinutesRemaining: 5
     property bool ticking: false
     signal buttonClicked();
     background: Rectangle{
@@ -19,7 +19,7 @@ Page {
         id: timeModel
     }
     BackEnd{
-        id: background
+        id: backend
     }
     Timer {
         running: ticking
@@ -29,10 +29,10 @@ Page {
             if(timerMinutessRemaining === 0) {
                 timerText.text = "STOP";
                 ticking = false;
-                goButton.text = "GO!";
+                startButtonText.text = "GO!";
             } else {
-                timerSecondsRemaining -= 1;
-                backend.timeFromInt = timerSecondsRemaining.toString();
+                timerMinutesRemaining -= 1;
+                backend.timeFromInt = timerMinutesRemaining.toString();
                 timerText.text = backend.timeFromInt;
             }
         }
@@ -122,7 +122,10 @@ Page {
                         id:mouseAreaVTR
                         anchors.fill: parent
                         onClicked: {
-                            timerText.text = numberRectValue
+                            timerMinutesRemaining = numberRectValue;
+                            backend.timeFromInt = timerMinutesRemaining.toString();
+                            timerText.text = timerMinutesRemaining.toString();
+
                         }
                     }
 
@@ -250,12 +253,14 @@ Page {
                 MouseArea{
                     anchors.fill: parent
                     onClicked: {
-                        if(numberRectValue === 5){
-                            numberRectValue = 5
+                        if(timerMinutesRemaining > 5){
+                            timerMinutesRemaining -= 5
                         }
                         else{
-                            numberRectValue -= 5
+                            numberRectValue = 5
                         }
+                        backend.timeFromInt = timerMinutesRemaining.toString();
+                        timerText.text = backend.timeFromInt;
                     }
                 }
             }
@@ -272,7 +277,7 @@ Page {
                     font.pixelSize: 40
                     color: colorYellow
                     anchors.centerIn: parent
-                    text: numberRectValue + " min"
+                    text: timerMinutesRemaining + " min"
                 }
             }
             Rectangle{
@@ -295,7 +300,9 @@ Page {
                     anchors.fill: parent
 
                     onClicked: {
-                        timerMinutesRemainig += 5
+                        timerMinutesRemaining += 5;
+                        backend.timeFromInt = timerMinutesRemaining.toString();
+                        timerText.text = backend.timeFromInt;
 
                     }
                 }
@@ -406,13 +413,15 @@ Page {
             MouseArea{
                 id: startButtonMouseArea
                 anchors.fill: parent
+
                 onClicked: {
-                    if(startButtonText.text === "START")
-                    {
-                    startButtonText.text = "STOP"
+                    if(timerMinutesRemaining === 0){
+                        startButtonText.text = "START";
+                        ticking = false;
                     }
-                    else{
-                        startButtonText.text = "START"
+                    else if(timerMinutesRemaining !== 0){
+                        ticking != ticking;
+                        startButtonText.text = ticking ? "STOP" : "START";
                     }
                 }
             }
