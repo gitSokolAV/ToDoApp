@@ -11,7 +11,7 @@ QString BackEnd::getTime()
 void BackEnd::setTime(const QString& newTime)
 {
     QTime* currentTime = new QTime(0,0,0);
-    *currentTime = currentTime->addSecs(newTime.toInt());
+    *currentTime = currentTime->addSecs(newTime.toInt()* 60);
     timeFromInt = currentTime->toString("hh:mm:ss");
     emit timeChanged();
 }

@@ -26,7 +26,7 @@ Page {
         repeat: true
         interval: 1000
         onTriggered: {
-            if(timerMinutessRemaining === 0) {
+            if(timerMinutesRemaining === 0) {
                 timerText.text = "STOP";
                 ticking = false;
                 startButtonText.text = "GO!";
@@ -125,7 +125,6 @@ Page {
                             timerMinutesRemaining = numberRectValue;
                             backend.timeFromInt = timerMinutesRemaining.toString();
                             timerText.text = timerMinutesRemaining.toString();
-
                         }
                     }
 
@@ -331,7 +330,7 @@ Page {
             MouseArea{
                 anchors.fill: parent
                 onClicked: {
-                    timeModel.append({"numberRectValue": numberRectValue})
+                    timeModel.append({"numberRectValue": timerMinutesRemaining})
                     focusTimerWindow.visible = false
                 }
             }
@@ -420,7 +419,7 @@ Page {
                         ticking = false;
                     }
                     else if(timerMinutesRemaining !== 0){
-                        ticking != ticking;
+                        ticking = true;
                         startButtonText.text = ticking ? "STOP" : "START";
                     }
                 }
