@@ -9,7 +9,7 @@ Page {
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: textNavButton.text
     property int numberRectValue: 5
-    property int timerMinutesRemaining: 5
+    property int timerMinutesRemaining: 5 * 60
     property bool ticking: false
     signal buttonClicked();
     background: Rectangle{
@@ -30,7 +30,7 @@ Page {
                 timerText.text = "STOP";
                 ticking = false;
                 startButtonText.text = "GO!";
-            } else {
+            } else {                
                 timerMinutesRemaining -= 1;
                 backend.timeFromInt = timerMinutesRemaining.toString();
                 timerText.text = backend.timeFromInt;
@@ -122,16 +122,17 @@ Page {
                         id:mouseAreaVTR
                         anchors.fill: parent
                         onClicked: {
-                            timerMinutesRemaining = numberRectValue;
+                            timerMinutesRemaining = numberRectValue * 60;
                             backend.timeFromInt = timerMinutesRemaining.toString();
-                            timerText.text = timerMinutesRemaining.toString();
+                            timerText.text = (timerMinutesRemaining / 60).toString() + " min";
                         }
                     }
 
                     Text{
-                        text: numberRectValue
+                        text: numberRectValue + " min"
                         anchors.centerIn: parent
                         font.pixelSize: 25
+                        color: "red"
                     }
                     Rectangle{
                         id: deleteButton
@@ -276,7 +277,7 @@ Page {
                     font.pixelSize: 40
                     color: colorYellow
                     anchors.centerIn: parent
-                    text: timerMinutesRemaining + " min"
+                    text: timerMinutesRemaining / 60 + " min"
                 }
             }
             Rectangle{
@@ -299,10 +300,9 @@ Page {
                     anchors.fill: parent
 
                     onClicked: {
-                        timerMinutesRemaining += 5;
-                        backend.timeFromInt = timerMinutesRemaining.toString();
+                        timerMinutesRemaining += 5 * 60 ;
+                        backend.timeFromInt = (timerMinutesRemaining).toString();
                         timerText.text = backend.timeFromInt;
-
                     }
                 }
             }
@@ -330,7 +330,7 @@ Page {
             MouseArea{
                 anchors.fill: parent
                 onClicked: {
-                    timeModel.append({"numberRectValue": timerMinutesRemaining})
+                    timeModel.append({"numberRectValue": timerMinutesRemaining / 60})
                     focusTimerWindow.visible = false
                 }
             }
