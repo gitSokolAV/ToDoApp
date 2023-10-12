@@ -254,7 +254,7 @@ Page {
                     anchors.fill: parent
                     onClicked: {
                         if(timerMinutesRemaining > 5){
-                            timerMinutesRemaining -= 5
+                            timerMinutesRemaining -= 5 * 60
                         }
                         else{
                             numberRectValue = 5
@@ -418,10 +418,15 @@ Page {
                         startButtonText.text = "START";
                         ticking = false;
                     }
+                    else if(timerMinutesRemaining !== 0 && startButtonText.text === "STOP"){
+                        ticking = false;
+                        startButtonText.text = ticking ? "STOP" : "START";
+                    }
                     else if(timerMinutesRemaining !== 0){
                         ticking = true;
                         startButtonText.text = ticking ? "STOP" : "START";
                     }
+
                 }
             }
         }
