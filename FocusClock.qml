@@ -27,9 +27,9 @@ Page {
         interval: 1000
         onTriggered: {
             if(timerMinutesRemaining === 0) {
-                timerText.text = "STOP";
+                timerText.text = "00:00:00";
                 ticking = false;
-                startButtonText.text = "GO!";
+                startButtonText.text = "START";
             } else {                
                 timerMinutesRemaining -= 1;
                 backend.timeFromInt = timerMinutesRemaining.toString();
@@ -394,6 +394,69 @@ Page {
             font.pixelSize: mainClock.width * 0.2
         }
         Rectangle{
+            id: pauseButton
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.margins: 20
+            height: 50
+            width: parent.width / 3
+            radius: 10
+            color: colorPurple
+            visible: false
+            Text{
+                id: pauseButtonText
+                anchors.centerIn: parent
+                font.pixelSize: 20
+                text: "PAUSE"
+                color: colorYellow
+            }
+            MouseArea{
+                id: pauseButtonMouseArea
+                anchors.fill: parent
+                onClicked: {
+                    if(timerMinutesRemaining !== 0 && pauseButtonText.text === "PAUSE"){
+                        ticking = false;
+                        pauseButtonText.text = "START";
+                    }
+                    else if(timerMinutesRemaining !== 0 && pauseButtonText.text === "START"){
+                        ticking = true;
+                        pauseButtonText.text = "PAUSE";
+                    }
+
+                }
+            }
+        }
+        Rectangle{
+            id: stopButton
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            anchors.margins: 20
+            height: 50
+            width: parent.width / 3
+            radius: 10
+            color: colorPurple
+            visible: false
+            Text{
+                id: stopButtonText
+                anchors.centerIn: parent
+                font.pixelSize: 20
+                text: "STOP"
+                color: colorYellow
+            }
+            MouseArea{
+                id: stopButtonMouseArea
+                anchors.fill: parent
+                onClicked: {
+                    timerMinutesRemaining = 0;
+                    ticking = true;
+                    pauseButton.visible = false;
+                    stopButton.visible = false;
+                    startButton.visible = true;
+                }
+            }
+        }
+
+        Rectangle{
             id: startButton
             anchors.bottom: parent.bottom
             anchors.horizontalCenter: mainClock.horizontalCenter
@@ -402,6 +465,7 @@ Page {
             width: parent.width / 4
             radius: 10
             color: colorPurple
+            visible: true
             Text{
                 id: startButtonText
                 anchors.centerIn: parent
@@ -418,15 +482,12 @@ Page {
                         startButtonText.text = "START";
                         ticking = false;
                     }
-                    else if(timerMinutesRemaining !== 0 && startButtonText.text === "STOP"){
-                        ticking = false;
-                        startButtonText.text = ticking ? "STOP" : "START";
-                    }
                     else if(timerMinutesRemaining !== 0){
                         ticking = true;
-                        startButtonText.text = ticking ? "STOP" : "START";
+                        startButton.visible = false;
+                        pauseButton.visible = true;
+                        stopButton.visible = true;
                     }
-
                 }
             }
         }
