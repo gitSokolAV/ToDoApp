@@ -253,7 +253,7 @@ Page {
                 MouseArea{
                     anchors.fill: parent
                     onClicked: {
-                        if(timerMinutesRemaining > 5){
+                        if(timerMinutesRemaining >= 5){
                             timerMinutesRemaining -= 5 * 60
                         }
                         else{
@@ -392,11 +392,13 @@ Page {
             anchors.horizontalCenter: mainClock.horizontalCenter
             text: "00:00:00"
             font.pixelSize: mainClock.width * 0.2
+            color: colorPurple
         }
         Rectangle{
             id: pauseButton
             anchors.bottom: parent.bottom
             anchors.left: parent.left
+            anchors.right: stopButton.left
             anchors.margins: 20
             height: 50
             width: parent.width / 3
@@ -429,6 +431,7 @@ Page {
         Rectangle{
             id: stopButton
             anchors.bottom: parent.bottom
+            anchors.left: parent.Center
             anchors.right: parent.right
             anchors.margins: 20
             height: 50
