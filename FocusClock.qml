@@ -4,6 +4,7 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQml
 import BackEnd
+import QtMultimedia
 Page {
     id: root
     property alias backgroundColor: backgroundRect.color
@@ -12,6 +13,11 @@ Page {
     property int timerMinutesRemaining: 5 * 60
     property bool ticking: false
     signal buttonClicked();
+    SoundEffect{
+        id: endTime
+        source: "audio/sound.wav"
+    }
+
     background: Rectangle{
         id: backgroundRect
     }
@@ -30,6 +36,7 @@ Page {
                 timerText.text = "00:00:00";
                 ticking = false;
                 startButtonText.text = "START";
+                endTime.play();
             } else {                
                 timerMinutesRemaining -= 1;
                 backend.timeFromInt = timerMinutesRemaining.toString();
