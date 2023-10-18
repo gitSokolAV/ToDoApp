@@ -11,6 +11,7 @@ Page {
     property alias buttonText: textNavButton.text
     property int numberRectValue: 5
     property int timerMinutesRemaining: 5 * 60
+    property string viewTimeRectangleColor: colorDarkGray
     property bool ticking: false
     signal buttonClicked();
     SoundEffect{
@@ -124,14 +125,56 @@ Page {
                     anchors.margins: 10
                     border.width: 1
                     border.color: colorPurple
+                    color: viewTimeRectangleColor
                     radius: 10
                     MouseArea{
                         id:mouseAreaVTR
                         anchors.fill: parent
+                        acceptedButtons: Qt.LeftButton | Qt.RightButton
                         onClicked: {
-                            timerMinutesRemaining = numberRectValue * 60;
-                            backend.timeFromInt = timerMinutesRemaining.toString();
-                            timerText.text = (timerMinutesRemaining / 60).toString() + " min";
+                            if (mouse.button === Qt.RightButton) {
+
+                                menuPopUp.popup();
+                            }
+                            else{
+                                timerMinutesRemaining = numberRectValue * 60;
+                                backend.timeFromInt = timerMinutesRemaining.toString();
+                                timerText.text = (timerMinutesRemaining / 60).toString() + " min";
+                            }
+                        }
+                    }
+                    Menu{
+                        id:menuPopUp
+                        MenuItem{
+                            text: "Change color"
+                            onClicked: {
+                                colorDialog.open();
+                            }
+                        }
+                    }
+                    Dialog{
+                        id: colorDialog
+                        width: 180
+                        height: 120
+                        title: "Select Color"
+                        standardButtons: Dialog.Ok | Dialog.Cancel
+                        Button {
+                            id: btnColor
+                            width: 160
+                            height: 50
+                            text: "Color"
+                            onClicked: {
+                                colorDialogOpen.open();
+                            }
+                        }
+                        ColorDialog{
+                            id: colorDialogOpen
+                            onAccepted: {
+                                var newColor = colorDialogOpen.selectedColor;
+                                var clickedObjectIndex = mouseAreaVTR.clickedIndex;
+
+                                timeModel.setProperty(clickedObjectIndex, "viewTimeRectangeColor", newColor)
+                            }
                         }
                     }
 
@@ -337,7 +380,8 @@ Page {
             MouseArea{
                 anchors.fill: parent
                 onClicked: {
-                    timeModel.append({"numberRectValue": timerMinutesRemaining / 60})
+                    timeModel.append({"numberRectValue": timerMinutesRemaining / 60,
+                                      "viewTimeRectangleColor": colorDarkGray})
                     focusTimerWindow.visible = false
                 }
             }
