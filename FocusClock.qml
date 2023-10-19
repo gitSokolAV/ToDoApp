@@ -546,6 +546,32 @@ Page {
             }
         }
     }
+    Rectangle{
+        id: fullScreanBtn
+        anchors.right: navButton.left
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        color: "White"
+        radius: 10
+        height: 50
+        width: textFullScreanBtn.width + 20
+        TextArea{
+            id: textFullScreanBtn
+            text: "Full Screan"
+            anchors.centerIn: parent
+            font.pixelSize: 16
+            color: backgroundColor
+        }
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                if(timerMinutesRemaining !== 0){
+                    mainClock.width = parent.width
+                    mainClock.height = parent.height
+                }
+            }
+        }
+    }
 
 
 
