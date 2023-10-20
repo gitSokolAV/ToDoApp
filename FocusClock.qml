@@ -547,31 +547,56 @@ Page {
         }
     }
     Rectangle{
-        id: fullScreanBtn
-        anchors.right: navButton.left
-        anchors.bottom: parent.bottom
-        anchors.margins: 10
-        color: "White"
-        radius: 10
-        height: 50
-        width: textFullScreanBtn.width + 20
-        TextArea{
-            id: textFullScreanBtn
-            text: "Full Screan"
-            anchors.centerIn: parent
-            font.pixelSize: 16
-            color: backgroundColor
+            id: fullScreenRect
+            anchors.top: parent.top
+            anchors.bottom: fullScreenBtn.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 10
+            radius: 10
+            color: colorPurple
+
+            visible: false
+            Label{
+                id: fullScreenLabel
+                text: timerText.text
+                font.pixelSize: parent.width * 0.2
+                anchors.centerIn: parent
+                color: colorYellow
+            }
         }
-        MouseArea{
-            anchors.fill: parent
-            onClicked: {
-                if(timerMinutesRemaining !== 0){
-                    mainClock.width = parent.width
-                    mainClock.height = parent.height
+
+        Rectangle{
+            id: fullScreenBtn
+            anchors.right: navButton.left
+            anchors.bottom: parent.bottom
+            anchors.margins: 10
+            color: "White"
+            radius: 10
+            height: 50
+            width: textFullScreenBtn.width + 20
+            TextArea{
+                id: textFullScreenBtn
+                text: "Full Screen"
+                anchors.centerIn: parent
+                font.pixelSize: 16
+                color: backgroundColor
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    if(timerMinutesRemaining !== 0 && textFullScreenBtn.text === "Full Screen"){
+                        fullScreenRect.visible = true;
+                        textFullScreenBtn.text = "Exit full screen mode";
+                    }
+                    else if(timerMinutesRemaining !== 0 && textFullScreenBtn.text === "Exit full screen mode"){
+                        fullScreenRect.visible = false;
+                        textFullScreenBtn.text = "Full Screen"
+
+                    }
                 }
             }
         }
-    }
 
 
 
