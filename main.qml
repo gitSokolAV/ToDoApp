@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
+import QtQml
+
 
 Window{
     //width: 1000
@@ -20,7 +22,7 @@ Window{
     }
     ListModel{
         id: categoryListModel
-    }
+    }    
 
 
     Rectangle {
@@ -42,6 +44,7 @@ Window{
                 color: colorPurple
                 border.width: 1
                 anchors.centerIn: parent
+
                 Text{
                     text: "To Do App"
                     color: colorLightGray
@@ -55,9 +58,43 @@ Window{
                     }
                 }
             }
+            Rectangle{
+                id: buttonFocusClock
+                height: 50
+                width: 300
+                color: colorPurple
+                border.width: 1
+
+                anchors.top: buttonTodo.bottom
+                anchors.left: buttonTodo.left
+                anchors.right: buttonTodo.right
+                anchors.topMargin: 50                
+
+                Text{
+                    text: "Focus Clock"
+                    color: colorLightGray
+                    font.pixelSize: 20
+                    anchors.centerIn: parent
+                }
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        stackView.push(pageFoculClock)
+                    }
+                }
+            }
         }
         Category{
             id: pageCategory
+            backgroundColor: colorPurple
+            visible: false
+            buttonText: "Back"
+            onButtonClicked: {
+                stackView.pop()
+            }
+        }
+        FocusClock{
+            id: pageFoculClock
             backgroundColor: colorPurple
             visible: false
             buttonText: "Back"
