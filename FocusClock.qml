@@ -565,7 +565,28 @@ Page {
                 color: colorYellow
             }
         }
+    Rectangle{
+        id: colorBtn
+        anchors.right: fullScreenBtn.left
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        color: "White"
+        radius: 10
+        height: 50
+        width: textColorBtn.width + 20
+        visible: true
+        TextArea{
+            id: textColorBtn
+            text: "Change color"
+            anchors.centerIn: parent
+            font.pixelSize: 16
+            color: backgroundColor
+        }
+        MouseArea{
+            anchors.fill: parent
 
+        }
+    }
         Rectangle{
             id: fullScreenBtn
             anchors.right: navButton.left
@@ -588,11 +609,12 @@ Page {
                     if(timerMinutesRemaining !== 0 && textFullScreenBtn.text === "Full Screen"){
                         fullScreenRect.visible = true;
                         textFullScreenBtn.text = "Exit full screen mode";
+                        colorBtn.visible = false
                     }
                     else if(timerMinutesRemaining !== 0 && textFullScreenBtn.text === "Exit full screen mode"){
                         fullScreenRect.visible = false;
+                        colorBtn.visible = true;
                         textFullScreenBtn.text = "Full Screen"
-
                     }
                 }
             }
