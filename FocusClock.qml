@@ -565,6 +565,29 @@ Page {
                 color: colorYellow
             }
         }
+    Dialog{
+        id: changeColorDialog
+        width: 180
+        height: 120
+        title: "Select Color"
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        Button {
+            id: selectColor
+            width: 160
+            height: 50
+            text: "Color"
+            onClicked: {
+                changeColorDialogOpen.open();
+            }
+        }
+        ColorDialog{
+            id: changeColorDialogOpen
+            onAccepted: {
+                var newColor = changeColorDialogOpen.selectedColor;
+                console.log(newColor)
+            }
+        }
+    }
     Rectangle{
         id: colorBtn
         anchors.right: fullScreenBtn.left
@@ -582,10 +605,14 @@ Page {
             font.pixelSize: 16
             color: backgroundColor
         }
+
         MouseArea{
             anchors.fill: parent
-
+            onClicked: {
+                changeColorDialog.open();
+            }
         }
+
     }
         Rectangle{
             id: fullScreenBtn
