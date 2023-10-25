@@ -13,6 +13,8 @@ Page {
     property int timerMinutesRemaining: 5 * 60
     property string viewTimeRectangleColor: colorDarkGray
     property bool ticking: false
+    property string firstColor: colorPurple
+    property string secondColor: colorYellow
     signal buttonClicked();
     SoundEffect{
         id: endTime
@@ -59,7 +61,7 @@ Page {
         anchors.leftMargin: 100
         anchors.rightMargin: 20
         radius: 50
-        color: "Yellow"
+        color: secondColor
         Label{
             id: menuLabel
             height: 100
@@ -83,8 +85,8 @@ Page {
             anchors.margins: 10
             radius: 10
             border.width: 1
-            border.color: colorPurple
-            color: "Yellow"
+            border.color: firstColor
+            color: secondColor
             Text{
                 id:addFocusTimerButtonText
                 anchors.centerIn: parent
@@ -108,8 +110,8 @@ Page {
             anchors.margins: 10
             radius: 10
             border.width: 1
-            border.color: colorPurple
-            color: colorYellow
+            border.color: firstColor
+            color: secondColor
             ListView{
                 id: timeModelView
                 model: timeModel
@@ -124,7 +126,7 @@ Page {
                     height: 50
                     anchors.margins: 10
                     border.width: 1
-                    border.color: colorPurple
+                    border.color: firstColor
                     color: viewTimeRectangleColor
                     radius: 10
                     MouseArea{
@@ -219,14 +221,14 @@ Page {
             anchors.bottomMargin: 50
             radius: 10
             border.width: 1
-            border.color: colorPurple
-            color: colorLightGray
+            border.color: firstColor
+            color: secondColor
             Text{
                 id:quitButtonText
                 anchors.centerIn: parent
                 font.pixelSize: 20
                 text: "Quit"
-                color: colorYellow
+                color: firstColor
             }
             MouseArea{
                 id:quitButtonMouseArea
@@ -280,7 +282,7 @@ Page {
             radius: 10
             color: colorLightGray
             border.width: 1
-            border.color: colorPurple           
+            border.color: firstColor
 
             Rectangle{
                 id: leftButton
@@ -296,7 +298,7 @@ Page {
                 Text{
                     id: leftButtonText
                     font.pixelSize: 40
-                    color: colorYellow
+                    color: secondColor
                     anchors.centerIn: parent
                     text: "-"
                 }
@@ -325,7 +327,7 @@ Page {
                 Text{
                     id: numberRectText
                     font.pixelSize: 40
-                    color: colorYellow
+                    color: secondColor
                     anchors.centerIn: parent
                     text: timerMinutesRemaining / 60 + " min"
                 }
@@ -342,7 +344,7 @@ Page {
                 Text{
                     id: rightButtonText
                     font.pixelSize: 40
-                    color: colorYellow
+                    color: secondColor
                     anchors.centerIn: parent
                     text: "+"
                 }
@@ -369,7 +371,7 @@ Page {
             radius: 10
             color: colorLightGray
             border.width: 1
-            border.color: colorPurple
+            border.color: firstColor
             Text{
                 id:focusTimerSaveButtonText
                 anchors.centerIn: parent
@@ -397,7 +399,7 @@ Page {
             radius: 10
             color: colorLightGray
             border.width: 1
-            border.color: colorPurple
+            border.color: firstColor
             Text{
                 id:focusTimerCanselButtonText
                 anchors.centerIn: parent
@@ -420,7 +422,7 @@ Page {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        color: "Yellow"
+        color: secondColor
         anchors.margins: 100
         radius: 50
         Label{
@@ -443,7 +445,7 @@ Page {
             anchors.horizontalCenter: mainClock.horizontalCenter
             text: "00:00:00"
             font.pixelSize: mainClock.width * 0.2
-            color: colorPurple
+            color: firstColor
         }
         Rectangle{
             id: pauseButton
@@ -454,14 +456,14 @@ Page {
             height: 50
             width: parent.width / 3
             radius: 10
-            color: colorPurple
+            color: firstColor
             visible: false
             Text{
                 id: pauseButtonText
                 anchors.centerIn: parent
                 font.pixelSize: 20
                 text: "PAUSE"
-                color: colorYellow
+                color: secondColor
             }
             MouseArea{
                 id: pauseButtonMouseArea
@@ -488,14 +490,14 @@ Page {
             height: 50
             width: parent.width / 3
             radius: 10
-            color: colorPurple
+            color: firstColor
             visible: false
             Text{
                 id: stopButtonText
                 anchors.centerIn: parent
                 font.pixelSize: 20
                 text: "STOP"
-                color: colorYellow
+                color: secondColor
             }
             MouseArea{
                 id: stopButtonMouseArea
@@ -518,14 +520,14 @@ Page {
             height: 50
             width: parent.width / 4
             radius: 10
-            color: colorPurple
+            color: firstColor
             visible: true
             Text{
                 id: startButtonText
                 anchors.centerIn: parent
                 font.pixelSize: 20
                 text: "START"
-                color: colorYellow
+                color: secondColor
             }
             MouseArea{
                 id: startButtonMouseArea
@@ -554,7 +556,7 @@ Page {
             anchors.right: parent.right
             anchors.margins: 10
             radius: 10
-            color: colorPurple
+            color: firstColor
 
             visible: false
             Label{
@@ -562,29 +564,51 @@ Page {
                 text: timerText.text
                 font.pixelSize: parent.width * 0.2
                 anchors.centerIn: parent
-                color: colorYellow
+                color: secondColor
             }
         }
     Dialog{
         id: changeColorDialog
         width: 180
-        height: 120
+        height: 170
         title: "Select Color"
         standardButtons: Dialog.Ok | Dialog.Cancel
         Button {
-            id: selectColor
-            width: 160
+            id: firstColorBtn
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 5
             height: 50
-            text: "Color"
+            text: "First Color"
             onClicked: {
-                changeColorDialogOpen.open();
+                firstChangeColorDialogOpen.open();
+            }
+        }
+        Button {
+            id: secondColorBtn
+            anchors.top: firstColorBtn.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 5
+            height: 50
+            text: "Second Color"
+            onClicked: {
+                secondChangeColorDialogOpen.open();
             }
         }
         ColorDialog{
-            id: changeColorDialogOpen
+            id: firstChangeColorDialogOpen
             onAccepted: {
-                var newColor = changeColorDialogOpen.selectedColor;
-                console.log(newColor)
+                var newColor = firstChangeColorDialogOpen.selectedColor;
+                firstColor = newColor;
+            }
+        }
+        ColorDialog{
+            id: secondChangeColorDialogOpen
+            onAccepted: {
+                var newColor = secondChangeColorDialogOpen.selectedColor;
+                secondColor = newColor;
             }
         }
     }
