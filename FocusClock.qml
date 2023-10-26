@@ -20,6 +20,10 @@ Page {
         id: endTime
         source: "audio/sound.wav"
     }
+    SoundEffect{
+        id: secondsTime
+        source: "audio/sound2.wav"
+    }
 
     background: Rectangle{
         id: backgroundRect
@@ -40,7 +44,8 @@ Page {
                 ticking = false;
                 startButtonText.text = "START";
                 endTime.play();
-            } else {                
+            } else {
+                secondsTime.play();
                 timerMinutesRemaining -= 1;
                 backend.timeFromInt = timerMinutesRemaining.toString();
                 timerText.text = backend.timeFromInt;
