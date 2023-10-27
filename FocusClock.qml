@@ -451,6 +451,7 @@ Page {
             text: "00:00:00"
             font.pixelSize: mainClock.width * 0.2
             color: firstColor
+            visible: true
         }
         Rectangle{
             id: pauseButton
@@ -553,6 +554,7 @@ Page {
             }
         }
     }
+
     Rectangle{
             id: fullScreenRect
             anchors.top: parent.top
@@ -570,6 +572,7 @@ Page {
                 font.pixelSize: parent.width * 0.2
                 anchors.centerIn: parent
                 color: secondColor
+                visible: true
             }
         }
     Dialog{
@@ -643,38 +646,72 @@ Page {
         }
 
     }
-        Rectangle{
-            id: fullScreenBtn
-            anchors.right: navButton.left
-            anchors.bottom: parent.bottom
-            anchors.margins: 10
-            color: "White"
-            radius: 10
-            height: 50
-            width: textFullScreenBtn.width + 20
-            TextArea{
-                id: textFullScreenBtn
-                text: "Full Screen"
-                anchors.centerIn: parent
-                font.pixelSize: 16
-                color: backgroundColor
-            }
-            MouseArea{
-                anchors.fill: parent
-                onClicked: {
-                    if(timerMinutesRemaining !== 0 && textFullScreenBtn.text === "Full Screen"){
-                        fullScreenRect.visible = true;
-                        textFullScreenBtn.text = "Exit full screen mode";
-                        colorBtn.visible = false
-                    }
-                    else if(timerMinutesRemaining !== 0 && textFullScreenBtn.text === "Exit full screen mode"){
-                        fullScreenRect.visible = false;
-                        colorBtn.visible = true;
-                        textFullScreenBtn.text = "Full Screen"
-                    }
+    Rectangle{
+        id: visibleTextLabelBtn
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        color: "White"
+        radius: 10
+        height: 50
+        width: textVisibleTextLabelBtn.width + 20
+        visible: false
+        TextArea{
+           id: textVisibleTextLabelBtn
+           text: "Hide Timer"
+           anchors.centerIn: parent
+           font.pixelSize: 16
+           color: "RED"
+        }
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                if(textVisibleTextLabelBtn.text === "Hide Timer"){
+                    textVisibleTextLabelBtn.text = "Show Timer";
+                   fullScreenLabel.visible = false;
+                }
+                else if(textVisibleTextLabelBtn.text === "Show Timer"){
+                    textVisibleTextLabelBtn.text = "Hide Timer";
+                    fullScreenLabel.visible = true;
                 }
             }
         }
+    }
+
+    Rectangle{
+        id: fullScreenBtn
+        anchors.right: navButton.left
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        color: "White"
+        radius: 10
+        height: 50
+        width: textFullScreenBtn.width + 20
+        TextArea{
+            id: textFullScreenBtn
+            text: "Full Screen"
+            anchors.centerIn: parent
+            font.pixelSize: 16
+            color: backgroundColor
+        }
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                if(timerMinutesRemaining !== 0 && textFullScreenBtn.text === "Full Screen"){
+                    fullScreenRect.visible = true;
+                    visibleTextLabelBtn.visible = true;
+                    textFullScreenBtn.text = "Exit full screen mode";
+                    colorBtn.visible = false
+                }
+                else if(timerMinutesRemaining !== 0 && textFullScreenBtn.text === "Exit full screen mode"){
+                    fullScreenRect.visible = false;
+                    visibleTextLabelBtn.visible = false;
+                    colorBtn.visible = true;
+                    textFullScreenBtn.text = "Full Screen"
+                }
+            }
+        }
+    }
 
 
 
