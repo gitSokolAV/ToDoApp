@@ -9,7 +9,7 @@ Page {
     id: root
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: textNavButton.text
-    property int numberRectValue: 5
+    property int numberRectValue: 0
     property int timerMinutesRemaining: 5 * 60
     property string viewTimeRectangleColor: colorDarkGray
     property bool ticking: false
@@ -34,7 +34,7 @@ Page {
     BackEnd{
         id: backend
     }
-    Timer {
+    Timer {        
         running: ticking
         repeat: true
         interval: 1000
@@ -45,10 +45,18 @@ Page {
                 startButtonText.text = "START";
                 endTime.play();
             } else {
-                secondsTime.play();
-                timerMinutesRemaining -= 1;
-                backend.timeFromInt = timerMinutesRemaining.toString();
-                timerText.text = backend.timeFromInt;
+                if(textStopSoundBtn.text === "Sound Off"){
+                    secondsTime.play();
+                    timerMinutesRemaining -= 1;
+                    backend.timeFromInt = timerMinutesRemaining.toString();
+                    timerText.text = backend.timeFromInt;
+                }
+                else{
+                    secondsTime.stop();
+                    timerMinutesRemaining -= 1;
+                    backend.timeFromInt = timerMinutesRemaining.toString();
+                    timerText.text = backend.timeFromInt;
+                }
             }
         }
     }
@@ -476,7 +484,7 @@ Page {
                 anchors.fill: parent
                 onClicked: {
                     if(timerMinutesRemaining !== 0 && pauseButtonText.text === "PAUSE"){
-                        ticking = false;
+                        ticking = false;                        
                         pauseButtonText.text = "START";
                     }
                     else if(timerMinutesRemaining !== 0 && pauseButtonText.text === "START"){
@@ -620,6 +628,36 @@ Page {
             }
         }
     }
+    Rectangle{
+        id: stopSoundBtn
+        anchors.right: colorBtn.left
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        color: "White"
+        radius: 10
+        height: 50
+        width: textStopSoundBtn.width + 20
+        visible: true
+        TextArea{
+            id: textStopSoundBtn
+            text: "Sound Off"
+            anchors.centerIn: parent
+            font.pixelSize: 16
+            color: backgroundColor
+        }
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                if(timerMinutesRemaining !== 0 && textStopSoundBtn.text === "Sound Off"){
+                    textStopSoundBtn.text = "Sound On";
+                }
+                else{
+                    textStopSoundBtn.text = "Sound Off";
+                }
+            }
+        }
+    }
+
     Rectangle{
         id: colorBtn
         anchors.right: fullScreenBtn.left
