@@ -9,7 +9,7 @@ Page {
     id: root
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: textNavButton.text
-    property int numberRectValue: 0
+    property int numberRectValue: 5
     property int timerMinutesRemaining: 5 * 60
     property string viewTimeRectangleColor: colorDarkGray
     property bool ticking: false
@@ -461,6 +461,36 @@ Page {
             color: firstColor
             visible: true
         }
+        Rectangle{
+            id: imageBtn
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.margins: 20
+            height: 50
+            width: textImageBtn.width + 20
+            radius: 10
+            color: "White"
+            Text{
+                id: textImageBtn
+                text: "Select Image"
+                font.pixelSize: 16
+                anchors.centerIn: parent
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    imageDialog.open();
+                }
+            }
+        }
+        FileDialog{
+            id: imageDialog
+            title: "Please select image"
+            currentFolder: "/home/"
+            nameFilters: ["Image (*.png *.jpg)"]
+
+        }
+
         Rectangle{
             id: pauseButton
             anchors.bottom: parent.bottom
