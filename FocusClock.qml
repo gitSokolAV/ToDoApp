@@ -488,6 +488,15 @@ Page {
             title: "Please select image"
             currentFolder: "/home/"
             nameFilters: ["Image (*.png *.jpg)"]
+            onAccepted: {
+                var selectedFile = imageDialog.selectedFile
+                if(selectedFile !== ""){
+
+                }
+            }
+            onRejected: {
+                console.log("Выбор файла отменен")
+            }
 
         }
 
