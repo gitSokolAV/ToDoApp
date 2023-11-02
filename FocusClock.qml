@@ -460,6 +460,7 @@ Page {
             font.pixelSize: mainClock.width * 0.2
             color: firstColor
             visible: true
+            z: 1
         }
         Rectangle{
             id: imageBtn
@@ -487,16 +488,23 @@ Page {
             id: imageDialog
             title: "Please select image"
             currentFolder: "/home/"
-            nameFilters: ["Image (*.png *.jpg)"]
+            nameFilters: ["Image (*.png *.jpeg)"]
             onAccepted: {
                 var selectedFile = imageDialog.selectedFile
                 if(selectedFile !== ""){
-
+                    backgroundImage.source = selectedFile
                 }
             }
             onRejected: {
                 console.log("Выбор файла отменен")
             }
+
+        }
+        Image{
+            id: backgroundImage
+            anchors.fill: parent
+            fillMode: Image.Stretch
+            source: ""
 
         }
 
