@@ -60,7 +60,24 @@ Page {
             }
         }
     }
-
+    Rectangle{
+        id: header
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: menuClock.top
+        anchors.margins: 30
+        radius: 10
+        Label{
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.margins: 20
+            width: parent.width / 2
+            text: "Focus"
+            color: colorPurple
+        }
+    }
 
     Rectangle{
         id: menuClock
@@ -471,6 +488,7 @@ Page {
             width: textImageBtn.width + 20
             radius: 10
             color: "White"
+            z: 1
             Text{
                 id: textImageBtn
                 text: "Select Image"
@@ -488,7 +506,7 @@ Page {
             id: imageDialog
             title: "Please select image"
             currentFolder: "/home/"
-            nameFilters: ["Image (*.png *.jpeg)"]
+            nameFilters: ["Image (*.png *.jpeg *.gif)"]
             onAccepted: {
                 var selectedFile = imageDialog.selectedFile
                 if(selectedFile !== ""){
