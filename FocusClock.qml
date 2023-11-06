@@ -68,14 +68,40 @@ Page {
         anchors.bottom: menuClock.top
         anchors.margins: 30
         radius: 10
-        Label{
-            anchors.left: parent.left
+        color: firstColor
+        Rectangle{
+            id:headerFocus
             anchors.top: parent.top
+            anchors.left: parent.left
             anchors.bottom: parent.bottom
-            anchors.margins: 20
-            width: parent.width / 2
-            text: "Focus"
-            color: colorPurple
+            anchors.right: parent.horizontalCenter
+            anchors.margins: 5
+            radius: 10
+            color: colorYellow
+            TextArea{
+                text: "Focus : "
+                font.pixelSize: parent.height * 0.8
+                color: colorPurple
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+            }
+        }
+        Rectangle{
+            id:headerPause
+            anchors.top: parent.top
+            anchors.left: parent.horizontalCenter
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            anchors.margins: 5
+            radius: 10
+            color: colorYellow
+            TextArea{
+                text: "Pause : "
+                font.pixelSize: parent.height * 0.8
+                color: colorPurple
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+            }
         }
     }
 
