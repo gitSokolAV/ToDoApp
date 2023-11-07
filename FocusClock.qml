@@ -528,6 +528,30 @@ Page {
                 }
             }
         }
+        Rectangle{
+            id: hideImage
+            anchors.bottom: parent.bottom
+            anchors.left: imageBtn.right
+            anchors.margins: 20
+            height: 50
+            width: textHideBtn.width + 20
+            radius: 10
+            color: "White"
+            z: 1
+            Text{
+                id: textHideBtn
+                text: "Delete Image"
+                font.pixelSize: 16
+                anchors.centerIn: parent
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    backgroundImage.visible = false;
+                }
+            }
+        }
+
         FileDialog{
             id: imageDialog
             title: "Please select image"
@@ -536,7 +560,8 @@ Page {
             onAccepted: {
                 var selectedFile = imageDialog.selectedFile
                 if(selectedFile !== ""){
-                    backgroundImage.source = selectedFile
+                    backgroundImage.source = selectedFile;
+                    backgroundImage.visible = true;
                 }
             }
             onRejected: {
