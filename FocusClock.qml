@@ -79,10 +79,20 @@ Page {
             radius: 10
             color: colorYellow
             TextArea{
+                id: textFocus
                 text: "Focus : "
                 font.pixelSize: parent.height * 0.8
                 color: colorPurple
                 anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            TextArea{
+                id: textFocusTime
+                text: "00:00:00"
+                font.pixelSize: parent.height * 0.8
+                color: firstColor
+                anchors.left: textFocus.right
+                anchors.leftMargin: 50
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
@@ -96,10 +106,20 @@ Page {
             radius: 10
             color: colorYellow
             TextArea{
+                id: textPause
                 text: "Pause : "
                 font.pixelSize: parent.height * 0.8
                 color: colorPurple
                 anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            TextArea{
+                id: textPauseTime
+                text: "00:00:00"
+                font.pixelSize: parent.height * 0.8
+                color: firstColor
+                anchors.left: textPause.right
+                anchors.leftMargin: 50
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
