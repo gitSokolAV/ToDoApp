@@ -11,6 +11,8 @@ Page {
     property alias buttonText: textNavButton.text
     property int numberRectValue: 5
     property int timerMinutesRemaining: 5 * 60
+    property int timeFocus: 0
+    property int timePause: 0
     property string viewTimeRectangleColor: colorDarkGray
     property bool ticking: false
     property string firstColor: colorPurple
@@ -50,6 +52,9 @@ Page {
                     timerMinutesRemaining -= 1;
                     backend.timeFromInt = timerMinutesRemaining.toString();
                     timerText.text = backend.timeFromInt;
+                    timeFocus += 1
+                    backend.timeFromInt = timeFocus.toString();
+                    textFocusTime.text = backend.timeFromInt;
                 }
                 else{
                     secondsTime.stop();
