@@ -15,6 +15,7 @@ Page {
     property int timePause: 0
     property string viewTimeRectangleColor: colorDarkGray
     property bool ticking: false
+    property bool pauseTicking: false
     property string firstColor: colorPurple
     property string secondColor: colorYellow
     signal buttonClicked();
@@ -36,6 +37,17 @@ Page {
     BackEnd{
         id: backend
     }
+    Timer{
+        running: pauseTicking
+        repeat: true
+        interval: 1000
+        onTriggered: {
+            timePause += 1;
+            backend.timeFromInt = timePause.toString();
+            textPauseTime.text = backend.timeFromInt;
+        }
+    }
+
     Timer {        
         running: ticking
         repeat: true
@@ -627,10 +639,12 @@ Page {
                     if(timerMinutesRemaining !== 0 && pauseButtonText.text === "PAUSE"){
                         ticking = false;                        
                         pauseButtonText.text = "START";
+                        pauseTicking = true;
                     }
                     else if(timerMinutesRemaining !== 0 && pauseButtonText.text === "START"){
                         ticking = true;
                         pauseButtonText.text = "PAUSE";
+                        pauseTicking = false;
                     }
 
                 }
