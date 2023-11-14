@@ -5,6 +5,7 @@ import QtQuick.Dialogs
 import QtQml
 import BackEnd
 import QtMultimedia
+import CustomControls
 Page {
     id: root
     property alias backgroundColor: backgroundRect.color
@@ -26,6 +27,9 @@ Page {
     SoundEffect{
         id: secondsTime
         source: "audio/sound2.wav"
+    }
+    CustomButton{
+        id: cppButton
     }
 
     background: Rectangle{
@@ -112,6 +116,7 @@ Page {
                 anchors.leftMargin: 50
                 anchors.verticalCenter: parent.verticalCenter
             }
+
         }
         Rectangle{
             id:headerPause
@@ -715,7 +720,7 @@ Page {
                     }
                 }
             }
-        }
+        }        
     }
 
     Rectangle{
@@ -862,10 +867,12 @@ Page {
                 if(textVisibleTextLabelBtn.text === "Hide Timer"){
                     textVisibleTextLabelBtn.text = "Show Timer";
                    fullScreenLabel.visible = false;
+                    customButton.buttonClicked()
                 }
                 else if(textVisibleTextLabelBtn.text === "Show Timer"){
                     textVisibleTextLabelBtn.text = "Hide Timer";
                     fullScreenLabel.visible = true;
+                    customButton.buttonClicked()
                 }
             }
         }

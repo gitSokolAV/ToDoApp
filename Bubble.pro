@@ -2,6 +2,7 @@ QT += quick core
 
 SOURCES += \
         backend.cpp \
+        custombutton.cpp \
         main.cpp
 
 resources.files = main.qml AddCategoryBtn.qml ToDoList.qml Category.qml audio/sound.wav audio/sound2.wav FocusClock.qml
@@ -26,4 +27,5 @@ DISTFILES += \
     ToDoList.qml
 
 HEADERS += \
-    backend.h
+    backend.h \
+    custombutton.h
