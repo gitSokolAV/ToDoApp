@@ -27,10 +27,7 @@ Page {
     SoundEffect{
         id: secondsTime
         source: "audio/sound2.wav"
-    }
-    CustomButton{
-        id: cppButton
-    }
+    }   
 
     background: Rectangle{
         id: backgroundRect
@@ -720,7 +717,12 @@ Page {
                     }
                 }
             }
-        }        
+        }
+        CustomButton{
+            id: cppButton
+
+
+        }
     }
 
     Rectangle{
@@ -742,6 +744,26 @@ Page {
                 color: secondColor
                 visible: true
             }
+            Rectangle {
+                    width: 200
+                    height: 100
+                    color: "lightblue"
+                    anchors.centerIn: parent
+
+                    CustomButton {
+                        id: myCppButton
+                        text: "Click me"
+                        color: "green"
+                        width: 120
+                        height: 40
+                        anchors.centerIn: parent
+
+                        onClicked: {
+                            myCppButton.buttonClicked()
+                        }
+                    }
+                }
+
         }
     Dialog{
         id: changeColorDialog
@@ -867,12 +889,12 @@ Page {
                 if(textVisibleTextLabelBtn.text === "Hide Timer"){
                     textVisibleTextLabelBtn.text = "Show Timer";
                    fullScreenLabel.visible = false;
-                    customButton.buttonClicked()
+
                 }
                 else if(textVisibleTextLabelBtn.text === "Show Timer"){
                     textVisibleTextLabelBtn.text = "Hide Timer";
                     fullScreenLabel.visible = true;
-                    customButton.buttonClicked()
+
                 }
             }
         }
