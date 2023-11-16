@@ -5,7 +5,7 @@ import QtQuick.Dialogs
 import QtQml
 import BackEnd
 import QtMultimedia
-import CustomControls
+import CustomButton
 Page {
     id: root
     property alias backgroundColor: backgroundRect.color
@@ -112,7 +112,7 @@ Page {
                 anchors.left: textFocus.right
                 anchors.leftMargin: 50
                 anchors.verticalCenter: parent.verticalCenter
-            }
+            }            
 
         }
         Rectangle{
@@ -157,6 +157,7 @@ Page {
         anchors.rightMargin: 20
         radius: 50
         color: secondColor
+
         Label{
             id: menuLabel
             height: 100
@@ -744,26 +745,6 @@ Page {
                 color: secondColor
                 visible: true
             }
-            Rectangle {
-                    width: 200
-                    height: 100
-                    color: "lightblue"
-                    anchors.centerIn: parent
-
-                    CustomButton {
-                        id: myCppButton
-                        text: "Click me"
-                        color: "green"
-                        width: 120
-                        height: 40
-                        anchors.centerIn: parent
-
-                        onClicked: {
-                            myCppButton.buttonClicked()
-                        }
-                    }
-                }
-
         }
     Dialog{
         id: changeColorDialog

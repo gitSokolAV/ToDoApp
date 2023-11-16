@@ -20,9 +20,9 @@ int main(int argc, char *argv[])
                 QCoreApplication::exit(-1);
         }, Qt::QueuedConnection);
     engine.rootContext()->setContextProperty("bck", &bck);
-    engine.rootContext()-> setContextProperty("customButton", &customButton);
-    qmlRegisterType<BackEnd>("BackEnd", 1,0,"BackEnd");    
-    qmlRegisterType<CustomButton>("CustomControls", 1, 0, "CustomButton");
+    //engine.rootContext()-> setContextProperty("customButton", &customButton);
+    qmlRegisterType<BackEnd>("BackEnd", 1,0,"BackEnd");
+    qmlRegisterType<CustomButton>("CustomButton", 1, 0, "CustomButton");
     engine.load(url);
 
     return app.exec();

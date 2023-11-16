@@ -1,7 +1,7 @@
 #include "custombutton.h"
 #include <QDebug>
 
-CustomButton::CustomButton(QObject *parent) : QObject(parent), m_width(100), m_height(50)
+CustomButton::CustomButton(QObject *parent) : QObject(parent), m_width(100), m_height(50), m_visible(true)
 {
     m_text  = "Test text";
     m_color = QColor(Qt::yellow);
@@ -48,6 +48,17 @@ void CustomButton::setHeight(int height)
         if(m_height != height){
             m_height = height;
             emit heightChanged();
+        }
+}
+bool CustomButton::visible() const
+{
+        return m_visible;
+}
+void CustomButton::setVisible(bool visible)
+{
+        if(m_visible != visible){
+            m_visible = visible;
+            emit visibleChanged();
         }
 }
 void CustomButton::buttonClicked()

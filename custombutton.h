@@ -12,6 +12,7 @@ class CustomButton : public QObject
     Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
     Q_PROPERTY(int width READ width WRITE setWidth NOTIFY widthChanged)
     Q_PROPERTY(int height READ height WRITE setHeight NOTIFY heightChanged)
+    Q_PROPERTY(bool visible READ visible WRITE setVisible NOTIFY visibleChanged)
 public:
     explicit CustomButton(QObject *parent = nullptr);
 
@@ -27,6 +28,9 @@ public:
     int height() const;
     void setHeight(int height);
 
+    bool visible() const;
+    void setVisible(bool visible);
+
 public slots:
     void buttonClicked();
 signals:
@@ -34,11 +38,13 @@ signals:
     void colorChanged();
     void widthChanged();
     void heightChanged();
+    void visibleChanged();
 private:
     QString m_text;
     QColor m_color;
     int m_width;
     int m_height;
+    bool m_visible;
 };
 
 #endif
