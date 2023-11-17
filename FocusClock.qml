@@ -112,8 +112,7 @@ Page {
                 anchors.left: textFocus.right
                 anchors.leftMargin: 50
                 anchors.verticalCenter: parent.verticalCenter
-            }            
-
+            }
         }
         Rectangle{
             id:headerPause

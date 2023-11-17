@@ -13,6 +13,8 @@ class CustomButton : public QObject
     Q_PROPERTY(int width READ width WRITE setWidth NOTIFY widthChanged)
     Q_PROPERTY(int height READ height WRITE setHeight NOTIFY heightChanged)
     Q_PROPERTY(bool visible READ visible WRITE setVisible NOTIFY visibleChanged)
+    Q_PROPERTY(QString horizontalAnchor READ horizontalAnchor WRITE setHorizontalAnchor NOTIFY horizontalAnchorChanged)
+    Q_PROPERTY(QString verticalAnchor READ verticalAnchor WRITE setVerticalAnchor NOTIFY verticalAnchorChanged)
 public:
     explicit CustomButton(QObject *parent = nullptr);
 
@@ -31,6 +33,12 @@ public:
     bool visible() const;
     void setVisible(bool visible);
 
+    QString horizontalAnchor() const;
+    void setHorizontalAnchor(const QString &anchor);
+
+    QString verticalAnchor() const;
+    void setVerticalAnchor(const QString &anchor);
+
 public slots:
     void buttonClicked();
 signals:
@@ -39,12 +47,16 @@ signals:
     void widthChanged();
     void heightChanged();
     void visibleChanged();
+    void horizontalAnchorChanged();
+    void verticalAnchorChanged();
 private:
     QString m_text;
     QColor m_color;
     int m_width;
     int m_height;
     bool m_visible;
+    QString m_horizontalAnchor;
+    QString m_verticalAnchor;
 };
 
 #endif

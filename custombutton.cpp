@@ -61,6 +61,33 @@ void CustomButton::setVisible(bool visible)
             emit visibleChanged();
         }
 }
+QString CustomButton::horizontalAnchor() const
+{
+        return m_horizontalAnchor;
+}
+
+void CustomButton::setHorizontalAnchor(const QString &anchor)
+{
+        if (m_horizontalAnchor != anchor)
+        {
+            m_horizontalAnchor = anchor;
+            emit horizontalAnchorChanged();
+        }
+}
+
+QString CustomButton::verticalAnchor() const
+{
+        return m_verticalAnchor;
+}
+
+void CustomButton::setVerticalAnchor(const QString &anchor)
+{
+        if (m_verticalAnchor != anchor)
+        {
+            m_verticalAnchor = anchor;
+            emit verticalAnchorChanged();
+        }
+}
 void CustomButton::buttonClicked()
 {
     qDebug() << "Btn click in C++ code";
