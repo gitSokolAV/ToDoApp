@@ -28,4 +28,5 @@ DISTFILES += \
 
 HEADERS += \
     backend.h \
-    custombutton.h
+    custombutton.h \
+    tictactoegame.h
