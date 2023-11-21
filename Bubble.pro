@@ -3,7 +3,8 @@ QT += quick core
 SOURCES += \
         backend.cpp \
         custombutton.cpp \
-        main.cpp
+        main.cpp \
+        tictactoegame.cpp
 
 resources.files = main.qml AddCategoryBtn.qml ToDoList.qml Category.qml audio/sound.wav audio/sound2.wav FocusClock.qml
 resources.prefix = /$${TARGET}
