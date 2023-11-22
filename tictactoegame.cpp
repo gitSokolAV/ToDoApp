@@ -20,6 +20,32 @@ void TicTacToeGame::resetGame()
 
     emit gameReset();
 }
+bool TicTacToeGame::makeMove(int row, int col)
+{
+    if(row < 0 || row >= 3 || col < 0 || col >= 3 || board[row][col].isEmpty())
+    {
+        return false;
+    }
+    board[row][col] = currentPlayer;
+    movesCount++;
+
+    emit moveMade(row, col, currentPlayer);
+    if(checkWin())
+    {
+        emit gameEnded(currentPlayer);
+        resetGame();
+    }
+    else if(movesCount == 9)
+    {
+        emit gameEnded("");
+        resetGame();
+    }
+    else
+    {
+        currentPlayer = (currentPlayer == "X") ? "O" : "X";
+    }
+    return true;
+}
 
 QString TicTacToeGame::getCellValue(int row, int col)
 {
