@@ -6,7 +6,7 @@ SOURCES += \
         main.cpp \
         tictactoegame.cpp
 
-resources.files = main.qml AddCategoryBtn.qml ToDoList.qml Category.qml audio/sound.wav audio/sound2.wav FocusClock.qml
+resources.files = main.qml AddCategoryBtn.qml ToDoList.qml Category.qml audio/sound.wav audio/sound2.wav FocusClock.qml TicTacToeGame.qml
 resources.prefix = /$${TARGET}
 RESOURCES += resources
 
@@ -25,6 +25,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     Category.qml \
     FocusClock.qml \
+    TicTacToeGame.qml \
     ToDoList.qml
 
 HEADERS += \

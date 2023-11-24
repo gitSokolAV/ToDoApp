@@ -83,6 +83,31 @@ Window{
                     }
                 }
             }
+            Rectangle{
+                id: buttonTicTacToeGame
+                height: 50
+                width: 300
+                color: colorPurple
+                border.width: 1
+
+                anchors.top: buttonFocusClock.bottom
+                anchors.left: buttonFocusClock.left
+                anchors.right: buttonFocusClock.right
+                anchors.topMargin: 50
+
+                Text{
+                    text: "Tic Tac Toe"
+                    color: colorLightGray
+                    font.pixelSize: 20
+                    anchors.centerIn: parent
+                }
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        stackView.push(pageTicTacToeGame)
+                    }
+                }
+            }
         }
         Category{
             id: pageCategory
@@ -99,6 +124,15 @@ Window{
             visible: false
             buttonText: "Back"
             onButtonClicked: {
+                stackView.pop()
+            }
+        }
+        TicTacToeGame{
+            id: pageTicTacToeGame
+            backgroundColor: colorPurple
+            visible: false
+            buttonText: "Back"
+            onButtonClicked:{
                 stackView.pop()
             }
         }
