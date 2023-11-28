@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import TicTacToeGame
+
 Page {
     id: root
     property alias backgroundColor: backgroundRect.color
@@ -8,27 +9,31 @@ Page {
 
     signal buttonClicked();
 
+
+    TicTacToe{
+        id: game
+        onGameEnded: {
+            if(winner != ""){
+                console.log("Player" + winner + " wins!")
+            }
+            else{
+                console.log("It's a draw.")
+            }
+        }
+
+    }
+
     background: Rectangle{
         id: backgroundRect
     }
+
     Rectangle{
         id: mainRectangle
         width: parent.width /2
         height: parent.height /2
         anchors.centerIn: parent
         color: colorYellow
-        TicTacToeGame{
-            id: game
-            onGameEnded: {
-                if(winner != ""){
-                    console.log("Player" + winner + " wins!")
-                }
-                else{
-                    console.log("It's a draw.")
-                }
-            }
 
-        }
         Grid{
             rows: 3
             columns: 3
@@ -42,11 +47,19 @@ Page {
 
                 Button{
                     text: game.getCellValue(index / 3, index % 3)
-                    onClicked: game.makeMove(index /3, index % 3)
+
+                    onClicked:{
+                        console.log("Button clicked at", index / 3, index % 3);
+                        console.log("text: >>>> ", game.getCellValue(index / 3, index % 3).toString() )
+                        game.makeMove(index /3, index % 3)
+                        update()
+                    }
                 }
             }
         }
         Button{
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
             text: "Reset Game"
             onClicked: game.resetGame()
         }

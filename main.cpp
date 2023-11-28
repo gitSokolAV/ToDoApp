@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     engine.rootContext()-> setContextProperty("TicTacToeGame", &tttg);
     qmlRegisterType<BackEnd>("BackEnd", 1,0,"BackEnd");
     qmlRegisterType<CustomButton>("CustomButton", 1, 0, "CustomButton");
-    qmlRegisterType<TicTacToeGame>("TicTacToeGame", 1, 0, "TicTacToeGame");
+    qmlRegisterType<TicTacToeGame>("TicTacToeGame", 1, 0, "TicTacToe");
     engine.load(url);
 
     return app.exec();
