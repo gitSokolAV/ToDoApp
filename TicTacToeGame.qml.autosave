@@ -28,33 +28,9 @@ Page {
         height: parent.height / 2
         anchors.centerIn: parent
 
-        Grid{
-            id: gameGrid
-            columns: 3
-            rows: 3
-            anchors.centerIn: parent
-            Repeater{
-                model: 9
-                Rectangle {
-                    width: gameGrid.width / 3
-                    height: gameGrid.height / 3
-                    color: "red"
-                    border.width: 2
-                    border.color: "black"
-
-                    Text {
-                        id: cellText
-                        anchors.centerIn: parent
-                        font.pixelSize: 24
-                        text: gameModel.getCellValue(Math.floor(index / 3), index % 3)
-
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: gameModel.makeMove(Math.floor(index / 3), index % 3)
-                        }
-                    }
-                }
-            }
+        ListView{
+            id: listView
+            model: pageTicTacToeGame
         }
 
 
