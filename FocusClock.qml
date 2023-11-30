@@ -5,19 +5,29 @@ import QtQuick.Dialogs
 import QtQml
 import BackEnd
 import QtMultimedia
+
 Page {
     id: root
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: textNavButton.text
     property int numberRectValue: 5
     property int timerMinutesRemaining: 5 * 60
+    property int timeFocus: 0
+    property int timePause: 0
     property string viewTimeRectangleColor: colorDarkGray
     property bool ticking: false
+    property bool pauseTicking: false
+    property string firstColor: colorPurple
+    property string secondColor: colorYellow
     signal buttonClicked();
     SoundEffect{
         id: endTime
         source: "audio/sound.wav"
     }
+    SoundEffect{
+        id: secondsTime
+        source: "audio/sound2.wav"
+    }   
 
     background: Rectangle{
         id: backgroundRect
@@ -28,7 +38,18 @@ Page {
     BackEnd{
         id: backend
     }
-    Timer {
+    Timer{
+        running: pauseTicking
+        repeat: true
+        interval: 1000
+        onTriggered: {
+            timePause += 1;
+            backend.timeFromInt = timePause.toString();
+            textPauseTime.text = backend.timeFromInt;
+        }
+    }
+
+    Timer {        
         running: ticking
         repeat: true
         interval: 1000
@@ -38,14 +59,89 @@ Page {
                 ticking = false;
                 startButtonText.text = "START";
                 endTime.play();
-            } else {                
-                timerMinutesRemaining -= 1;
-                backend.timeFromInt = timerMinutesRemaining.toString();
-                timerText.text = backend.timeFromInt;
+            } else {
+                if(textStopSoundBtn.text === "Sound Off"){
+                    secondsTime.play();
+                    timerMinutesRemaining -= 1;
+                    backend.timeFromInt = timerMinutesRemaining.toString();
+                    timerText.text = backend.timeFromInt;
+                    timeFocus += 1
+                    backend.timeFromInt = timeFocus.toString();
+                    textFocusTime.text = backend.timeFromInt;
+                }
+                else{
+                    secondsTime.stop();
+                    timerMinutesRemaining -= 1;
+                    backend.timeFromInt = timerMinutesRemaining.toString();
+                    timerText.text = backend.timeFromInt;
+                }
             }
         }
     }
-
+    Rectangle{
+        id: header
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: menuClock.top
+        anchors.margins: 30
+        radius: 10
+        color: firstColor
+        Rectangle{
+            id:headerFocus
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            anchors.right: parent.horizontalCenter
+            anchors.margins: 5
+            radius: 10
+            color: colorYellow
+            TextArea{
+                id: textFocus
+                text: "Focus : "
+                font.pixelSize: parent.height * 0.8
+                color: colorPurple
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            TextArea{
+                id: textFocusTime
+                text: "00:00:00"
+                font.pixelSize: parent.height * 0.8
+                color: firstColor
+                anchors.left: textFocus.right
+                anchors.leftMargin: 50
+                anchors.verticalCenter: parent.verticalCenter
+            }
+        }
+        Rectangle{
+            id:headerPause
+            anchors.top: parent.top
+            anchors.left: parent.horizontalCenter
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            anchors.margins: 5
+            radius: 10
+            color: colorYellow
+            TextArea{
+                id: textPause
+                text: "Pause : "
+                font.pixelSize: parent.height * 0.8
+                color: colorPurple
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            TextArea{
+                id: textPauseTime
+                text: "00:00:00"
+                font.pixelSize: parent.height * 0.8
+                color: firstColor
+                anchors.left: textPause.right
+                anchors.leftMargin: 50
+                anchors.verticalCenter: parent.verticalCenter
+            }
+        }
+    }
 
     Rectangle{
         id: menuClock
@@ -59,7 +155,8 @@ Page {
         anchors.leftMargin: 100
         anchors.rightMargin: 20
         radius: 50
-        color: "Yellow"
+        color: secondColor
+
         Label{
             id: menuLabel
             height: 100
@@ -83,8 +180,8 @@ Page {
             anchors.margins: 10
             radius: 10
             border.width: 1
-            border.color: colorPurple
-            color: "Yellow"
+            border.color: firstColor
+            color: secondColor
             Text{
                 id:addFocusTimerButtonText
                 anchors.centerIn: parent
@@ -108,8 +205,8 @@ Page {
             anchors.margins: 10
             radius: 10
             border.width: 1
-            border.color: colorPurple
-            color: colorYellow
+            border.color: firstColor
+            color: secondColor
             ListView{
                 id: timeModelView
                 model: timeModel
@@ -124,7 +221,7 @@ Page {
                     height: 50
                     anchors.margins: 10
                     border.width: 1
-                    border.color: colorPurple
+                    border.color: firstColor
                     color: viewTimeRectangleColor
                     radius: 10
                     MouseArea{
@@ -219,14 +316,14 @@ Page {
             anchors.bottomMargin: 50
             radius: 10
             border.width: 1
-            border.color: colorPurple
-            color: colorLightGray
+            border.color: firstColor
+            color: secondColor
             Text{
                 id:quitButtonText
                 anchors.centerIn: parent
                 font.pixelSize: 20
                 text: "Quit"
-                color: colorYellow
+                color: firstColor
             }
             MouseArea{
                 id:quitButtonMouseArea
@@ -280,7 +377,7 @@ Page {
             radius: 10
             color: colorLightGray
             border.width: 1
-            border.color: colorPurple           
+            border.color: firstColor
 
             Rectangle{
                 id: leftButton
@@ -296,7 +393,7 @@ Page {
                 Text{
                     id: leftButtonText
                     font.pixelSize: 40
-                    color: colorYellow
+                    color: secondColor
                     anchors.centerIn: parent
                     text: "-"
                 }
@@ -325,7 +422,7 @@ Page {
                 Text{
                     id: numberRectText
                     font.pixelSize: 40
-                    color: colorYellow
+                    color: secondColor
                     anchors.centerIn: parent
                     text: timerMinutesRemaining / 60 + " min"
                 }
@@ -342,7 +439,7 @@ Page {
                 Text{
                     id: rightButtonText
                     font.pixelSize: 40
-                    color: colorYellow
+                    color: secondColor
                     anchors.centerIn: parent
                     text: "+"
                 }
@@ -369,7 +466,7 @@ Page {
             radius: 10
             color: colorLightGray
             border.width: 1
-            border.color: colorPurple
+            border.color: firstColor
             Text{
                 id:focusTimerSaveButtonText
                 anchors.centerIn: parent
@@ -397,7 +494,7 @@ Page {
             radius: 10
             color: colorLightGray
             border.width: 1
-            border.color: colorPurple
+            border.color: firstColor
             Text{
                 id:focusTimerCanselButtonText
                 anchors.centerIn: parent
@@ -420,7 +517,7 @@ Page {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        color: "Yellow"
+        color: secondColor
         anchors.margins: 100
         radius: 50
         Label{
@@ -443,8 +540,82 @@ Page {
             anchors.horizontalCenter: mainClock.horizontalCenter
             text: "00:00:00"
             font.pixelSize: mainClock.width * 0.2
-            color: colorPurple
+            color: firstColor
+            visible: true
+            z: 1
         }
+        Rectangle{
+            id: imageBtn
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.margins: 20
+            height: 50
+            width: textImageBtn.width + 20
+            radius: 10
+            color: "White"
+            z: 1
+            Text{
+                id: textImageBtn
+                text: "Select Image"
+                font.pixelSize: 16
+                anchors.centerIn: parent
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    imageDialog.open();
+                }
+            }
+        }
+        Rectangle{
+            id: hideImage
+            anchors.bottom: parent.bottom
+            anchors.left: imageBtn.right
+            anchors.margins: 20
+            height: 50
+            width: textHideBtn.width + 20
+            radius: 10
+            color: "White"
+            z: 1
+            Text{
+                id: textHideBtn
+                text: "Delete Image"
+                font.pixelSize: 16
+                anchors.centerIn: parent
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    backgroundImage.visible = false;
+                }
+            }
+        }
+
+        FileDialog{
+            id: imageDialog
+            title: "Please select image"
+            currentFolder: "/home/"
+            nameFilters: ["Image (*.png *.jpeg *.gif)"]
+            onAccepted: {
+                var selectedFile = imageDialog.selectedFile
+                if(selectedFile !== ""){
+                    backgroundImage.source = selectedFile;
+                    backgroundImage.visible = true;
+                }
+            }
+            onRejected: {
+                console.log("Выбор файла отменен")
+            }
+
+        }
+        Image{
+            id: backgroundImage
+            anchors.fill: parent
+            fillMode: Image.Stretch
+            source: ""
+
+        }
+
         Rectangle{
             id: pauseButton
             anchors.bottom: parent.bottom
@@ -454,26 +625,28 @@ Page {
             height: 50
             width: parent.width / 3
             radius: 10
-            color: colorPurple
+            color: firstColor
             visible: false
             Text{
                 id: pauseButtonText
                 anchors.centerIn: parent
                 font.pixelSize: 20
                 text: "PAUSE"
-                color: colorYellow
+                color: secondColor
             }
             MouseArea{
                 id: pauseButtonMouseArea
                 anchors.fill: parent
                 onClicked: {
                     if(timerMinutesRemaining !== 0 && pauseButtonText.text === "PAUSE"){
-                        ticking = false;
+                        ticking = false;                        
                         pauseButtonText.text = "START";
+                        pauseTicking = true;
                     }
                     else if(timerMinutesRemaining !== 0 && pauseButtonText.text === "START"){
                         ticking = true;
                         pauseButtonText.text = "PAUSE";
+                        pauseTicking = false;
                     }
 
                 }
@@ -488,14 +661,14 @@ Page {
             height: 50
             width: parent.width / 3
             radius: 10
-            color: colorPurple
+            color: firstColor
             visible: false
             Text{
                 id: stopButtonText
                 anchors.centerIn: parent
                 font.pixelSize: 20
                 text: "STOP"
-                color: colorYellow
+                color: secondColor
             }
             MouseArea{
                 id: stopButtonMouseArea
@@ -518,14 +691,14 @@ Page {
             height: 50
             width: parent.width / 4
             radius: 10
-            color: colorPurple
+            color: firstColor
             visible: true
             Text{
                 id: startButtonText
                 anchors.centerIn: parent
                 font.pixelSize: 20
                 text: "START"
-                color: colorYellow
+                color: secondColor
             }
             MouseArea{
                 id: startButtonMouseArea
@@ -545,19 +718,87 @@ Page {
                 }
             }
         }
+
+    }
+
+    Rectangle{
+            id: fullScreenRect
+            anchors.top: parent.top
+            anchors.bottom: fullScreenBtn.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 10
+            radius: 10
+            color: firstColor
+
+            visible: false
+            Label{
+                id: fullScreenLabel
+                text: timerText.text
+                font.pixelSize: parent.width * 0.2
+                anchors.centerIn: parent
+                color: secondColor
+                visible: true
+            }
+        }
+    Dialog{
+        id: changeColorDialog
+        width: 180
+        height: 170
+        title: "Select Color"
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        Button {
+            id: firstColorBtn
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 5
+            height: 50
+            text: "First Color"
+            onClicked: {
+                firstChangeColorDialogOpen.open();
+            }
+        }
+        Button {
+            id: secondColorBtn
+            anchors.top: firstColorBtn.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 5
+            height: 50
+            text: "Second Color"
+            onClicked: {
+                secondChangeColorDialogOpen.open();
+            }
+        }
+        ColorDialog{
+            id: firstChangeColorDialogOpen
+            onAccepted: {
+                var newColor = firstChangeColorDialogOpen.selectedColor;
+                firstColor = newColor;
+            }
+        }
+        ColorDialog{
+            id: secondChangeColorDialogOpen
+            onAccepted: {
+                var newColor = secondChangeColorDialogOpen.selectedColor;
+                secondColor = newColor;
+            }
+        }
     }
     Rectangle{
-        id: fullScreanBtn
-        anchors.right: navButton.left
+        id: stopSoundBtn
+        anchors.right: colorBtn.left
         anchors.bottom: parent.bottom
         anchors.margins: 10
         color: "White"
         radius: 10
         height: 50
-        width: textFullScreanBtn.width + 20
+        width: textStopSoundBtn.width + 20
+        visible: true
         TextArea{
-            id: textFullScreanBtn
-            text: "Full Screan"
+            id: textStopSoundBtn
+            text: "Sound Off"
             anchors.centerIn: parent
             font.pixelSize: 16
             color: backgroundColor
@@ -565,9 +806,106 @@ Page {
         MouseArea{
             anchors.fill: parent
             onClicked: {
-                if(timerMinutesRemaining !== 0){
-                    mainClock.width = parent.width
-                    mainClock.height = parent.height
+                if(timerMinutesRemaining !== 0 && textStopSoundBtn.text === "Sound Off"){
+                    textStopSoundBtn.text = "Sound On";
+                }
+                else{
+                    textStopSoundBtn.text = "Sound Off";
+                }
+            }
+        }
+    }
+
+    Rectangle{
+        id: colorBtn
+        anchors.right: fullScreenBtn.left
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        color: "White"
+        radius: 10
+        height: 50
+        width: textColorBtn.width + 20
+        visible: true
+        TextArea{
+            id: textColorBtn
+            text: "Change color"
+            anchors.centerIn: parent
+            font.pixelSize: 16
+            color: backgroundColor
+        }
+
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                changeColorDialog.open();
+            }
+        }
+
+    }
+    Rectangle{
+        id: visibleTextLabelBtn
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        color: "White"
+        radius: 10
+        height: 50
+        width: textVisibleTextLabelBtn.width + 20
+        visible: false
+        TextArea{
+           id: textVisibleTextLabelBtn
+           text: "Hide Timer"
+           anchors.centerIn: parent
+           font.pixelSize: 16
+           color: "RED"
+        }
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                if(textVisibleTextLabelBtn.text === "Hide Timer"){
+                    textVisibleTextLabelBtn.text = "Show Timer";
+                   fullScreenLabel.visible = false;
+
+                }
+                else if(textVisibleTextLabelBtn.text === "Show Timer"){
+                    textVisibleTextLabelBtn.text = "Hide Timer";
+                    fullScreenLabel.visible = true;
+
+                }
+            }
+        }
+    }
+
+    Rectangle{
+        id: fullScreenBtn
+        anchors.right: navButton.left
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        color: "White"
+        radius: 10
+        height: 50
+        width: textFullScreenBtn.width + 20
+        TextArea{
+            id: textFullScreenBtn
+            text: "Full Screen"
+            anchors.centerIn: parent
+            font.pixelSize: 16
+            color: backgroundColor
+        }
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                if(timerMinutesRemaining !== 0 && textFullScreenBtn.text === "Full Screen"){
+                    fullScreenRect.visible = true;
+                    visibleTextLabelBtn.visible = true;
+                    textFullScreenBtn.text = "Exit full screen mode";
+                    colorBtn.visible = false
+                }
+                else if(timerMinutesRemaining !== 0 && textFullScreenBtn.text === "Exit full screen mode"){
+                    fullScreenRect.visible = false;
+                    visibleTextLabelBtn.visible = false;
+                    colorBtn.visible = true;
+                    textFullScreenBtn.text = "Full Screen"
                 }
             }
         }

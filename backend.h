@@ -24,4 +24,6 @@ signals:
 private:
     QString timeFromInt;
 };
+
+
 #endif // BACKEND_H

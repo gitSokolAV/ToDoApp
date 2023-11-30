@@ -15,3 +15,4 @@ void BackEnd::setTime(const QString& newTime)
     timeFromInt = currentTime->toString("hh:mm:ss");
     emit timeChanged();
 }
+
