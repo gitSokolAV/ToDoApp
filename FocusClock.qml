@@ -5,7 +5,7 @@ import QtQuick.Dialogs
 import QtQml
 import BackEnd
 import QtMultimedia
-import CustomButton
+
 Page {
     id: root
     property alias backgroundColor: backgroundRect.color
@@ -718,11 +718,7 @@ Page {
                 }
             }
         }
-        CustomButton{
-            id: cppButton
 
-
-        }
     }
 
     Rectangle{

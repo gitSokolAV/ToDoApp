@@ -2,11 +2,9 @@ QT += quick core
 
 SOURCES += \
         backend.cpp \
-        custombutton.cpp \
-        main.cpp \
-        tictactoegame.cpp
+        main.cpp
 
-resources.files = main.qml AddCategoryBtn.qml ToDoList.qml Category.qml audio/sound.wav audio/sound2.wav FocusClock.qml TicTacToeGame.qml
+resources.files = main.qml AddCategoryBtn.qml ToDoList.qml Category.qml audio/sound.wav audio/sound2.wav FocusClock.qml
 resources.prefix = /$${TARGET}
 RESOURCES += resources
 
@@ -25,10 +23,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     Category.qml \
     FocusClock.qml \
-    TicTacToeGame.qml \
     ToDoList.qml
 
 HEADERS += \
-    backend.h \
-    custombutton.h \
-    tictactoegame.h
+    backend.h
