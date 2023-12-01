@@ -4,7 +4,7 @@ SOURCES += \
         backend.cpp \
         main.cpp
 
-resources.files = main.qml AddCategoryBtn.qml ToDoList.qml Category.qml audio/sound.wav audio/sound2.wav FocusClock.qml
+resources.files = main.qml AddCategoryBtn.qml ToDoList.qml Category.qml audio/sound.wav audio/sound2.wav FocusClock.qml Tiles.qml
 resources.prefix = /$${TARGET}
 RESOURCES += resources
 
@@ -23,6 +23,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     Category.qml \
     FocusClock.qml \
+    Tiles.qml \
     ToDoList.qml
 
 HEADERS += \

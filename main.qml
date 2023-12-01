@@ -83,6 +83,31 @@ Window{
                     }
                 }
             }
+            Rectangle{
+                id: buttonTiles
+                height: 50
+                width: 300
+                color: colorPurple
+                border.width: 1
+
+                anchors.top: buttonFocusClock.bottom
+                anchors.left: buttonFocusClock.left
+                anchors.right: buttonFocusClock.right
+                anchors.topMargin: 50
+
+                Text{
+                    text: "Tiles"
+                    color: colorLightGray
+                    font.pixelSize: 20
+                    anchors.centerIn: parent
+                }
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        stackView.push(pageTiles)
+                    }
+                }
+            }
         }
         Category{
             id: pageCategory
@@ -96,6 +121,15 @@ Window{
         FocusClock{
             id: pageFoculClock
             backgroundColor: colorPurple
+            visible: false
+            buttonText: "Back"
+            onButtonClicked: {
+                stackView.pop()
+            }
+        }
+        Tiles{
+            id: pageTiles
+            background: colorPurple
             visible: false
             buttonText: "Back"
             onButtonClicked: {
