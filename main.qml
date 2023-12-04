@@ -129,7 +129,7 @@ Window{
         }
         Tiles{
             id: pageTiles
-            background: colorPurple
+            backgroundColor: colorPurple
             visible: false
             buttonText: "Back"
             onButtonClicked: {
