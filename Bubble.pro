@@ -29,4 +29,5 @@ DISTFILES += \
     ToDoList.qml
 
 HEADERS += \
-    backend.h
+    backend.h \
+    gameboard.h
