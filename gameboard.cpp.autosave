@@ -1,0 +1,11 @@
+#include <gameboard.h>
+#include <algorithm>
+
+GameBoard::GameBoard(const size_t boardDimension, QObject *parent)
+    : QAbstractListModel {parent},
+    m_dimension {boardDimension},
+    m_boardSize {m_dimesnion * m_dimesnion}
+{
+    m_rawBoard.resize(m_boardSize);
+    std::i
+}

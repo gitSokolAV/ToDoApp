@@ -2,6 +2,7 @@ QT += quick core
 
 SOURCES += \
         backend.cpp \
+        gameboard.cpp \
         main.cpp
 
 resources.files = main.qml AddCategoryBtn.qml ToDoList.qml Category.qml audio/sound.wav audio/sound2.wav FocusClock.qml Tiles.qml Tile.qml GameBoard.qml
