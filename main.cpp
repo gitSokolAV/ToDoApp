@@ -2,7 +2,8 @@
 #include <QQmlApplicationEngine>
 #include <QQuickView>
 #include <QQmlContext>
-#include <backend.h>
+#include "backend.h"
+#include "gameboard.h"
 
 
 
@@ -13,6 +14,8 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     const QUrl url(u"qrc:/Bubble/main.qml"_qs);
     BackEnd bck;
+    GameBoard model;
+    qmlRegisterType<GameBoard>("Game", 1, 0, "GameBoardModel");
 
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

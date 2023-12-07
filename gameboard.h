@@ -8,7 +8,8 @@ class GameBoard : public QAbstractListModel
     Q_OBJECT
 public:
     static constexpr size_t defauldPuzzleDimension { 4 };
-    GameBoard(const size_t boardDimension = defauldPuzzleDimension);
+    GameBoard(const size_t boardDimension = defauldPuzzleDimension,
+              QObject* parent = nullptr);
 
     struct Tile{
         size_t value{};
@@ -23,9 +24,15 @@ public:
         }
     };
 
+    int rowCount(const QModelIndex& parent = QModelIndex {}) const override;
+    QVariant data (const QModelIndex& index, int role = Qt::DisplayRole) const override;
+
 private:
-    std::vector<Tile> m_rawBoard();
-    const size_t m_dimesnion;
+    void shuffle();
+    bool isPositionValid(const size_t position) const;
+
+    std::vector<Tile> m_rawBoard;
+    const size_t m_dimension;
     const size_t m_boardSize;
 };
 
