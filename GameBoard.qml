@@ -8,17 +8,17 @@ GridView{
 
     }
 
-    cellWidth: width / 4
-    cellHeight: height / 4
+    cellWidth: width / root.model.dimension
+    cellHeight: height / root.model.dimension
     delegate: Item{
         id: backgroundDelegate
         width: root.cellWidth
         height: root.cellHeight
-        visible: display != 16
+        visible: display !== root.model.hiddenElementValue
         Tile{
             anchors.fill: backgroundDelegate
             anchors.margins: 5
-            displayText: display
+            displayText: visible
         }
     }
 }

@@ -6,8 +6,11 @@
 class GameBoard : public QAbstractListModel
 {
     Q_OBJECT
+    Q_PROPERTY(int dimension READ dimension CONSTANT)
+    Q_PROPERTY(int hiddenElementValue READ boardSize CONSTANT)
+
 public:
-    static constexpr size_t defauldPuzzleDimension { 4 };
+    static constexpr size_t defauldPuzzleDimension { 5 };
     GameBoard(const size_t boardDimension = defauldPuzzleDimension,
               QObject* parent = nullptr);
 
@@ -24,12 +27,19 @@ public:
         }
     };
 
+    size_t dimension() const;
+    size_t boardSize() const;
+
     int rowCount(const QModelIndex& parent = QModelIndex {}) const override;
     QVariant data (const QModelIndex& index, int role = Qt::DisplayRole) const override;
+
+    std::vector<Tile> rawBoard() const;
+
 
 private:
     void shuffle();
     bool isPositionValid(const size_t position) const;
+    bool isBoardValid() const;
 
     std::vector<Tile> m_rawBoard;
     const size_t m_dimension;
