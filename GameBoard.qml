@@ -14,11 +14,11 @@ GridView{
         id: backgroundDelegate
         width: root.cellWidth
         height: root.cellHeight
-        visible: display !== root.model.hiddenElementValue
+        visible: display != root.model.hiddenElementValue
         Tile{
             anchors.fill: backgroundDelegate
             anchors.margins: 5
-            displayText: visible
+            displayText: display
         }
     }
 }

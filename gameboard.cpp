@@ -61,6 +61,7 @@ bool GameBoard::isBoardValid() const
         }
     }
     const size_t startPoint = 1;
+
     for(size_t i = 0; i < m_boardSize; ++i)
     {
         if(m_rawBoard[i].value == m_boardSize)
