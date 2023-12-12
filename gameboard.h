@@ -10,6 +10,8 @@ class GameBoard : public QAbstractListModel
     Q_PROPERTY(int hiddenElementValue READ boardSize CONSTANT)
 
 public:
+
+    using Position = std::pair<size_t, size_t>;
     static constexpr size_t defauldPuzzleDimension { 5 };
     GameBoard(const size_t boardDimension = defauldPuzzleDimension,
               QObject* parent = nullptr);
@@ -26,6 +28,7 @@ public:
             return other == value;
         }
     };
+    bool move(int index);
 
     size_t dimension() const;
     size_t boardSize() const;
@@ -35,7 +38,7 @@ public:
 
     std::vector<Tile> rawBoard() const;
 
-
+    Position getRowCol(size_t index) const;
 private:
     void shuffle();
     bool isPositionValid(const size_t position) const;

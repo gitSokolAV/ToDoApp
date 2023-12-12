@@ -12,6 +12,14 @@ GameBoard::GameBoard(const size_t boardDimension, QObject *parent)
     shuffle();
 }
 
+bool GameBoard::move(int index)
+{
+    if(!isPositionValid(static_cast<size_t> (index)))
+    {
+        return false;
+    }
+}
+
 int GameBoard::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
