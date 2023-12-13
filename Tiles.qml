@@ -20,6 +20,7 @@ Page {
         width: root.width / 3
         height: root.height / 2
         anchors.centerIn: parent
+        clip: true
         GameBoard{
             anchors.fill: parent
         }
