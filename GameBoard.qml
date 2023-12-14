@@ -7,7 +7,6 @@ GridView{
     model:  GameBoardModel{
 
     }
-
     cellWidth: width / root.model.dimension
     cellHeight: height / root.model.dimension
     delegate: Item{

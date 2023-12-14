@@ -14,11 +14,74 @@ Page {
     background: Rectangle{
         id: backgroundRect
     }
+    Rectangle{
+        id: gameBoardSize
+        width: root.width / 3
+        height: root.height / 2
+        visible: true
+        anchors.centerIn: parent
+        Text{
+            id: titleText
+            font.pixelSize: parent.width / 8
+            font.bold: true
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: 20
+            text: "Board Size"
+        }
+        Rectangle{
+            id: positiveBtn
+            anchors.left: sizeLabel.right
+            anchors.verticalCenter: parent.verticalCenter
+            width: 100
+            height: 100
+            color: colorYellow
+            radius: 50
+            Text{
+                font.pixelSize: parent.width / 4
+                font.bold: true
+                text: "+"
+                anchors.centerIn: parent
+            }
+        }
+        Rectangle{
+            id: sizeLabel
+            width: 200
+            height: 200
+            color: colorYellow
+            radius: 50
+            anchors.centerIn: parent
+            Text{
+                font.pixelSize: parent.width / 4
+                font.bold: true
+                text: "5"
+                anchors.centerIn: parent
+            }
+        }
+        Rectangle{
+            id: negativeBtn
+            anchors.right: sizeLabel.left
+            anchors.verticalCenter: parent.verticalCenter
+            width: 100
+            height: 100
+            color: colorYellow
+            radius: 50
+            Text{
+                font.pixelSize: parent.width / 4
+                font.bold: true
+                text: "-"
+                anchors.centerIn: parent
+            }
+        }
+
+
+    }
 
     Rectangle{
         id: gameBoard
         width: root.width / 3
         height: root.height / 2
+        visible: false
         anchors.centerIn: parent
         clip: true
         GameBoard{
