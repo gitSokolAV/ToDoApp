@@ -8,6 +8,7 @@ Page {
     id: root
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: textNavButton.text
+    property int sizeBoard: 2
 
     signal buttonClicked();
 
@@ -43,6 +44,12 @@ Page {
                 text: "+"
                 anchors.centerIn: parent
             }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    sizeBoard += 1
+                }
+            }
         }
         Rectangle{
             id: sizeLabel
@@ -54,7 +61,7 @@ Page {
             Text{
                 font.pixelSize: parent.width / 4
                 font.bold: true
-                text: "5"
+                text: sizeBoard
                 anchors.centerIn: parent
             }
         }
@@ -71,6 +78,15 @@ Page {
                 font.bold: true
                 text: "-"
                 anchors.centerIn: parent
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    if(sizeBoard >= 2){
+                        sizeBoard -= 1
+                    }
+
+                }
             }
         }
 
