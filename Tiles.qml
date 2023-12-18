@@ -89,6 +89,30 @@ Page {
                 }
             }
         }
+        Rectangle{
+            id: okButton
+            anchors.top: sizeLabel.bottom
+            anchors.left: sizeLabel.left
+            anchors.right: sizeLabel.right
+            anchors.margins: 10
+            height: 50
+            color: colorYellow
+            radius: 10
+            Text{
+                font.pixelSize: parent.width / 4
+                font.bold: true
+                text: "OK"
+                anchors.centerIn: parent
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    gameBoardSize.visible = false
+                    gameBoard.visible = true
+
+                }
+            }
+        }
 
 
     }

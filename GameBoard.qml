@@ -14,6 +14,7 @@ GridView{
         width: root.cellWidth
         height: root.cellHeight
         visible: display != root.model.hiddenElementValue
+
         Tile{
             anchors.fill: backgroundDelegate
             anchors.margins: 5
