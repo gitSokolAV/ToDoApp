@@ -3,7 +3,7 @@ import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQml
-
+import Game
 Page {
     id: root
     property alias backgroundColor: backgroundRect.color
@@ -14,118 +14,18 @@ Page {
 
     background: Rectangle{
         id: backgroundRect
-    }
-    Rectangle{
-        id: gameBoardSize
-        width: root.width / 3
-        height: root.height / 2
-        visible: true
-        anchors.centerIn: parent
-        Text{
-            id: titleText
-            font.pixelSize: parent.width / 8
-            font.bold: true
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: parent.top
-            anchors.topMargin: 20
-            text: "Board Size"
-        }
-        Rectangle{
-            id: positiveBtn
-            anchors.left: sizeLabel.right
-            anchors.verticalCenter: parent.verticalCenter
-            width: 100
-            height: 100
-            color: colorYellow
-            radius: 50
-            Text{
-                font.pixelSize: parent.width / 4
-                font.bold: true
-                text: "+"
-                anchors.centerIn: parent
-            }
-            MouseArea{
-                anchors.fill: parent
-                onClicked: {
-                    sizeBoard += 1
-                }
-            }
-        }
-        Rectangle{
-            id: sizeLabel
-            width: 200
-            height: 200
-            color: colorYellow
-            radius: 50
-            anchors.centerIn: parent
-            Text{
-                font.pixelSize: parent.width / 4
-                font.bold: true
-                text: sizeBoard
-                anchors.centerIn: parent
-            }
-        }
-        Rectangle{
-            id: negativeBtn
-            anchors.right: sizeLabel.left
-            anchors.verticalCenter: parent.verticalCenter
-            width: 100
-            height: 100
-            color: colorYellow
-            radius: 50
-            Text{
-                font.pixelSize: parent.width / 4
-                font.bold: true
-                text: "-"
-                anchors.centerIn: parent
-            }
-            MouseArea{
-                anchors.fill: parent
-                onClicked: {
-                    if(sizeBoard >= 2){
-                        sizeBoard -= 1
-                    }
-
-                }
-            }
-        }
-        Rectangle{
-            id: okButton
-            anchors.top: sizeLabel.bottom
-            anchors.left: sizeLabel.left
-            anchors.right: sizeLabel.right
-            anchors.margins: 10
-            height: 50
-            color: colorYellow
-            radius: 10
-            Text{
-                font.pixelSize: parent.width / 4
-                font.bold: true
-                text: "OK"
-                anchors.centerIn: parent
-            }
-            MouseArea{
-                anchors.fill: parent
-                onClicked: {
-                    gameBoardSize.visible = false
-                    gameBoard.visible = true
-
-                }
-            }
-        }
-
-
-    }
+    }    
 
     Rectangle{
         id: gameBoard
         width: root.width / 3
         height: root.height / 2
-        visible: false
+        visible: true
         anchors.centerIn: parent
         clip: true
         GameBoard{
             anchors.fill: parent
+
         }
     }
 
