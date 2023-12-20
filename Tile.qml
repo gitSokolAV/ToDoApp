@@ -5,10 +5,10 @@ Rectangle{
     property string displayText: ""
     property alias internalText: textTile
 
-    color: "Yellow"
+    color: colorYellow
     border.width: 1
     border.color: "Black"
-    radius:10
+    radius: width / 2
 
     Text{
         id: textTile
