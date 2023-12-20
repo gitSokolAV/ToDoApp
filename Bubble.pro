@@ -2,9 +2,10 @@ QT += quick core
 
 SOURCES += \
         backend.cpp \
+        gameboard.cpp \
         main.cpp
 
-resources.files = main.qml AddCategoryBtn.qml ToDoList.qml Category.qml audio/sound.wav audio/sound2.wav FocusClock.qml
+resources.files = main.qml AddCategoryBtn.qml ToDoList.qml Category.qml audio/sound.wav audio/sound2.wav FocusClock.qml Tiles.qml Tile.qml GameBoard.qml
 resources.prefix = /$${TARGET}
 RESOURCES += resources
 
@@ -23,7 +24,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     Category.qml \
     FocusClock.qml \
+    GameBoard.qml \
+    Tile.qml \
+    Tiles.qml \
     ToDoList.qml
 
 HEADERS += \
-    backend.h
+    backend.h \
+    gameboard.h
