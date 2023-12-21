@@ -25,7 +25,6 @@ Page {
         clip: true
         GameBoard{
             anchors.fill: parent
-
         }
     }
 

@@ -619,7 +619,7 @@ Page {
         Rectangle{
             id: pauseButton
             anchors.bottom: parent.bottom
-            anchors.left: parent.left
+            anchors.left: deleteButton.left
             anchors.right: stopButton.left
             anchors.margins: 20
             height: 50
