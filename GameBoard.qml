@@ -1,6 +1,9 @@
 import QtQuick
 import Game
 
+
+
+
 GridView{
     id: root
 

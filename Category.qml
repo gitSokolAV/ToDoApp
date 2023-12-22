@@ -12,6 +12,9 @@ Page {
     signal buttonClicked();
     property var categoryConnectIndex : []    
     property bool stopRepeater: false
+    property bool isPlaying: false
+
+
         SoundEffect{
             id: soundEffect
             source: "audio/sound.wav"
@@ -20,6 +23,24 @@ Page {
             if(visible){
                 soundEffect.play()
             }
+        }
+        Rectangle{
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: 50
+            color: colorYellow
+
+            MediaPlayer{
+                id:radioPlayer
+                source: "https://radio.i.ua/play/hit.fm/"
+            }
+            Button {
+                    text: radioPlayer.playbackState === MediaPlayer.PlayingState ? "Пауза" : "Воспроизвести"
+                    onClicked: {
+                       Qt.openUrlExternally("https://radio.i.ua/play/hit.fm/")
+                    }
+                }
         }
 
         ListModel {
