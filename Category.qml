@@ -30,17 +30,45 @@ Page {
             anchors.right: parent.right
             height: 50
             color: colorYellow
-
-            MediaPlayer{
-                id:radioPlayer
-                source: "https://radio.i.ua/play/hit.fm/"
-            }
-            Button {
-                    text: radioPlayer.playbackState === MediaPlayer.PlayingState ? "Пауза" : "Воспроизвести"
+            Rectangle{
+                id:hitFm
+                anchors.left:parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.margins: 10
+                width: parent.width / 2
+                color: colorPurple
+                TextArea{
+                    anchors.centerIn: parent
+                    text: "Hit Fm"
+                }
+                MouseArea{
+                    anchors.fill: parent
                     onClicked: {
-                       Qt.openUrlExternally("https://radio.i.ua/play/hit.fm/")
+                        Qt.openUrlExternally("https://radio.i.ua/play/hit.fm/")
                     }
                 }
+            }
+            Rectangle{
+                id:fullRadioPage
+                anchors.right:parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: hitFm.right
+                anchors.margins: 10
+                width: parent.width / 2
+                color: colorPurple
+                TextArea{
+                    anchors.centerIn: parent
+                    text: "Other radio"
+                }
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        Qt.openUrlExternally("https://radio.i.ua")
+                    }
+                }
+            }
         }
 
         ListModel {
