@@ -36,7 +36,7 @@ Page {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.margins: 10
-                width: parent.width / 2
+                width: parent.width / 3
                 color: colorPurple
                 TextArea{
                     anchors.centerIn: parent
@@ -51,7 +51,7 @@ Page {
             }
             Rectangle{
                 id:fullRadioPage
-                anchors.right:parent.right
+                anchors.right:calc.left
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.left: hitFm.right
@@ -66,6 +66,29 @@ Page {
                     anchors.fill: parent
                     onClicked: {
                         Qt.openUrlExternally("https://radio.i.ua")
+                    }
+                }
+            }
+            Rectangle{
+                id:calc
+                anchors.right:parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.margins: 10
+                width: parent.width / 2
+                color: colorPurple
+                TextArea{
+                    anchors.centerIn: parent
+                    text: "Calculator"
+                }
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        var command = "xdg-open"
+                                    var params = ["calc"]
+                                    var proc = Qt.createQProcess()
+                                    proc.start(command, params)
+                                    proc.waitForFinished()
                     }
                 }
             }
