@@ -85,10 +85,10 @@ Page {
                     anchors.fill: parent
                     onClicked: {
                         var command = "xdg-open"
-                                    var params = ["calc"]
-                                    var proc = Qt.createQProcess()
-                                    proc.start(command, params)
-                                    proc.waitForFinished()
+                        var params = ["calc"]
+                        var proc = Qt.createQProcess()
+                        proc.start(command, params)
+                        proc.waitForFinished()
                     }
                 }
             }

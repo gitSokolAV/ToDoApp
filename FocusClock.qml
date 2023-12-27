@@ -11,7 +11,7 @@ Page {
     property alias backgroundColor: backgroundRect.color
     property alias buttonText: textNavButton.text
     property int numberRectValue: 5
-    property int timerMinutesRemaining: 5 * 60
+    property int timerMinutesRemaining: 0
     property int timeFocus: 0
     property int timePause: 0
     property string viewTimeRectangleColor: colorDarkGray
